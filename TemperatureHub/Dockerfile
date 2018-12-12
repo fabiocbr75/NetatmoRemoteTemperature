@@ -11,6 +11,7 @@ WORKDIR "/src/"
 RUN dotnet build "TemperatureHub.csproj" -c Release -o /app
 
 FROM build AS publish
+#RUN dotnet publish "TemperatureHub.csproj" -c Release -r linux-arm -o /app
 RUN dotnet publish "TemperatureHub.csproj" -c Release -o /app
 
 FROM base AS final
