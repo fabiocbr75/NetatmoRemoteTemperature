@@ -21,6 +21,6 @@ namespace TemperatureHub.Models
             get => _humidity;
             set => _humidity = System.Math.Round(value, 1);
         }
-        public DateTime ingestionTimestamp { get; set; }
+        public string ingestionTimestamp { get; set; }
     }
 }
