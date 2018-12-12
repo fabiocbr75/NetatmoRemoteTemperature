@@ -40,7 +40,7 @@ namespace TemperatureHub.Controllers
         {
             Console.WriteLine($"Time:{DateTime.Now.ToString("s")} MAC:{value.MAC}; Temp:{value.Temp}; Humidity:{value.Humidity}");
 
-            var sensorData = new SensorData() { senderMAC = value.MAC, temperature = value.Temp, humidity = value.Humidity, ingestionTimestamp = DateTime.UtcNow };
+            var sensorData = new SensorData() { senderMAC = value.MAC, temperature = value.Temp, humidity = value.Humidity, ingestionTimestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") };
             _repository.AddSensorData(sensorData);
         }
     }
