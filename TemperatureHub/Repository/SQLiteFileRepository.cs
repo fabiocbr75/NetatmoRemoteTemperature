@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
+using SQLite;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,12 +12,13 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using TemperatureHub.Helpers;
+using TemperatureHub.Models;
 
 namespace TemperatureHub.Repository
 {
     public class SQLiteFileRepository : ISQLiteFileRepository
     {
-        private static ConcurrentDictionary<int, IDbConnection> _dbInstaces = new ConcurrentDictionary<int, IDbConnection>();
+        private static ConcurrentDictionary<int, SQLiteConnection> _dbInstaces = new ConcurrentDictionary<int, SQLiteConnection>();
         private static ConcurrentQueue<Executor> _executorQueue = new ConcurrentQueue<Executor>();
         
         private readonly string _databasePathWithFileName;
@@ -36,10 +37,9 @@ namespace TemperatureHub.Repository
             System.IO.Directory.CreateDirectory(databasePath);
             var fullPath = Path.Combine(databasePath, "repository.db");
             bool needsDatabaseInit = !File.Exists(fullPath);
-            using (var db = new SQLiteConnection($"Data Source={fullPath};foreign keys = true;"))
-            {
-                db.Open();
 
+            using (var db = new SQLiteConnection(fullPath))
+            {
                 if (needsDatabaseInit)
                 {
                     DropAndCreateTables(db);
@@ -48,15 +48,14 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "CreateOrUpdateDb Get finished");
         }
 
-        private IDbConnection GetDbInstance()
+        private SQLiteConnection GetDbInstance()
         {
-            IDbConnection db = null;
+            SQLiteConnection db = null;
             var currentThread = Thread.CurrentThread.ManagedThreadId;
 
             if (!_dbInstaces.TryGetValue(currentThread, out db))
             {
-                db = new SQLiteConnection($"Data Source={_databasePathWithFileName};foreign keys = true;");
-                db.Open();
+                db = new SQLiteConnection(_databasePathWithFileName);
 
                 _dbInstaces.AddOrUpdate(currentThread, db, (key, old) => db);
             }
@@ -64,7 +63,7 @@ namespace TemperatureHub.Repository
             return db;
         }
         /// <summary>Initialiazes a new repository database file</summary>
-        private static void DropAndCreateTables(IDbConnection db)
+        private static void DropAndCreateTables(SQLiteConnection db)
         {
             Logger.Info("SQLiteFileRepository", "DropAndCreateTables Get started");
 
@@ -73,26 +72,15 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "DropAndCreateTables Get finished");
         }
 
-        public void AddSensorData(string senderMAC, double temperature, double humidity, DateTime ingestionTimestamp)
+        public void AddSensorData(SensorData sensorData)
         {
             Logger.Info("SQLiteFileRepository", "AddSensorDatastarted");
 
-            string sqlQuery;
-
-            sqlQuery = @"INSERT INTO SensorData (SenderMAC, Temperature, Humidity, IngestionTimestamp)
-                              VALUES (@SenderMAC, @Temperature, @Humidity, @IngestionTimestamp) ";
-
-
             ExecuteOnThreadPool(() => {
-                GetDbInstance().CreateCommand(sqlQuery)
-                   .SetParameter("SenderMAC", senderMAC)
-                   .SetParameter("Temperature", Math.Round(temperature, 1))
-                   .SetParameter("Humidity", Math.Round(humidity, 1))
-                   .SetParameter("IngestionTimestamp", ingestionTimestamp.ToString("yyyy-MM-ddTHH:mm:ssZ"))
-                   .ExecuteNonQuery();
+                GetDbInstance().Insert(sensorData);
 
             });
-            Logger.Info("SQLiteFileRepository", "CreateOrUpdateUserRole Get finished");
+            Logger.Info("SQLiteFileRepository", "AddSensorDatastarted Get finished");
         }
 
 
@@ -161,7 +149,7 @@ namespace TemperatureHub.Repository
                 if (_executorQueue.TryDequeue(out executor))
                 {
                     executor.Run(() => {
-                        IDbConnection db = null;
+                        SQLiteConnection db = null;
                         var currentThread = Thread.CurrentThread.ManagedThreadId;
                         _dbInstaces.TryRemove(currentThread, out db);
                         db?.Close();

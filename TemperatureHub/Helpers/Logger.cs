@@ -6,7 +6,7 @@ namespace TemperatureHub.Helpers
         public static void Info(string context, string message)
         {
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine(message);
+            System.Console.WriteLine(message);
 #endif
 
         }
@@ -14,7 +14,7 @@ namespace TemperatureHub.Helpers
         public static void Error(string context, string message)
         {
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine(message);
+            System.Console.WriteLine(message);
 #endif
 
         }
@@ -22,7 +22,7 @@ namespace TemperatureHub.Helpers
         public static void Warn(string context, string message)
         {
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine(message);
+            System.Console.WriteLine(message);
 #endif
 
         }
