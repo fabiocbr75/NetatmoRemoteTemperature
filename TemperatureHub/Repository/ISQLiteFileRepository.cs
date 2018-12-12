@@ -1,9 +1,10 @@
 ﻿using System;
+using TemperatureHub.Models;
 
 namespace TemperatureHub.Repository
 {
     public interface ISQLiteFileRepository
     {
-        void AddSensorData(string senderMAC, double temperature, double humidity, DateTime ingestionTimestamp);
+        void AddSensorData(SensorData sensorData);
     }
 }

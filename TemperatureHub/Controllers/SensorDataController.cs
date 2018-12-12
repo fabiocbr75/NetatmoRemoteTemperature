@@ -3,23 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TemperatureHub.DTOs;
+using TemperatureHub.Models;
 using TemperatureHub.Repository;
 
 namespace TemperatureHub.Controllers
 {
-    public class RoomTemp
-    {
-        public string MAC { get; set; }
-        public float Temp { get; set; }
-        public float Humidity { get; set; }
-    }
 
     [Route("api/[controller]")]
     [ApiController]
-    public class SensorData : ControllerBase
+    public class SensorDataController : ControllerBase
     {
         private readonly ISQLiteFileRepository _repository;
-        public SensorData(ISQLiteFileRepository repository)
+        public SensorDataController(ISQLiteFileRepository repository)
         {
             _repository = repository;
         }
@@ -44,7 +40,8 @@ namespace TemperatureHub.Controllers
         {
             Console.WriteLine($"Time:{DateTime.Now.ToString("s")} MAC:{value.MAC}; Temp:{value.Temp}; Humidity:{value.Humidity}");
 
-            _repository.AddSensorData(value.MAC, value.Temp, value.Humidity, DateTime.UtcNow);
+            var sensorData = new SensorData() { senderMAC = value.MAC, temperature = value.Temp, humidity = value.Humidity, ingestionTimestamp = DateTime.UtcNow };
+            _repository.AddSensorData(sensorData);
         }
     }
 }
