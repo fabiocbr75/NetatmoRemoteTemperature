@@ -20,20 +20,23 @@ namespace TemperatureHub.Repository
         private static ConcurrentDictionary<int, IDbConnection> _dbInstaces = new ConcurrentDictionary<int, IDbConnection>();
         private static ConcurrentQueue<Executor> _executorQueue = new ConcurrentQueue<Executor>();
         
-        private readonly string _databasePath;
+        private readonly string _databasePathWithFileName;
 
         public SQLiteFileRepository() { }
 
         public SQLiteFileRepository(IOptions<AppSettings> appSettings)
         {
-            _databasePath = appSettings.Value.DbFullPath;
+            _databasePathWithFileName = Path.Combine(appSettings.Value.DbFullPath, "repository.db");
         }
 
-        public static void CreateOrUpdateDb(string databasePath, string reportLanguage)
+        public static void CreateOrUpdateDb(string databasePath)
         {
             Logger.Info("SQLiteFileRepository", "CreateOrUpdateDb Get started");
-            bool needsDatabaseInit = !File.Exists(databasePath);
-            using (var db = new SQLiteConnection($"Data Source={databasePath};foreign keys = true;"))
+
+            System.IO.Directory.CreateDirectory(databasePath);
+            var fullPath = Path.Combine(databasePath, "repository.db");
+            bool needsDatabaseInit = !File.Exists(fullPath);
+            using (var db = new SQLiteConnection($"Data Source={fullPath};foreign keys = true;"))
             {
                 db.Open();
 
@@ -52,7 +55,7 @@ namespace TemperatureHub.Repository
 
             if (!_dbInstaces.TryGetValue(currentThread, out db))
             {
-                db = new SQLiteConnection($"Data Source={_databasePath};foreign keys = true;");
+                db = new SQLiteConnection($"Data Source={_databasePathWithFileName};foreign keys = true;");
                 db.Open();
 
                 _dbInstaces.AddOrUpdate(currentThread, db, (key, old) => db);
@@ -87,6 +90,29 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "ContainsItem Get finished");
             return ret;
         }
+        public void AddSensorData(string senderMAC, double temperature, double humidity, DateTime ingestionTimestamp)
+        {
+            Logger.Info("SQLiteFileRepository", "AddSensorDatastarted");
+
+            string sqlQuery;
+
+            sqlQuery = @"INSERT INTO SensorData (SenderMAC, Temperature, Humidity, IngestionTimestamp)
+                              VALUES (@SenderMAC, @Temperature, @Humidity, @IngestionTimestamp) ";
+
+
+            ExecuteOnThreadPool(() => {
+                GetDbInstance().CreateCommand(sqlQuery)
+                   .SetParameter("SenderMAC", senderMAC)
+                   .SetParameter("Temperature", Math.Round(temperature, 1))
+                   .SetParameter("Humidity", Math.Round(humidity, 1))
+                   .SetParameter("IngestionTimestamp", ingestionTimestamp.ToString("yyyy-MM-ddTHH:mm:ssZ"))
+                   .ExecuteNonQuery();
+
+            });
+            Logger.Info("SQLiteFileRepository", "CreateOrUpdateUserRole Get finished");
+        }
+
+
 
         /*
 
@@ -582,67 +608,6 @@ namespace TemperatureHub.Repository
             return ret;
         }
 
-        public void CreateOrUpdateUserRole(Guid UserRoleId, Guid RoleId, Guid ItemId, String UserName, bool isAdministrator)
-        {
-            Logger.Info("SQLiteFileRepository", "CreateOrUpdateUserRole Get started");
-
-            string sqlQuery;
-            string userSqlQuery;
-
-            string Admin_RoleId = "B2378A00-B242-428E-BDBA-3940751CAF75";
-            bool UserRole_isUpdate = GetUserRoleFromDb(UserRoleId) != null;
-            UserItem UserItem = GetUserFromDb(UserName);
-          
-            if (UserRole_isUpdate)
-            { //UPDATE
-                sqlQuery = @"UPDATE UserRoles 
-                                 SET RoleId = @RoleId, 
-                                     ItemId = @ItemId,
-                                     UserId = @UserId                                    
-                                 WHERE UserRoleId = @UserRoleId";
-
-                userSqlQuery = @"Update Users 
-                                SET RoleId = @RoleId
-                                WHERE UserId = @UserId";
-                                
-            }
-            else    // INSERT
-            {
-                
-                userSqlQuery = (UserItem != null) 
-                    ? @"Update Users SET RoleId = @RoleId
-                                WHERE UserId = @UserId" :
-                    @"INSERT INTO Users (UserId, UserName, RoleId)
-                     VALUES (@UserId, @UserName, @RoleId) ";                              
-
-                sqlQuery = (ItemId.Equals(Guid.Empty)) 
-                            ? @"INSERT INTO UserRoles (UserRoleId, RoleId, UserId) 
-                                              VALUES  (@UserRoleId, @RoleId, @UserId)"
-                            : @"INSERT INTO UserRoles (UserRoleId, RoleId, ItemId, UserId) 
-                                              VALUES  (@UserRoleId, @RoleId, @ItemId, @UserId)";           
-          
-            }
-
-            ExecuteOnThreadPool(() => {
-                String userId = (UserItem != null) ?
-                                UserItem.UserId.ToString().ToUpperInvariant() :
-                                Guid.NewGuid().ToString().ToUpperInvariant();
-                GetDbInstance().CreateCommand(userSqlQuery)
-                   .SetParameter("UserId", userId)
-                   .SetParameter("UserName", UserName)
-                   .SetParameter("RoleId", (isAdministrator) ? Admin_RoleId : null)
-                   .ExecuteNonQuery();
-
-                GetDbInstance().CreateCommand(sqlQuery)
-                    .SetParameter("RoleId", RoleId.ToString().ToUpperInvariant())
-                    .SetParameter("ItemId", (ItemId.Equals(Guid.Empty))? null :ItemId.ToString().ToUpperInvariant())
-                    .SetParameter("UserId", userId)
-                    .SetParameter("UserRoleId", UserRoleId.ToString().ToUpperInvariant())               
-                    .ExecuteNonQuery();               
-            });
-            Logger.Info("SQLiteFileRepository", "CreateOrUpdateUserRole Get finished");
-        }
-
         public void DeleteUserRole(Guid UserRoleId)
         {
             Logger.Info("SQLiteFileRepository", "DeleteUserRole Get started");
@@ -1020,7 +985,7 @@ namespace TemperatureHub.Repository
         }
 
         #endregion
-
+        */
         // Don't use Dispose pattern for static members. Better specific CleanUp when Application shutdown.
         public static void CleanUp()
         {
@@ -1047,7 +1012,7 @@ namespace TemperatureHub.Repository
 
             Logger.Info("SQLiteFileRepository", "CleanUp Get finished");
         }
-        */
+
         private Executor GetExecutor()
         {
             Executor executor;

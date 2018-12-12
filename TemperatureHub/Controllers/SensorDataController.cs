@@ -16,10 +16,10 @@ namespace TemperatureHub.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class SensorData : ControllerBase
     {
         private readonly ISQLiteFileRepository _repository;
-        public ValuesController(ISQLiteFileRepository repository)
+        public SensorData(ISQLiteFileRepository repository)
         {
             _repository = repository;
         }
@@ -43,6 +43,8 @@ namespace TemperatureHub.Controllers
         public void Post([FromBody] RoomTemp value)
         {
             Console.WriteLine($"Time:{DateTime.Now.ToString("s")} MAC:{value.MAC}; Temp:{value.Temp}; Humidity:{value.Humidity}");
+
+            _repository.AddSensorData(value.MAC, value.Temp, value.Humidity, DateTime.UtcNow);
         }
     }
 }

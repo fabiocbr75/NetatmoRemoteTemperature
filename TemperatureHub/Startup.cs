@@ -42,6 +42,9 @@ namespace TemperatureHub
                 app.UseDeveloperExceptionPage();
             }
 
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            SQLiteFileRepository.CreateOrUpdateDb(appSettingsSection.Get<AppSettings>().DbFullPath);
+
             app.UseMvc();
         }
     }
