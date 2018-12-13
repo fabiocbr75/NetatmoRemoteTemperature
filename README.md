@@ -10,7 +10,7 @@
   - Docker
   - Raspberry
 
-  ![LOLIN D1 MINI PRO v2](/RoomTempSender/Images/d1_mini_pro_v2)
+  ![LOLIN D1 MINI PRO v2](/RoomTempSender/Images/d1_mini_pro_v2.png)
   ![DHT22](/RoomTempSender/Images/DHT22.png)
 
 # Compile & Install:
