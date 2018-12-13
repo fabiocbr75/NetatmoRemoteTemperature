@@ -10,6 +10,9 @@
   - Docker
   - Raspberry
 
+  ![NodeMCU](NetatmoRemoteTemperature/RoomTempSender/Images/NodeMCU_1_0.png)
+  ![DHT22](NetatmoRemoteTemperature/RoomTempSender/Images/DHT22.png)
+
 # Compile & Install:
 
 To be define
