@@ -10,17 +10,17 @@ namespace TemperatureHub.Models
         private double _temperature;
         private double _humidity;
 
-        public string senderMAC { get; set; }
-        public double temperature
+        public string SenderMAC { get; set; }
+        public double Temperature
         {
             get => _temperature;
             set => _temperature = System.Math.Round(value, 1);
         }
-        public double humidity
+        public double Humidity
         {
             get => _humidity;
             set => _humidity = System.Math.Round(value, 1);
         }
-        public string ingestionTimestamp { get; set; }
+        public string IngestionTimestamp { get; set; }
     }
 }

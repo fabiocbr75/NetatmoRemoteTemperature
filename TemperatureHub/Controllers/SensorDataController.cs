@@ -20,27 +20,30 @@ namespace TemperatureHub.Controllers
             _repository = repository;
         }
 
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { DateTime.Now.ToLongTimeString() };
-        }
-
-        // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<IEnumerable<RoomTemp>> Get(string id, [FromQuery] string from, [FromQuery] string to)
         {
-            return "value";
+            List<RoomTemp> retData = new List<RoomTemp>();
+            List<SensorData> sensorDataList = _repository.LoadSensorData(id, from, to);
+            foreach (var item in sensorDataList)
+            {
+                var tmp = new RoomTemp();
+                tmp.MAC = item.SenderMAC;
+                tmp.Temp = item.Temperature;
+                tmp.Humidity = item.Humidity;
+                tmp.IngestionTimestamp = item.IngestionTimestamp;
+                retData.Add(tmp);
+            }
+
+            return retData;
         }
 
-        // POST api/values
         [HttpPost]
         public void Post([FromBody] RoomTemp value)
         {
             Console.WriteLine($"Time:{DateTime.Now.ToString("s")} MAC:{value.MAC}; Temp:{value.Temp}; Humidity:{value.Humidity}");
 
-            var sensorData = new SensorData() { senderMAC = value.MAC, temperature = value.Temp, humidity = value.Humidity, ingestionTimestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") };
+            var sensorData = new SensorData() { SenderMAC = value.MAC, Temperature = value.Temp, Humidity = value.Humidity, IngestionTimestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") };
             _repository.AddSensorData(sensorData);
         }
     }

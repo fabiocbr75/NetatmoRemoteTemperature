@@ -83,6 +83,17 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "AddSensorDatastarted Get finished");
         }
 
+        public List<SensorData> LoadSensorData(string mac, string from, string to)
+        {
+            Logger.Info("SQLiteFileRepository", "LoadSensorData");
+
+            var ret = ExecuteOnThreadPool<List<SensorData>>(() => {
+                var result = GetDbInstance().Query<SensorData>("SELECT SenderMAC, Temperature, Humidity, IngestionTimestamp FROM SensorData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
+                return result;
+            });
+            Logger.Info("SQLiteFileRepository", "LoadSensorData Get finished");
+            return ret;
+        }
 
 
         /*
