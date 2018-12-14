@@ -17,4 +17,8 @@ RUN dotnet publish "TemperatureHub.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
+RUN mkdir -p /app/AppData
+VOLUME /app/AppData
 ENTRYPOINT ["dotnet", "TemperatureHub.dll"]
+
+#docker run -d -v C:\DockerVolume\SensorData:/app/AppData -p 5000:5000 ImageId
