@@ -22,3 +22,4 @@ VOLUME /app/AppData
 ENTRYPOINT ["dotnet", "TemperatureHub.dll"]
 
 #docker run -d -v C:\DockerVolume\SensorData:/app/AppData -p 5000:5000 ImageId
+#docker run -d -v ~/SensorData:/app/AppData -p 5000:5000 --restart=always ImageId 
