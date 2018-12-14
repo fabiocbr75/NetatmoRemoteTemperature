@@ -20,6 +20,7 @@ namespace TemperatureHub.Repository
     {
         private static ConcurrentDictionary<int, SQLiteConnection> _dbInstaces = new ConcurrentDictionary<int, SQLiteConnection>();
         private static ConcurrentQueue<Executor> _executorQueue = new ConcurrentQueue<Executor>();
+        private Dictionary<string, SensorData> _dataCache = new Dictionary<string, SensorData>();
         
         private readonly string _databasePathWithFileName;
 
@@ -74,7 +75,18 @@ namespace TemperatureHub.Repository
 
         public void AddSensorData(SensorData sensorData)
         {
-            Logger.Info("SQLiteFileRepository", "AddSensorDatastarted");
+            Logger.Info("SQLiteFileRepository", "AddSensorData Get started");
+            SensorData lastData;
+
+            if (_dataCache.TryGetValue(sensorData.SenderMAC, out lastData))
+            {
+                if (sensorData.Temperature == lastData.Temperature && sensorData.Humidity == lastData.Humidity)
+                {
+                    Logger.Info("SQLiteFileRepository", "AddSensorData Data skipped");
+                    Logger.Info("SQLiteFileRepository", "AddSensorData Get finished");
+                    return;
+                }
+            }
 
             ExecuteOnThreadPool(() => {
                 GetDbInstance().Insert(sensorData);
