@@ -90,8 +90,9 @@ namespace TemperatureHub.Repository
 
             ExecuteOnThreadPool(() => {
                 GetDbInstance().Insert(sensorData);
-
             });
+
+            _dataCache[sensorData.SenderMAC] = sensorData;
             Logger.Info("SQLiteFileRepository", "AddSensorDatastarted Get finished");
         }
 
