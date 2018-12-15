@@ -19,7 +19,6 @@
     },
     "TemperatureHub": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "api/sensorData",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

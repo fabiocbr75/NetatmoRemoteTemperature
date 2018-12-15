@@ -21,14 +21,15 @@ namespace TemperatureHub.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<RoomTemp>> Get(string id, [FromQuery] string from, [FromQuery] string to)
+        public ActionResult<IEnumerable<SensorDataExDTO>> Get(string id, [FromQuery] string from, [FromQuery] string to)
         {
-            List<RoomTemp> retData = new List<RoomTemp>();
-            List<SensorData> sensorDataList = _repository.LoadSensorData(id, from, to);
+            List<SensorDataExDTO> retData = new List<SensorDataExDTO>();
+            List<SensorDataEx> sensorDataList = _repository.LoadSensorDataEx(id, from, to);
             foreach (var item in sensorDataList)
             {
-                var tmp = new RoomTemp();
+                var tmp = new SensorDataExDTO();
                 tmp.MAC = item.SenderMAC;
+                tmp.Name = item.SenderName;
                 tmp.Temp = item.Temperature;
                 tmp.Humidity = item.Humidity;
                 tmp.IngestionTimestamp = item.IngestionTimestamp;
@@ -39,7 +40,7 @@ namespace TemperatureHub.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] RoomTemp value)
+        public void Post([FromBody] SensorDataDTO value)
         {
             Console.WriteLine($"Time:{DateTime.Now.ToString("s")} MAC:{value.MAC}; Temp:{value.Temp}; Humidity:{value.Humidity}");
 

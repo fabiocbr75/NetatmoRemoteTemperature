@@ -1,6 +1,6 @@
 ﻿namespace TemperatureHub.DTOs
 {
-    public class RoomTemp
+    public class SensorDataDTO
     {
         public string MAC { get; set; }
         public double Temp { get; set; }
