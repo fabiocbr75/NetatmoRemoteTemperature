@@ -37,14 +37,10 @@ namespace TemperatureHub.Repository
 
             System.IO.Directory.CreateDirectory(databasePath);
             var fullPath = Path.Combine(databasePath, "repository.db");
-            bool needsDatabaseInit = !File.Exists(fullPath);
 
             using (var db = new SQLiteConnection(fullPath))
             {
-                if (needsDatabaseInit)
-                {
-                    DropAndCreateTables(db);
-                }
+                CreateOrUpdateTables(db);
             }
             Logger.Info("SQLiteFileRepository", "CreateOrUpdateDb Get finished");
         }
@@ -63,12 +59,16 @@ namespace TemperatureHub.Repository
 
             return db;
         }
-        /// <summary>Initialiazes a new repository database file</summary>
-        private static void DropAndCreateTables(SQLiteConnection db)
+
+        private static void CreateOrUpdateTables(SQLiteConnection db)
         {
             Logger.Info("SQLiteFileRepository", "DropAndCreateTables Get started");
 
-            db.CreateCommand(DbSchemaSQL.SQLScript).ExecuteNonQuery();
+            var statements = DbSchemaSQL.SQLScript.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var statement in statements)
+            {
+                db.Execute(statement);
+            }
 
             Logger.Info("SQLiteFileRepository", "DropAndCreateTables Get finished");
         }
@@ -105,6 +105,30 @@ namespace TemperatureHub.Repository
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadSensorData Get finished");
+            return ret;
+        }
+
+        public List<SensorDataEx> LoadSensorDataEx(string mac, string from, string to)
+        {
+            Logger.Info("SQLiteFileRepository", "LoadSensorData");
+
+            var ret = ExecuteOnThreadPool<List<SensorDataEx>>(() => {
+                var result = GetDbInstance().Query<SensorDataEx>("SELECT SD.SenderMAC, SMD.SenderName, SD.Temperature, SD.Humidity, SD.IngestionTimestamp FROM SensorData SD JOIN SensorMasterData SMD ON  SMD.SenderMAC = SD.SenderMAC WHERE SD.SenderMAC = ? AND SD.IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
+                return result;
+            });
+            Logger.Info("SQLiteFileRepository", "LoadSensorData Get finished");
+            return ret;
+        }
+
+        public List<SensorMasterData> LoadSensorMasterData()
+        {
+            Logger.Info("SQLiteFileRepository", "LoadSensorMasterData");
+
+            var ret = ExecuteOnThreadPool<List<SensorMasterData>>(() => {
+                var result = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName FROM SensorMasterData");
+                return result;
+            });
+            Logger.Info("SQLiteFileRepository", "LoadSensorMasterData Get finished");
             return ret;
         }
 
