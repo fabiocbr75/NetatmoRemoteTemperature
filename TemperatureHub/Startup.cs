@@ -46,6 +46,13 @@ namespace TemperatureHub
             SQLiteFileRepository.CreateOrUpdateDb(appSettingsSection.Get<AppSettings>().DbFullPath);
 
             app.UseMvc();
+
+            var lifeTime = app.ApplicationServices.GetService<IApplicationLifetime>();
+            lifeTime.ApplicationStopping.Register(() =>
+            {
+                SQLiteFileRepository.CleanUp();
+            });
+
         }
     }
 }
