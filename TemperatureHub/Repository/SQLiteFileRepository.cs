@@ -131,61 +131,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorMasterData Get finished");
             return ret;
         }
-
-
-        /*
-		
-        public IEnumerable<DataSourceItem> GetDataSourcesFromDb(Guid datasourceId)
-        {
-            Logger.Info("SQLiteFileRepository", "GetDataSourcesFromDb Get started");
-
-            var ret = ExecuteOnThreadPool<IEnumerable<DataSourceItem>>(() =>
-            {
-                List<DataSourceItem> result = new List<DataSourceItem>();
-
-                var cmd = GetDbInstance().CreateCommand("SELECT DataSourceId, DataSourceType, DataSourceName, ServerName, DatabaseName, UserName, Password, UseWindowsAuth, Description FROM DataSources");
-
-                if (datasourceId != default(Guid))
-                {
-                    cmd.CommandText += " WHERE (DataSourceId = @DataSourceId)";
-                    cmd.SetParameter("DataSourceId", datasourceId.ToString().ToUpperInvariant());
-                }
-
-                cmd.CommandText += " ORDER BY DataSourceName";
-
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        bool useWinAuth = reader.GetInt32(reader.GetOrdinal("UseWindowsAuth")) != 0;
-                        string decryptPwd = string.Empty;
-                        var encryptPwd = reader.GetString(reader.GetOrdinal("Password"));
-                        if (!string.IsNullOrEmpty(encryptPwd))
-                        {
-                            decryptPwd = Unprotect(encryptPwd ?? "", "", DataProtectionScope.LocalMachine);
-                        }
-
-                        result.Add(new DataSourceItem(
-                            Guid.Parse(reader.GetString(reader.GetOrdinal("DataSourceId"))),
-                            reader.GetString(reader.GetOrdinal("DataSourceName")),
-                            (DataSourceType)reader.GetInt32(reader.GetOrdinal("DataSourceType")),
-                            reader.GetString(reader.GetOrdinal("ServerName")),
-                            reader.GetString(reader.GetOrdinal("DatabaseName")),
-                            reader.GetString(reader.GetOrdinal("UserName")),
-                            decryptPwd,
-                            useWinAuth,
-                            reader.GetString(reader.GetOrdinal("Description"))
-                            )
-                        );
-                    }
-                }
-                return result;
-            });
-
-            Logger.Info("SQLiteFileRepository", "GetDataSourcesFromDb Get finished");
-            return ret;
-        }
-        */
+   
         // Don't use Dispose pattern for static members. Better specific CleanUp when Application shutdown.
         public static void CleanUp()
         {
