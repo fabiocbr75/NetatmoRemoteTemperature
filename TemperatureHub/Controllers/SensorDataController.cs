@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TemperatureHub.DTOs;
+using TemperatureHub.Helpers;
 using TemperatureHub.Models;
 using TemperatureHub.Repository;
 
@@ -33,6 +34,7 @@ namespace TemperatureHub.Controllers
                 tmp.Temp = item.Temperature;
                 tmp.Humidity = item.Humidity;
                 tmp.IngestionTimestamp = item.IngestionTimestamp;
+                tmp.HeatIndex = HeatHelper.GetHeatIndexCelsius(item.Temperature, item.Humidity);
                 retData.Add(tmp);
             }
 
