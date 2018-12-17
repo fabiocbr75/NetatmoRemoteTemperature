@@ -17,7 +17,7 @@ export class AppComponent {
   selectedCities1: City[];
   from: Date;
   to: Date;
-  data: any;
+  rangeDates: Date[];
   constructor() {
     this.cities1 = [
       {label: 'New York', value: {id: 1, name: 'New York', code: 'NY'}},
