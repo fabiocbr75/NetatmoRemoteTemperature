@@ -1,9 +1,8 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <p-toolbar>
   <div class="ui-toolbar-group-left">
-      <p-multiSelect [options]="cities1" [(ngModel)]="selectedCities1"></p-multiSelect>  
-      <p-calendar [(ngModel)]="from"></p-calendar>
-      <p-calendar [(ngModel)]="to"></p-calendar>
+      <p-multiSelect [options]="cities1" [(ngModel)]="selectedCities1" ></p-multiSelect>  
+      <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"  icon="pi pi-calendar"></p-calendar>
       <button pButton type="button" label="Go" icon="pi pi-plus"></button>
       <i class="pi pi-bars"></i>
   </div>
