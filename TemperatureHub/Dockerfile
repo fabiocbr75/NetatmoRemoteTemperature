@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim-arm32v7 AS base
 WORKDIR /app
 EXPOSE 5000
 
@@ -11,7 +11,6 @@ WORKDIR "/src/"
 RUN dotnet build "TemperatureHub.csproj" -c Release -o /app
 
 FROM build AS publish
-#RUN dotnet publish "TemperatureHub.csproj" -c Release -r linux-arm -o /app
 RUN dotnet publish "TemperatureHub.csproj" -c Release -o /app
 
 FROM base AS final
