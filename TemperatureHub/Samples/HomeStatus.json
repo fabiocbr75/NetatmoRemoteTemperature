@@ -1,0 +1,152 @@
+{
+    "status": "ok",
+    "time_server": 1545329772,
+    "body": {
+        "home": {
+            "modules": [
+                {
+                    "id": "70:ee:50:0e:ca:d8",
+                    "type": "NAPlug",
+                    "firmware_revision": 197,
+                    "rf_strength": 107,
+                    "wifi_strength": 62
+                },
+                {
+                    "id": "09:00:00:01:c2:06",
+                    "reachable": true,
+                    "type": "NRV",
+                    "firmware_revision": 73,
+                    "rf_strength": 72,
+                    "battery_level": 3139,
+                    "bridge": "70:ee:50:0e:ca:d8",
+                    "battery_state": "full"
+                },
+                {
+                    "id": "09:00:00:01:d1:2e",
+                    "reachable": true,
+                    "type": "NRV",
+                    "firmware_revision": 73,
+                    "rf_strength": 53,
+                    "battery_level": 3115,
+                    "bridge": "70:ee:50:0e:ca:d8",
+                    "battery_state": "full"
+                },
+                {
+                    "id": "09:00:00:02:d4:2f",
+                    "reachable": true,
+                    "type": "NRV",
+                    "firmware_revision": 73,
+                    "rf_strength": 50,
+                    "battery_level": 3070,
+                    "bridge": "70:ee:50:0e:ca:d8",
+                    "battery_state": "full"
+                },
+                {
+                    "id": "09:00:00:02:d5:6e",
+                    "reachable": true,
+                    "type": "NRV",
+                    "firmware_revision": 73,
+                    "rf_strength": 56,
+                    "battery_level": 3036,
+                    "bridge": "70:ee:50:0e:ca:d8",
+                    "battery_state": "full"
+                },
+                {
+                    "id": "09:00:00:02:e3:d8",
+                    "reachable": true,
+                    "type": "NRV",
+                    "firmware_revision": 73,
+                    "rf_strength": 57,
+                    "battery_level": 3090,
+                    "bridge": "70:ee:50:0e:ca:d8",
+                    "battery_state": "full"
+                },
+                {
+                    "id": "09:00:00:02:e4:ef",
+                    "reachable": true,
+                    "type": "NRV",
+                    "firmware_revision": 73,
+                    "rf_strength": 63,
+                    "battery_level": 3127,
+                    "bridge": "70:ee:50:0e:ca:d8",
+                    "battery_state": "full"
+                }
+            ],
+            "rooms": [
+                {
+                    "id": "1541168514",
+                    "reachable": true,
+                    "therm_measured_temperature": 19,
+                    "heating_power_request": 0,
+                    "therm_setpoint_temperature": 19,
+                    "therm_setpoint_mode": "schedule",
+                    "therm_setpoint_start_time": 1545325200,
+                    "therm_setpoint_end_time": 0,
+                    "anticipating": false,
+                    "open_window": false
+                },
+                {
+                    "id": "2809735084",
+                    "reachable": true,
+                    "therm_measured_temperature": 19,
+                    "heating_power_request": 100,
+                    "therm_setpoint_temperature": 20,
+                    "therm_setpoint_mode": "schedule",
+                    "therm_setpoint_start_time": 1545305400,
+                    "therm_setpoint_end_time": 0,
+                    "anticipating": false,
+                    "open_window": false
+                },
+                {
+                    "id": "2935863693",
+                    "reachable": true,
+                    "therm_measured_temperature": 19.5,
+                    "heating_power_request": 100,
+                    "therm_setpoint_temperature": 20,
+                    "therm_setpoint_mode": "schedule",
+                    "therm_setpoint_start_time": 1545305400,
+                    "therm_setpoint_end_time": 0,
+                    "anticipating": false,
+                    "open_window": false
+                },
+                {
+                    "id": "3575883469",
+                    "reachable": true,
+                    "therm_measured_temperature": 20.5,
+                    "heating_power_request": 0,
+                    "therm_setpoint_temperature": 19,
+                    "therm_setpoint_mode": "schedule",
+                    "therm_setpoint_start_time": 1545328800,
+                    "therm_setpoint_end_time": 0,
+                    "anticipating": false,
+                    "open_window": false
+                },
+                {
+                    "id": "3702889680",
+                    "reachable": true,
+                    "therm_measured_temperature": 19,
+                    "heating_power_request": 100,
+                    "therm_setpoint_temperature": 20,
+                    "therm_setpoint_mode": "schedule",
+                    "therm_setpoint_start_time": 1545325200,
+                    "therm_setpoint_end_time": 0,
+                    "anticipating": false,
+                    "open_window": false
+                },
+                {
+                    "id": "3716460054",
+                    "reachable": true,
+                    "therm_measured_temperature": 19,
+                    "heating_power_request": 100,
+                    "therm_setpoint_temperature": 20,
+                    "therm_setpoint_mode": "schedule",
+                    "therm_setpoint_start_time": 1545328893,
+                    "therm_setpoint_end_time": 0,
+                    "anticipating": true,
+                    "open_window": false
+                }
+            ],
+            "id": "5bfc49c0b4809d29c88f5dd0"
+        }
+    }
+}

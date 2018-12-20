@@ -1,0 +1,1308 @@
+{
+    "body": {
+        "homes": [
+            {
+                "id": "5bfc49c0b4809d29c88f5dd0",
+                "name": "Casa",
+                "altitude": 138,
+                "coordinates": [
+                    8.9223027,
+                    44.4246149
+                ],
+                "country": "IT",
+                "timezone": "Europe/Rome",
+                "rooms": [
+                    {
+                        "id": "1541168514",
+                        "name": "Studio",
+                        "type": "custom",
+                        "module_ids": [
+                            "09:00:00:01:d1:2e"
+                        ],
+                        "measure_offset_NAPlug_temperature": 0,
+                        "measure_offset_NAPlug_estimated_temperature": 0.9
+                    },
+                    {
+                        "id": "2809735084",
+                        "name": "Cucina",
+                        "type": "kitchen",
+                        "module_ids": [
+                            "09:00:00:01:c2:06"
+                        ],
+                        "measure_offset_NAPlug_temperature": 0,
+                        "measure_offset_NAPlug_estimated_temperature": 0.2
+                    },
+                    {
+                        "id": "3702889680",
+                        "name": "Cameretta",
+                        "type": "bedroom",
+                        "module_ids": [
+                            "09:00:00:02:d4:2f"
+                        ],
+                        "measure_offset_NAPlug_temperature": 0,
+                        "measure_offset_NAPlug_estimated_temperature": 0.5
+                    },
+                    {
+                        "id": "3575883469",
+                        "name": "Bagno",
+                        "type": "bathroom",
+                        "module_ids": [
+                            "09:00:00:02:d5:6e"
+                        ],
+                        "measure_offset_NAPlug_temperature": -1.8,
+                        "measure_offset_NAPlug_estimated_temperature": 0.7
+                    },
+                    {
+                        "id": "3716460054",
+                        "name": "Camera",
+                        "type": "bedroom",
+                        "module_ids": [
+                            "09:00:00:02:e3:d8"
+                        ],
+                        "measure_offset_NAPlug_temperature": 0,
+                        "measure_offset_NAPlug_estimated_temperature": 0.2
+                    },
+                    {
+                        "id": "2935863693",
+                        "name": "Sala",
+                        "type": "livingroom",
+                        "module_ids": [
+                            "09:00:00:02:e4:ef"
+                        ],
+                        "measure_offset_NAPlug_temperature": -2.8,
+                        "measure_offset_NAPlug_estimated_temperature": 0.8
+                    }
+                ],
+                "modules": [
+                    {
+                        "id": "70:ee:50:0e:ca:d8",
+                        "type": "NAPlug",
+                        "name": "Relè",
+                        "setup_date": 1543260608,
+                        "modules_bridged": [
+                            "09:00:00:01:c2:06",
+                            "09:00:00:01:d1:2e",
+                            "09:00:00:02:d4:2f",
+                            "09:00:00:02:d5:6e",
+                            "09:00:00:02:e3:d8",
+                            "09:00:00:02:e4:ef"
+                        ]
+                    },
+                    {
+                        "id": "09:00:00:01:c2:06",
+                        "type": "NRV",
+                        "name": "Valvola Cucina",
+                        "setup_date": 1543260633,
+                        "room_id": "2809735084",
+                        "bridge": "70:ee:50:0e:ca:d8"
+                    },
+                    {
+                        "id": "09:00:00:01:d1:2e",
+                        "type": "NRV",
+                        "name": "Valvola Studio",
+                        "setup_date": 1543260633,
+                        "room_id": "1541168514",
+                        "bridge": "70:ee:50:0e:ca:d8"
+                    },
+                    {
+                        "id": "09:00:00:02:d4:2f",
+                        "type": "NRV",
+                        "name": "Valvola Cameretta",
+                        "setup_date": 1543264177,
+                        "room_id": "3702889680",
+                        "bridge": "70:ee:50:0e:ca:d8"
+                    },
+                    {
+                        "id": "09:00:00:02:d5:6e",
+                        "type": "NRV",
+                        "name": "Valvola Bagno",
+                        "setup_date": 1543302589,
+                        "room_id": "3575883469",
+                        "bridge": "70:ee:50:0e:ca:d8"
+                    },
+                    {
+                        "id": "09:00:00:02:e3:d8",
+                        "type": "NRV",
+                        "name": "Valvola Camera",
+                        "setup_date": 1543303167,
+                        "room_id": "3716460054",
+                        "bridge": "70:ee:50:0e:ca:d8"
+                    },
+                    {
+                        "id": "09:00:00:02:e4:ef",
+                        "type": "NRV",
+                        "name": "Valvola Sala",
+                        "setup_date": 1543303457,
+                        "room_id": "2935863693",
+                        "bridge": "70:ee:50:0e:ca:d8"
+                    }
+                ],
+                "therm_schedules": [
+                    {
+                        "timetable": [
+                            {
+                                "zone_id": 1,
+                                "m_offset": 0
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 405
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 480
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 750
+                            },
+                            {
+                                "zone_id": 8,
+                                "m_offset": 1080
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 1140
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 1215
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 1425
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 1845
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 1920
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 2190
+                            },
+                            {
+                                "zone_id": 6,
+                                "m_offset": 2415
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 2550
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 2655
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 2865
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 3285
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 3360
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 3630
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 3960
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 4095
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 4305
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 4725
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 4800
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 5070
+                            },
+                            {
+                                "zone_id": 8,
+                                "m_offset": 5400
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 5460
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 5535
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 5745
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 6165
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 6240
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 6510
+                            },
+                            {
+                                "zone_id": 6,
+                                "m_offset": 6660
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 6870
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 6975
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 7185
+                            },
+                            {
+                                "zone_id": 3,
+                                "m_offset": 7680
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 8415
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 8625
+                            },
+                            {
+                                "zone_id": 3,
+                                "m_offset": 9120
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 9855
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 10065
+                            }
+                        ],
+                        "zones": [
+                            {
+                                "name": "Comfort",
+                                "id": 0,
+                                "type": 0,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Notte",
+                                "id": 1,
+                                "type": 1,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 18
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Comfort+",
+                                "id": 3,
+                                "type": 8,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19.5
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Economico",
+                                "id": 4,
+                                "type": 5,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Cena",
+                                "id": 7,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19.5
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "PreNight",
+                                "id": 2,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 18.5
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 18.5
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 20
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Ricreativo",
+                                "id": 6,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Risveglio",
+                                "id": 5,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 20
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Sport",
+                                "id": 8,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 21
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19
+                                    }
+                                ]
+                            }
+                        ],
+                        "name": "Special Modes",
+                        "default": false,
+                        "away_temp": 18,
+                        "hg_temp": 7,
+                        "id": "5bfc49c0b4809d29c88f5dd1",
+                        "selected": true,
+                        "type": "therm"
+                    }
+                ],
+                "therm_setpoint_default_duration": 300,
+                "schedules": [
+                    {
+                        "timetable": [
+                            {
+                                "zone_id": 1,
+                                "m_offset": 0
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 405
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 480
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 750
+                            },
+                            {
+                                "zone_id": 8,
+                                "m_offset": 1080
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 1140
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 1215
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 1425
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 1845
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 1920
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 2190
+                            },
+                            {
+                                "zone_id": 6,
+                                "m_offset": 2415
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 2550
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 2655
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 2865
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 3285
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 3360
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 3630
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 3960
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 4095
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 4305
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 4725
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 4800
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 5070
+                            },
+                            {
+                                "zone_id": 8,
+                                "m_offset": 5400
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 5460
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 5535
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 5745
+                            },
+                            {
+                                "zone_id": 5,
+                                "m_offset": 6165
+                            },
+                            {
+                                "zone_id": 4,
+                                "m_offset": 6240
+                            },
+                            {
+                                "zone_id": 0,
+                                "m_offset": 6510
+                            },
+                            {
+                                "zone_id": 6,
+                                "m_offset": 6660
+                            },
+                            {
+                                "zone_id": 7,
+                                "m_offset": 6870
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 6975
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 7185
+                            },
+                            {
+                                "zone_id": 3,
+                                "m_offset": 7680
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 8415
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 8625
+                            },
+                            {
+                                "zone_id": 3,
+                                "m_offset": 9120
+                            },
+                            {
+                                "zone_id": 2,
+                                "m_offset": 9855
+                            },
+                            {
+                                "zone_id": 1,
+                                "m_offset": 10065
+                            }
+                        ],
+                        "zones": [
+                            {
+                                "name": "Comfort",
+                                "id": 0,
+                                "type": 0,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 17
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 19
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Notte",
+                                "id": 1,
+                                "type": 1,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 18
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 17
+                                    },
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 17
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 17
+                                    },
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 17
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 18
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Comfort+",
+                                "id": 3,
+                                "type": 8,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19.5
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 19.5
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Economico",
+                                "id": 4,
+                                "type": 5,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 17
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Cena",
+                                "id": 7,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19.5
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 19.5
+                                    },
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 20
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "PreNight",
+                                "id": 2,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 18.5
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 18.5
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 20
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 18.5
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 18.5
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 20
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Ricreativo",
+                                "id": 6,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 18
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 18
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 19
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Risveglio",
+                                "id": 5,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 17
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 20
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 17
+                                    },
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 20
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Sport",
+                                "id": 8,
+                                "type": 4,
+                                "rooms_temp": [
+                                    {
+                                        "room_id": "1541168514",
+                                        "temp": 19
+                                    },
+                                    {
+                                        "room_id": "2809735084",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "2935863693",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3575883469",
+                                        "temp": 21
+                                    },
+                                    {
+                                        "room_id": "3702889680",
+                                        "temp": 20
+                                    },
+                                    {
+                                        "room_id": "3716460054",
+                                        "temp": 19
+                                    }
+                                ],
+                                "rooms": [
+                                    {
+                                        "id": "1541168514",
+                                        "therm_setpoint_temperature": 19
+                                    },
+                                    {
+                                        "id": "2809735084",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "2935863693",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3575883469",
+                                        "therm_setpoint_temperature": 21
+                                    },
+                                    {
+                                        "id": "3702889680",
+                                        "therm_setpoint_temperature": 20
+                                    },
+                                    {
+                                        "id": "3716460054",
+                                        "therm_setpoint_temperature": 19
+                                    }
+                                ]
+                            }
+                        ],
+                        "name": "Special Modes",
+                        "default": false,
+                        "away_temp": 18,
+                        "hg_temp": 7,
+                        "id": "5bfc49c0b4809d29c88f5dd1",
+                        "selected": true,
+                        "type": "therm"
+                    }
+                ],
+                "therm_mode": "schedule"
+            }
+        ],
+        "user": {
+            "email": "fabio@hobbytek.net",
+            "language": "it-IT",
+            "locale": "en-US",
+            "feel_like_algorithm": 0,
+            "unit_pressure": 0,
+            "unit_system": 0,
+            "unit_wind": 0,
+            "id": "5bf8626149c75f09008c58df"
+        }
+    },
+    "status": "ok",
+    "time_exec": 0.020770072937012,
+    "time_server": 1545329766
+}
