@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using TemperatureHub.Helpers;
 using TemperatureHub.Models;
 
 namespace TemperatureHub.NetatmoData
@@ -42,7 +43,7 @@ namespace TemperatureHub.NetatmoData
             return JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
         }
 
-        public async Task<List<RoomData>> GetHomeStatus(string homeId, string accessToken)
+        public async Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -62,7 +63,7 @@ namespace TemperatureHub.NetatmoData
                 {
                     roomData = jobj["body"]["home"]["rooms"].Select(x => new RoomData()
                     {
-                        Id = x["id"].ToString(),
+                        RoomId = x["id"].ToString(),
                         TCurrentTarget = x["therm_setpoint_temperature"].ToObject<double>(),
                         TValve = x["therm_measured_temperature"].ToObject<double>()
                     }).ToList();
@@ -75,7 +76,7 @@ namespace TemperatureHub.NetatmoData
             return roomData;
         }
 
-        public async Task<List<Schedule>> GetHomeData(string homeId, string accessToken)
+        public async Task<List<Schedule>> GetSchedule(string homeId, string accessToken)
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
@@ -96,19 +97,18 @@ namespace TemperatureHub.NetatmoData
                 {
                     var home = jobj["body"]["homes"].ToArray()[0];
                     var sched = home["schedules"].ToArray()[0];
-                    roomSchedules = sched["timetable"].Select(x => new Schedule()
-                    {
-                        zoneId = x["zone_id"].ToString(),
-                        MinuteFromMonday = x["m_offset"].ToObject<int>(),
-                    }).ToList();
 
-                    foreach (var item in roomSchedules)
-                    {
-                        var rooms = sched["zones"].Where(z => z["id"].ToString() == item.zoneId).Select(r => r["rooms"]).First();
-                        item.RoomSchedules = rooms.Select(y => new RoomSchedule() { RoomId = y["id"].ToString(), TTarget = y["therm_setpoint_temperature"].ToObject<double>()}).ToArray();
-                    }
-
-
+                    roomSchedules = sched["timetable"]
+                                        .Select(x => new Schedule()
+                                            {
+                                                MinuteFromMonday = x["m_offset"].ToObject<int>(),
+                                                RoomSchedules = sched["zones"]
+                                                                    .Where(z => z["id"].ToString() == x["zone_id"].ToString())
+                                                                    .Select(r => r["rooms"]).First()
+                                                                    .Select(y => new RoomSchedule() { RoomId = y["id"].ToString(),
+                                                                                                      TScheduleTarget = y["therm_setpoint_temperature"].ToObject<double>()
+                                                                                                    }).ToList()
+                                            }).ToList();
                 }
             }
             catch (Exception ex)
@@ -119,15 +119,30 @@ namespace TemperatureHub.NetatmoData
             return roomSchedules;
         }
 
-        public async Task<RoomSchedule[]> GetActiveRoomSchedule(string homeId, string accessToken)
+        public async Task<Schedule> GetActiveRoomSchedule(string homeId, string accessToken)
         {
             var now = DateTime.Now;
             var dow = (int)(now.DayOfWeek + 6) % 7;
             var scheduleTime = (dow * 1440) + (now.Hour * 60) + (now.Minute);
 
-            var homesData = await GetHomeData(homeId, accessToken);
-            var room = homesData.Where(x => x.MinuteFromMonday < scheduleTime).OrderByDescending(y => y.MinuteFromMonday).First();
-            return room.RoomSchedules;
+            var homesData = await GetSchedule(homeId, accessToken);
+            var schedule = homesData.Where(x => x.MinuteFromMonday < scheduleTime).OrderByDescending(y => y.MinuteFromMonday).First();
+
+            var nextSched = homesData.Where(x => x.MinuteFromMonday > scheduleTime).OrderByDescending(y => y.MinuteFromMonday).FirstOrDefault();
+            if (nextSched != null)
+            {
+                int minuteToNextSched = nextSched.MinuteFromMonday - scheduleTime;
+                DateTimeOffset dto = new DateTimeOffset(now.AddMinutes(Convert.ToDouble(minuteToNextSched)));
+                schedule.EndTime = dto.ToUnixTimeSeconds();
+            }
+            else
+            {
+                var nextSunday = DateTimeHelper.Next(now, DayOfWeek.Sunday);
+                DateTimeOffset dto = new DateTimeOffset(new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 23, 59, 59));
+                schedule.EndTime = dto.ToUnixTimeSeconds();
+            }
+
+            return schedule;
         }
     }
 }

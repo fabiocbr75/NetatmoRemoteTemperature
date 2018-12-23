@@ -7,8 +7,8 @@ namespace TemperatureHub.Models
 {
     public class Schedule
     {
-        public string zoneId { get; set; } 
         public int MinuteFromMonday { get; set; }
-        public RoomSchedule[] RoomSchedules { get; set; }
+        public long EndTime { get; set; }
+        public List<RoomSchedule> RoomSchedules { get; set; }
     }
 }

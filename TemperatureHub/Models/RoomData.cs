@@ -7,7 +7,7 @@ namespace TemperatureHub.Models
 {
     public class RoomData
     {
-        public string Id { get; set; }
+        public string RoomId { get; set; }
         public double TValve { get; set; }
         public double TCurrentTarget { get; set; }
     }
