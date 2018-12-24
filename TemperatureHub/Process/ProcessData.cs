@@ -41,12 +41,8 @@ namespace TemperatureHub.Process
                 {
                     try
                     {
-                        //_repository.AddSensorData(item);
+                        _repository.AddSensorData(item);
                         var token = _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
-
-
-
-
 
 
                     }
