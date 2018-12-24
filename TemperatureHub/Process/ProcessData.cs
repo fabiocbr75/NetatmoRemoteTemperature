@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,16 @@ namespace TemperatureHub.Process
     public class ProcessData : IDisposable, IProcessData
     {
         private readonly BlockingCollection<SensorData> _queue = new BlockingCollection<SensorData>();
-        private ISQLiteFileRepository _repository = null;
-        private INetatmoDataHandler _netatmoCloud = null;
+        private readonly ISQLiteFileRepository _repository = null;
+        private readonly INetatmoDataHandler _netatmoCloud = null;
+        private readonly AppSettings _appsettings = null;
         private Thread _executorThd = null;
 
-        public ProcessData(ISQLiteFileRepository repository, INetatmoDataHandler netatmoCloud)
+        public ProcessData(ISQLiteFileRepository repository, INetatmoDataHandler netatmoCloud, IOptions<AppSettings> appSettings)
         {
             _repository = repository;
             _netatmoCloud = netatmoCloud;
+            _appsettings = appSettings.Value;
             StartExecutionLoop();
         }
 
@@ -38,7 +41,8 @@ namespace TemperatureHub.Process
                 {
                     try
                     {
-                        _repository.AddSensorData(item);
+                        //_repository.AddSensorData(item);
+                        var token = _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
 
 
 

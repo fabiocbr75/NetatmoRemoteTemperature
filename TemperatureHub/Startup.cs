@@ -18,9 +18,26 @@ namespace TemperatureHub
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        //public Startup(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
+
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("appsettings.json",
+                                 optional: false,
+                                 reloadOnChange: true)
+                    .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -48,7 +65,9 @@ namespace TemperatureHub
             }
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
-            SQLiteFileRepository.CreateOrUpdateDb(appSettingsSection.Get<AppSettings>().DbFullPath);
+            var sett = appSettingsSection.Get<AppSettings>();
+
+            SQLiteFileRepository.CreateOrUpdateDb(sett.DbFullPath);
 
             app.UseMvc();
 
