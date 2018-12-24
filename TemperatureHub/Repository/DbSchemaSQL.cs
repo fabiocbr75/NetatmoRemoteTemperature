@@ -23,6 +23,15 @@ namespace TemperatureHub.Repository
                         FOREIGN KEY (SenderMAC) REFERENCES SensorMasterData(SenderMAC) ON DELETE CASCADE
                 );
                 
-                CREATE UNIQUE INDEX IF NOT EXISTS IDX_SensorData ON SensorData (SenderMAC ASC, IngestionTimestamp ASC);";
+                CREATE UNIQUE INDEX IF NOT EXISTS IDX_SensorData ON SensorData (SenderMAC ASC, IngestionTimestamp ASC);
+
+                CREATE TABLE IF NOT EXISTS SensorRoom (
+                        SenderMAC           TEXT NOT NULL,
+                        RoomId              TEXT NOT NULL
+                );
+
+                INSERT INTO SensorRoom (SenderMAC, RoomId) VALUES ('80:7D:3A:57:F2:50', '1541168514');
+               ";
+
     }
 }
