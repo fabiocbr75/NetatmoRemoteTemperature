@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,23 @@ using TemperatureHub.Models;
 
 namespace TemperatureHub.NetatmoData
 {
-    public class NetatmoDataHandler
+    public class NetatmoDataHandler : INetatmoDataHandler
     {
+        private readonly IMemoryCache _cache;
+
+        public NetatmoDataHandler(IMemoryCache cache)
+        {
+            _cache = cache;
+        }
         public async Task<NetatmoToken> GetToken(string clientId, string clientSecret, string userName, string password)
         {
+            string key = $"Token4ClientId_{clientId}";
+            NetatmoToken token = null;
+            if (_cache.TryGetValue<NetatmoToken>(key, out token))
+            {
+                return token;
+            }
+
             var dict = new Dictionary<string, string>();
             dict.Add("grant_type", "password");
             dict.Add("client_id", clientId);
@@ -27,7 +41,12 @@ namespace TemperatureHub.NetatmoData
             var req = new HttpRequestMessage(HttpMethod.Post, "https://api.netatmo.com/oauth2/token") { Content = new FormUrlEncodedContent(dict) };
             var res = await client.SendAsync(req);
             var tokenJson = res.Content.ReadAsStringAsync().Result;
-            return JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
+            token = JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
+            _cache.Set<NetatmoToken>(key, token, new MemoryCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(token.Expire_in - 60)
+                });
+            return token;
         }
         public async Task<NetatmoToken> GetTokenByRefresh(string clientId, string clientSecret, string refreshToken)
         {
@@ -45,6 +64,13 @@ namespace TemperatureHub.NetatmoData
 
         public async Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken)
         {
+            string key = $"RoomStatus4HomeId_{homeId}";
+            List<RoomData> roomData = new List<RoomData>();
+            if (_cache.TryGetValue<List<RoomData>>(key, out roomData))
+            {
+                return roomData;
+            }
+
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
@@ -54,7 +80,7 @@ namespace TemperatureHub.NetatmoData
             query["home_id"] = homeId;
             builder.Query = query.ToString();
             string url = builder.ToString();
-            List<RoomData> roomData = new List<RoomData>();
+            
             try
             {
                 var res = await client.GetStringAsync(url);
@@ -73,11 +99,23 @@ namespace TemperatureHub.NetatmoData
             {
                 throw;
             }
+
+            _cache.Set<List<RoomData>>(key, roomData, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+            });
             return roomData;
         }
 
         public async Task<List<Schedule>> GetSchedule(string homeId, string accessToken)
         {
+            string key = $"Schedule4HomeId_{homeId}";
+            List<Schedule> roomSchedules = new List<Schedule>();
+            if (_cache.TryGetValue<List<Schedule>>(key, out roomSchedules))
+            {
+                return roomSchedules;
+            }
+
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
@@ -87,8 +125,7 @@ namespace TemperatureHub.NetatmoData
             query["home_id"] = homeId;
             builder.Query = query.ToString();
             string url = builder.ToString();
-
-            List<Schedule> roomSchedules = new List<Schedule>();
+            
             try
             {
                 var res = await client.GetStringAsync(url);
@@ -96,7 +133,7 @@ namespace TemperatureHub.NetatmoData
                 if (jobj["status"].ToString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var home = jobj["body"]["homes"].ToArray()[0];
-                    var sched = home["schedules"].ToArray().Where(x => x["selected"] != null).First();
+                    var sched = home["schedules"].ToArray().Where(x => x["selected"] != null && x["selected"].ToObject<bool>() == true ).First();
 
                     roomSchedules = sched["timetable"]
                                         .Select(x => new Schedule()
@@ -115,7 +152,12 @@ namespace TemperatureHub.NetatmoData
             {
                 throw;
             }
-                
+
+            _cache.Set<List<Schedule>>(key, roomSchedules, new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+            });
+
             return roomSchedules;
         }
 
@@ -128,7 +170,7 @@ namespace TemperatureHub.NetatmoData
             var homesData = await GetSchedule(homeId, accessToken);
             var schedule = homesData.Where(x => x.MinuteFromMonday < scheduleTime).OrderByDescending(y => y.MinuteFromMonday).First();
 
-            var nextSched = homesData.Where(x => x.MinuteFromMonday > scheduleTime).OrderByDescending(y => y.MinuteFromMonday).FirstOrDefault();
+            var nextSched = homesData.Where(x => x.MinuteFromMonday > scheduleTime).OrderBy(y => y.MinuteFromMonday).FirstOrDefault();
             if (nextSched != null)
             {
                 int minuteToNextSched = nextSched.MinuteFromMonday - scheduleTime;

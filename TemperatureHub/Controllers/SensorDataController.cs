@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TemperatureHub.DTOs;
 using TemperatureHub.Models;
+using TemperatureHub.Process;
 using TemperatureHub.Repository;
 
 namespace TemperatureHub.Controllers
@@ -14,9 +15,11 @@ namespace TemperatureHub.Controllers
     [ApiController]
     public class SensorDataController : ControllerBase
     {
+        private readonly IProcessData _processData;
         private readonly ISQLiteFileRepository _repository;
-        public SensorDataController(ISQLiteFileRepository repository)
+        public SensorDataController(IProcessData processData, ISQLiteFileRepository repository)
         {
+            _processData = processData;
             _repository = repository;
         }
 
@@ -44,7 +47,7 @@ namespace TemperatureHub.Controllers
             Console.WriteLine($"Time:{DateTime.Now.ToString("s")} MAC:{value.MAC}; Temp:{value.Temp}; Humidity:{value.Humidity}");
 
             var sensorData = new SensorData() { SenderMAC = value.MAC, Temperature = value.Temp, Humidity = value.Humidity, IngestionTimestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") };
-            _repository.AddSensorData(sensorData);
+            _processData.Add(sensorData);
         }
     }
 }

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TemperatureHub.NetatmoData;
+using TemperatureHub.Process;
 using TemperatureHub.Repository;
 
 namespace TemperatureHub
@@ -30,8 +32,11 @@ namespace TemperatureHub
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-
+            services.AddMemoryCache();
             services.AddSingleton<ISQLiteFileRepository, SQLiteFileRepository>();
+            services.AddSingleton<INetatmoDataHandler, NetatmoDataHandler>();
+            services.AddSingleton<IProcessData, ProcessData>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
