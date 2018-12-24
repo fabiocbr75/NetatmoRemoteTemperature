@@ -96,7 +96,7 @@ namespace TemperatureHub.NetatmoData
                 if (jobj["status"].ToString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var home = jobj["body"]["homes"].ToArray()[0];
-                    var sched = home["schedules"].ToArray()[0];
+                    var sched = home["schedules"].ToArray().Where(x => x["selected"] != null).First();
 
                     roomSchedules = sched["timetable"]
                                         .Select(x => new Schedule()
