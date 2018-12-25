@@ -30,6 +30,7 @@ namespace TemperatureHub.Controllers
                 var tmp = new SensorMasterDataDTO();
                 tmp.SenderMAC = item.SenderMAC;
                 tmp.SenderName= item.SenderName;
+                tmp.RoomId = item.RoomId;
                 retData.Add(tmp);
             }
 

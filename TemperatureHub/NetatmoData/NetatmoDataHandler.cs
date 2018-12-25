@@ -23,10 +23,12 @@ namespace TemperatureHub.NetatmoData
         }
         public async Task<NetatmoToken> GetToken(string clientId, string clientSecret, string userName, string password)
         {
+            Logger.Info("NetatmoDataHandler", "GetToken Get started");
             string key = $"Token4ClientId_{clientId}";
             NetatmoToken token = null;
             if (_cache.TryGetValue<NetatmoToken>(key, out token))
             {
+                Logger.Info("NetatmoDataHandler", "GetToken cached Get finished");
                 return token;
             }
 
@@ -46,10 +48,12 @@ namespace TemperatureHub.NetatmoData
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(token.Expire_in - 60)
                 });
+            Logger.Info("NetatmoDataHandler", "GetToken Get finished");
             return token;
         }
         public async Task<NetatmoToken> GetTokenByRefresh(string clientId, string clientSecret, string refreshToken)
         {
+            Logger.Info("NetatmoDataHandler", "GetTokenByRefresh Get started");
             var dict = new Dictionary<string, string>();
             dict.Add("grant_type", "password");
             dict.Add("client_id", clientId);
@@ -59,15 +63,18 @@ namespace TemperatureHub.NetatmoData
             var req = new HttpRequestMessage(HttpMethod.Post, "https://api.netatmo.com/oauth2/token") { Content = new FormUrlEncodedContent(dict) };
             var res = await client.SendAsync(req);
             var tokenJson = res.Content.ReadAsStringAsync().Result;
+            Logger.Info("NetatmoDataHandler", "GetTokenByRefresh Get finished");
             return JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
         }
 
         public async Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken)
         {
+            Logger.Info("NetatmoDataHandler", "GetRoomStatus Get started");
             string key = $"RoomStatus4HomeId_{homeId}";
             List<RoomData> roomData = new List<RoomData>();
             if (_cache.TryGetValue<List<RoomData>>(key, out roomData))
             {
+                Logger.Info("NetatmoDataHandler", "GetRoomStatus cached Get finished");
                 return roomData;
             }
 
@@ -95,8 +102,9 @@ namespace TemperatureHub.NetatmoData
                     }).ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Error("NetatmoDataHandler", $"GetRoomStatus exception {ex.Message}");
                 throw;
             }
 
@@ -104,15 +112,50 @@ namespace TemperatureHub.NetatmoData
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
             });
+            Logger.Info("NetatmoDataHandler", "GetRoomStatus Get finished");
             return roomData;
+        }
+
+        public async Task<string> SetThemp(string homeId, string roomId, double temp, long endTime, string accessToken)
+        {
+            Logger.Info("NetatmoDataHandler", "SetThemp Get started");
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var builder = new UriBuilder("https://api.netatmo.com/api/setroomthermpoint");
+            builder.Port = -1;
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            query["home_id"] = homeId;
+            query["room_id"] = roomId;
+            query["mode"] = "manual";
+            query["temp"] = temp.ToString();
+            query["endtime"] = endTime.ToString();
+            builder.Query = query.ToString();
+            string url = builder.ToString();
+            string result;
+            try
+            {
+                var req = new HttpRequestMessage(HttpMethod.Post, url);
+                var res = await client.SendAsync(req);
+                result = res.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("NetatmoDataHandler", $"SetThemp exception {ex.Message}");
+                throw;
+            }
+            Logger.Info("NetatmoDataHandler", "SetThemp Get finished");
+            return result;
         }
 
         public async Task<List<Schedule>> GetSchedule(string homeId, string accessToken)
         {
+            Logger.Info("NetatmoDataHandler", "GetSchedule Get started");
             string key = $"Schedule4HomeId_{homeId}";
             List<Schedule> roomSchedules = new List<Schedule>();
             if (_cache.TryGetValue<List<Schedule>>(key, out roomSchedules))
             {
+                Logger.Info("NetatmoDataHandler", "GetSchedule cached Get finished");
                 return roomSchedules;
             }
 
@@ -150,6 +193,7 @@ namespace TemperatureHub.NetatmoData
             }
             catch (Exception ex)
             {
+                Logger.Error("NetatmoDataHandler", $"GetSchedule exception {ex.Message}");
                 throw;
             }
 
@@ -157,12 +201,13 @@ namespace TemperatureHub.NetatmoData
             {
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
             });
-
+            Logger.Info("NetatmoDataHandler", "GetSchedule Get finished");
             return roomSchedules;
         }
 
         public async Task<Schedule> GetActiveRoomSchedule(string homeId, string accessToken)
         {
+            Logger.Info("NetatmoDataHandler", "GetActiveRoomSchedule Get started");
             var now = DateTime.Now;
             var dow = (int)(now.DayOfWeek + 6) % 7;
             var scheduleTime = (dow * 1440) + (now.Hour * 60) + (now.Minute);
@@ -183,7 +228,7 @@ namespace TemperatureHub.NetatmoData
                 DateTimeOffset dto = new DateTimeOffset(new DateTime(nextSunday.Year, nextSunday.Month, nextSunday.Day, 23, 59, 59));
                 schedule.EndTime = dto.ToUnixTimeSeconds();
             }
-
+            Logger.Info("NetatmoDataHandler", "GetActiveRoomSchedule Get finished");
             return schedule;
         }
     }

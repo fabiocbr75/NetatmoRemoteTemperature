@@ -35,20 +35,42 @@ namespace TemperatureHub.Process
 
         private void StartExecutionLoop()
         {
-            _executorThd = new Thread(() =>
+            _executorThd = new Thread(async() =>
             {
+                double lastSetTarget = 0;
                 foreach (var item in _queue.GetConsumingEnumerable())
                 {
                     try
                     {
                         _repository.AddSensorData(item);
-                        var token = _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
+                        var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
+                        var masterData = _repository.LoadSensorMasterData().Where(x => x.SenderMAC == item.SenderMAC).First();
 
+                        var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token)).Where(x => x.RoomId == masterData.RoomId).First();
+                        var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
+                        var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).First();
+                        if (lastSetTarget == 0)
+                        {
+                            lastSetTarget = roomScheduled.TScheduleTarget;
+                        }
+                        //currentStatus.TCurrentTarget = lastSetTarget;
+
+                        var newTarget = currentStatus.TValve + roomScheduled.TScheduleTarget - item.Temperature;
+                        Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduleTarget} - Humidity:{item.Humidity}");
+                        if (Math.Abs(newTarget - currentStatus.TCurrentTarget) > 0.6)
+                        {
+                            //if (newTarget < currentStatus.TCurrentTarget && ((currentStatus.TCurrentTarget - currentStatus.TValve) < 0.5) ||
+                            //    newTarget > currentStatus.TCurrentTarget && ((newTarget - currentStatus.TValve) < 0.5)
+                            //   )
+                            var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
+                            Logger.Message("ProcessData", $"Set NewTarget!!: {result}");
+                            lastSetTarget = newTarget;
+                        }
 
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("Executor", "Error on execution. " + ex.Message);
+                        Logger.Error("ProcessData", "Error on execution. " + ex.Message);
                     }
                 }
             });

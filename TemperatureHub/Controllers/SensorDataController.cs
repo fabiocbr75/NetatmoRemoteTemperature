@@ -47,8 +47,6 @@ namespace TemperatureHub.Controllers
         [HttpPost]
         public void Post([FromBody] SensorDataDTO value)
         {
-            Console.WriteLine($"Time:{DateTime.Now.ToString("s")} MAC:{value.MAC}; Temp:{value.Temp}; Humidity:{value.Humidity}");
-
             var sensorData = new SensorData() { SenderMAC = value.MAC, Temperature = value.Temp, Humidity = value.Humidity, IngestionTimestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") };
             _processData.Add(sensorData);
         }

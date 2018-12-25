@@ -125,7 +125,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorMasterData");
 
             var ret = ExecuteOnThreadPool<List<SensorMasterData>>(() => {
-                var result = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName FROM SensorMasterData");
+                var result = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName, RoomId FROM SensorMasterData");
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadSensorMasterData Get finished");
