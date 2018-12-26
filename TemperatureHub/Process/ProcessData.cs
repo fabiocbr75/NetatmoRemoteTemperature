@@ -46,9 +46,18 @@ namespace TemperatureHub.Process
                         var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
                         var masterData = _repository.LoadSensorMasterData().Where(x => x.SenderMAC == item.SenderMAC).First();
 
-                        var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token)).Where(x => x.RoomId == masterData.RoomId).First();
+                        var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token))?.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
+                        if (currentStatus == null)
+                        {
+                            continue;
+                        }
                         var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
-                        var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).First();
+                        if (schedule == null)
+                        {
+                            continue;
+                        }
+
+                        var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
                         if (lastSetTarget == 0)
                         {
                             lastSetTarget = roomScheduled.TScheduleTarget;

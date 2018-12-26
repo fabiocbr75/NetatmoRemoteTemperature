@@ -87,31 +87,39 @@ namespace TemperatureHub.NetatmoData
             query["home_id"] = homeId;
             builder.Query = query.ToString();
             string url = builder.ToString();
-            
+            string res = string.Empty;
             try
             {
-                var res = await client.GetStringAsync(url);
+                res = await client.GetStringAsync(url);
                 var jobj = JObject.Parse(res);
                 if (jobj["status"].ToString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    roomData = jobj["body"]["home"]["rooms"].Select(x => new RoomData()
+                    if (jobj["body"]["errors"] == null)
                     {
-                        RoomId = x["id"].ToString(),
-                        TCurrentTarget = x["therm_setpoint_temperature"].ToObject<double>(),
-                        TValve = x["therm_measured_temperature"].ToObject<double>()
-                    }).ToList();
+                        roomData = jobj["body"]["home"]["rooms"].Select(x => new RoomData()
+                        {
+                            RoomId = x["id"].ToString(),
+                            TCurrentTarget = x["therm_setpoint_temperature"].ToObject<double>(),
+                            TValve = x["therm_measured_temperature"].ToObject<double>()
+                        }).ToList();
+
+                        _cache.Set<List<RoomData>>(key, roomData, new MemoryCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                        });
+                    }
+                    else
+                    {
+                        Logger.Warn("NetatmoDataHandler", $"GetRoomStatus Error on netatmo body: {res}");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("NetatmoDataHandler", $"GetRoomStatus exception {ex.Message}");
+                Logger.Error("NetatmoDataHandler", $"GetRoomStatus message: {res}, exception {ex.Message}");
                 throw;
             }
 
-            _cache.Set<List<RoomData>>(key, roomData, new MemoryCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-            });
             Logger.Info("NetatmoDataHandler", "GetRoomStatus Get finished");
             return roomData;
         }
@@ -168,39 +176,53 @@ namespace TemperatureHub.NetatmoData
             query["home_id"] = homeId;
             builder.Query = query.ToString();
             string url = builder.ToString();
+
+            string res = string.Empty;
             
             try
             {
-                var res = await client.GetStringAsync(url);
+                res = await client.GetStringAsync(url);
                 var jobj = JObject.Parse(res);
                 if (jobj["status"].ToString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var home = jobj["body"]["homes"].ToArray()[0];
-                    var sched = home["schedules"].ToArray().Where(x => x["selected"] != null && x["selected"].ToObject<bool>() == true ).First();
+                    if (jobj["body"]["errors"] == null)
+                    {
+                        var home = jobj["body"]["homes"].ToArray()[0];
+                        var sched = home["schedules"].ToArray().Where(x => x["selected"] != null && x["selected"].ToObject<bool>() == true).First();
 
-                    roomSchedules = sched["timetable"]
-                                        .Select(x => new Schedule()
+                        roomSchedules = sched["timetable"]
+                                            .Select(x => new Schedule()
                                             {
                                                 MinuteFromMonday = x["m_offset"].ToObject<int>(),
                                                 RoomSchedules = sched["zones"]
-                                                                    .Where(z => z["id"].ToString() == x["zone_id"].ToString())
-                                                                    .Select(r => r["rooms"]).First()
-                                                                    .Select(y => new RoomSchedule() { RoomId = y["id"].ToString(),
-                                                                                                      TScheduleTarget = y["therm_setpoint_temperature"].ToObject<double>()
-                                                                                                    }).ToList()
+                                                                        .Where(z => z["id"].ToString() == x["zone_id"].ToString())
+                                                                        .Select(r => r["rooms"]).First()
+                                                                        .Select(y => new RoomSchedule()
+                                                                        {
+                                                                            RoomId = y["id"].ToString(),
+                                                                            TScheduleTarget = y["therm_setpoint_temperature"].ToObject<double>()
+                                                                        }).ToList()
                                             }).ToList();
+
+                        _cache.Set<List<Schedule>>(key, roomSchedules, new MemoryCacheEntryOptions
+                        {
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
+                        });
+
+                    }
+                    else
+                    {
+                        Logger.Warn("NetatmoDataHandler", $"GetSchedule Error on netatmo body: {res}");
+                    }
+
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("NetatmoDataHandler", $"GetSchedule exception {ex.Message}");
+                Logger.Error("NetatmoDataHandler", $"GetSchedule message: {res}, exception {ex.Message}");
                 throw;
             }
 
-            _cache.Set<List<Schedule>>(key, roomSchedules, new MemoryCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
-            });
             Logger.Info("NetatmoDataHandler", "GetSchedule Get finished");
             return roomSchedules;
         }
@@ -213,6 +235,10 @@ namespace TemperatureHub.NetatmoData
             var scheduleTime = (dow * 1440) + (now.Hour * 60) + (now.Minute);
 
             var homesData = await GetSchedule(homeId, accessToken);
+            if (homesData == null)
+            {
+                return null;
+            }
             var schedule = homesData.Where(x => x.MinuteFromMonday < scheduleTime).OrderByDescending(y => y.MinuteFromMonday).First();
 
             var nextSched = homesData.Where(x => x.MinuteFromMonday > scheduleTime).OrderBy(y => y.MinuteFromMonday).FirstOrDefault();
