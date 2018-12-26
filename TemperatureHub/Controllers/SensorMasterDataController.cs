@@ -31,6 +31,7 @@ namespace TemperatureHub.Controllers
                 tmp.SenderMAC = item.SenderMAC;
                 tmp.SenderName= item.SenderName;
                 tmp.RoomId = item.RoomId;
+                tmp.Enabled = item.Enabled;
                 retData.Add(tmp);
             }
 

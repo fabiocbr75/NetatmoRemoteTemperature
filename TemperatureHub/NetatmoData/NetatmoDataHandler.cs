@@ -105,7 +105,7 @@ namespace TemperatureHub.NetatmoData
 
                         _cache.Set<List<RoomData>>(key, roomData, new MemoryCacheEntryOptions
                         {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(9) //Every 10 minute there is a sensor recording
                         });
                     }
                     else
@@ -136,16 +136,16 @@ namespace TemperatureHub.NetatmoData
             query["home_id"] = homeId;
             query["room_id"] = roomId;
             query["mode"] = "manual";
-            query["temp"] = temp.ToString();
+            query["temp"] = temp.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture);
             query["endtime"] = endTime.ToString();
             builder.Query = query.ToString();
             string url = builder.ToString();
-            string result;
+            string result = url;
             try
             {
                 var req = new HttpRequestMessage(HttpMethod.Post, url);
                 var res = await client.SendAsync(req);
-                result = res.Content.ReadAsStringAsync().Result;
+                result += res.Content.ReadAsStringAsync().Result;
             }
             catch (Exception ex)
             {
