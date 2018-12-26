@@ -14,6 +14,7 @@ namespace TemperatureHub.Repository
                         RoomId              TEXT NOT NULL COLLATE NOCASE
                 );
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:57:F2:50', 'Studio', '1541168514');
+                INSERT OR IGNORE INTO SensorMasterData VALUES ('EC:FA:BC:9C:9A:92', 'Sala', '2935863693');
 
                 CREATE TABLE IF NOT EXISTS SensorData (
                         SenderMAC           TEXT NOT NULL,
