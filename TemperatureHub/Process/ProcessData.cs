@@ -58,9 +58,9 @@ namespace TemperatureHub.Process
 
                         var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
 
-                        var newTarget = currentStatus.TValve + roomScheduled.TScheduleTarget - item.Temperature;
+                        var newTarget = Number.HalfRound(currentStatus.TValve + roomScheduled.TScheduleTarget - item.Temperature);
                         Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduleTarget} - Humidity:{item.Humidity}");
-                        if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) > 0.6) && masterData.Enabled)
+                        if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) > 0.5) && masterData.Enabled)
                         {
                             //if (newTarget < currentStatus.TCurrentTarget && ((currentStatus.TCurrentTarget - currentStatus.TValve) < 0.5) ||
                             //    newTarget > currentStatus.TCurrentTarget && ((newTarget - currentStatus.TValve) < 0.5)
