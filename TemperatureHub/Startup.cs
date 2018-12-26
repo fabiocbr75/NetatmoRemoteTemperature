@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TemperatureHub.Helpers;
 using TemperatureHub.NetatmoData;
 using TemperatureHub.Process;
 using TemperatureHub.Repository;
@@ -68,6 +69,13 @@ namespace TemperatureHub
             var sett = appSettingsSection.Get<AppSettings>();
 
             SQLiteFileRepository.CreateOrUpdateDb(sett.DbFullPath);
+
+            Logger.Info("Startup", $"HomeId:{sett.HomeId}");
+            Logger.Info("Startup", $"Username:{sett.Username}");
+
+            Logger.Info("Startup", $"ClientId(last 3 char):{sett.ClientId.Substring(sett.ClientId.Length - 3)}");
+            Logger.Info("Startup", $"ClientSecret(last 3 char):{sett.ClientSecret.Substring(sett.ClientSecret.Length - 3)}");
+            Logger.Info("Startup", $"Password(last 3 char):{sett.Password.Substring(sett.Password.Length - 3)}");
 
             app.UseMvc();
 
