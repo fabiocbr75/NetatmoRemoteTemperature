@@ -17,14 +17,19 @@ namespace TemperatureHub.Repository
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:57:F2:50', 'Cucina', '2809735084', 1);
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('EC:FA:BC:9C:9A:92', 'Sala', '2935863693', 0);
 
-                CREATE TABLE IF NOT EXISTS SensorData (
+                CREATE TABLE IF NOT EXISTS AggregateData (
                         SenderMAC           TEXT NOT NULL,
                         Temperature         REAL NOT NULL,
                         Humidity            REAL NOT NULL,
                         IngestionTimestamp  TEXT NOT NULL,
+                        TValve              REAL NOT NULL,
+                        TCurrentTarget      REAL NOT NULL,
+                        TCalculateTarget    REAL NOT NULL,
+                        TScheduledTarget    REAL NOT NULL,
+                        SetTempSended       INT  NOT NULL,
                         FOREIGN KEY (SenderMAC) REFERENCES SensorMasterData(SenderMAC) ON DELETE CASCADE
                 );
                 
-                CREATE UNIQUE INDEX IF NOT EXISTS IDX_SensorData ON SensorData (SenderMAC ASC, IngestionTimestamp ASC);";
+                CREATE UNIQUE INDEX IF NOT EXISTS IDX_AggregateData ON AggregateData (SenderMAC ASC, IngestionTimestamp ASC);";
     }
 }

@@ -200,7 +200,7 @@ namespace TemperatureHub.NetatmoData
                                                                         .Select(y => new RoomSchedule()
                                                                         {
                                                                             RoomId = y["id"].ToString(),
-                                                                            TScheduleTarget = y["therm_setpoint_temperature"].ToObject<double>()
+                                                                            TScheduledTarget = y["therm_setpoint_temperature"].ToObject<double>()
                                                                         }).ToList()
                                             }).ToList();
 

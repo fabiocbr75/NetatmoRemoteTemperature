@@ -8,6 +8,6 @@ namespace TemperatureHub.Models
     public class RoomSchedule
     {
         public string RoomId { get; set; }
-        public double TScheduleTarget { get; set; }
+        public double TScheduledTarget { get; set; }
     }
 }

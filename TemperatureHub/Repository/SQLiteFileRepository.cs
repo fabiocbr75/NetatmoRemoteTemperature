@@ -20,7 +20,7 @@ namespace TemperatureHub.Repository
     {
         private static ConcurrentDictionary<int, SQLiteConnection> _dbInstaces = new ConcurrentDictionary<int, SQLiteConnection>();
         private static ConcurrentQueue<Executor> _executorQueue = new ConcurrentQueue<Executor>();
-        private Dictionary<string, SensorData> _dataCache = new Dictionary<string, SensorData>();
+        private Dictionary<string, AggregateData> _dataCache = new Dictionary<string, AggregateData>();
         
         private readonly string _databasePathWithFileName;
 
@@ -73,14 +73,14 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "DropAndCreateTables Get finished");
         }
 
-        public void AddSensorData(SensorData sensorData)
+        public void AddAggregateData(AggregateData aggregateData)
         {
             Logger.Info("SQLiteFileRepository", "AddSensorData Get started");
-            SensorData lastData;
+            AggregateData lastData;
 
-            if (_dataCache.TryGetValue(sensorData.SenderMAC, out lastData))
+            if (_dataCache.TryGetValue(aggregateData.SenderMAC, out lastData))
             {
-                if (sensorData.Temperature == lastData.Temperature && sensorData.Humidity == lastData.Humidity)
+                if (aggregateData.Temperature == lastData.Temperature && aggregateData.Humidity == lastData.Humidity)
                 {
                     Logger.Info("SQLiteFileRepository", "AddSensorData Data skipped");
                     Logger.Info("SQLiteFileRepository", "AddSensorData Get finished");
@@ -89,10 +89,10 @@ namespace TemperatureHub.Repository
             }
 
             ExecuteOnThreadPool(() => {
-                GetDbInstance().Insert(sensorData);
+                GetDbInstance().Insert(aggregateData);
             });
 
-            _dataCache[sensorData.SenderMAC] = sensorData;
+            _dataCache[aggregateData.SenderMAC] = aggregateData;
             Logger.Info("SQLiteFileRepository", "AddSensorDatastarted Get finished");
         }
 
@@ -101,7 +101,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorData");
 
             var ret = ExecuteOnThreadPool<List<SensorData>>(() => {
-                var result = GetDbInstance().Query<SensorData>("SELECT SenderMAC, Temperature, Humidity, IngestionTimestamp FROM SensorData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
+                var result = GetDbInstance().Query<SensorData>("SELECT SenderMAC, Temperature, Humidity, IngestionTimestamp FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadSensorData Get finished");
@@ -113,7 +113,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorData");
 
             var ret = ExecuteOnThreadPool<List<SensorDataEx>>(() => {
-                var result = GetDbInstance().Query<SensorDataEx>("SELECT SD.SenderMAC, SMD.SenderName, SD.Temperature, SD.Humidity, SD.IngestionTimestamp FROM SensorData SD JOIN SensorMasterData SMD ON  SMD.SenderMAC = SD.SenderMAC WHERE SD.SenderMAC = ? AND SD.IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
+                var result = GetDbInstance().Query<SensorDataEx>("SELECT SD.SenderMAC, SMD.SenderName, SD.Temperature, SD.Humidity, SD.IngestionTimestamp FROM AggregateData SD JOIN SensorMasterData SMD ON  SMD.SenderMAC = SD.SenderMAC WHERE SD.SenderMAC = ? AND SD.IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadSensorData Get finished");
