@@ -10,15 +10,35 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TemperatureHub.Helpers;
+using TemperatureHub.NetatmoData;
+using TemperatureHub.Process;
 using TemperatureHub.Repository;
 
 namespace TemperatureHub
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        //public Startup(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
+
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("appsettings.json",
+                                 optional: false,
+                                 reloadOnChange: true)
+                    .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -30,8 +50,11 @@ namespace TemperatureHub
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
-
+            services.AddMemoryCache();
             services.AddSingleton<ISQLiteFileRepository, SQLiteFileRepository>();
+            services.AddSingleton<INetatmoDataHandler, NetatmoDataHandler>();
+            services.AddSingleton<IProcessData, ProcessData>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +66,16 @@ namespace TemperatureHub
             }
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
-            SQLiteFileRepository.CreateOrUpdateDb(appSettingsSection.Get<AppSettings>().DbFullPath);
+            var sett = appSettingsSection.Get<AppSettings>();
+
+            SQLiteFileRepository.CreateOrUpdateDb(sett.DbFullPath);
+
+            Logger.Info("Startup", $"HomeId:{sett.HomeId}");
+            Logger.Info("Startup", $"Username:{sett.Username}");
+
+            Logger.Info("Startup", $"ClientId(last 3 char):{sett.ClientId.Substring(sett.ClientId.Length - 3)}");
+            Logger.Info("Startup", $"ClientSecret(last 3 char):{sett.ClientSecret.Substring(sett.ClientSecret.Length - 3)}");
+            Logger.Info("Startup", $"Password(last 3 char):{sett.Password.Substring(sett.Password.Length - 3)}");
 
             app.UseMvc();
 

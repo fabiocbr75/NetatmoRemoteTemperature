@@ -2,6 +2,7 @@ FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim-arm32v7 AS base
 WORKDIR /app
 EXPOSE 5000
 
+
 FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY ["TemperatureHub.csproj", ""]
@@ -18,6 +19,10 @@ WORKDIR /app
 COPY --from=publish /app .
 RUN mkdir -p /app/AppData
 VOLUME /app/AppData
+ENV ClientId ClientId
+ENV ClientSecret ClientSecret
+ENV Username Username
+ENV Password Password
 ENTRYPOINT ["dotnet", "TemperatureHub.dll"]
 
 #docker run -d -v C:\DockerVolume\SensorData:/app/AppData -p 5000:5000 ImageId

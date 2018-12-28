@@ -4,9 +4,9 @@ using TemperatureHub.Models;
 
 namespace TemperatureHub.Repository
 {
-    public interface ISQLiteFileRepository 
+    public interface ISQLiteFileRepository
     {
-        void AddSensorData(SensorData sensorData);
+        void AddAggregateData(AggregateData aggregateData);
         List<SensorData> LoadSensorData(string id, string from, string to);
         List<SensorDataEx> LoadSensorDataEx(string id, string from, string to);
         List<SensorMasterData> LoadSensorMasterData();
