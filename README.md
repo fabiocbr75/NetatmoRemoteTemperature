@@ -23,7 +23,7 @@
 
   ![LOLIN D1 MINI PRO v2](/RoomTempSender/Images/d1_mini_pro_v2.png)
   ![DHT22](/RoomTempSender/Images/DHT22.png)
-  ![DS18B20](/RoomTempSender/Images/DS18B20.png)
+  ![DS18B20](/RoomTempSender/Images/ds18b20.png)
   ![Lithion Battery](/RoomTempSender/Images/Battery.png)
   
 
