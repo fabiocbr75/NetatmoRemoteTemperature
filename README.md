@@ -9,15 +9,23 @@
 
 # Technology used:
 
-  - Asp.Net Core 2.2 / Docker / Raspberry pi 3
-  - ESP8266 / Arduino C++
-  - Netatmo public API
+- Asp.Net Core 2.2 / Docker / Raspberry pi 3
+- ESP8266 / Arduino C++
+- Netatmo public API
 
 # Remote Sensor
-  - ![LOLIN D1 MINI PRO v2](/RoomTempSender/Images/d1_mini_pro_v2.png) 4,00 €
-  - ![DHT22](/RoomTempSender/Images/DHT22.png) or ![DS18B20]() 1,80 € / 0,50 €
-  - ![Lithion Battery]() 4,00 €
-  - Other parts (enclosoure, battery holder, etc..) 2,00 €
+- LOLIN D1 MINI PRO v2 -  4,00 €
+- DHT22 or DS18B20 - 1,80 € / 0,50 €
+- Lithion Battery 18650 3000ma - 4,00 €
+- Other parts (enclosoure, battery holder, etc..) 2,00 €
+
+  Total price of around 11,00 € for each room\sensor
+
+  ![LOLIN D1 MINI PRO v2](/RoomTempSender/Images/d1_mini_pro_v2.png)
+  ![DHT22](/RoomTempSender/Images/DHT22.png)
+  ![DS18B20](/RoomTempSender/Images/DS18B20.png)
+  ![Lithion Battery](/RoomTempSender/Images/Battery.png)
+  
 
   Total price of around 11,00 € for each room\sensor
 
