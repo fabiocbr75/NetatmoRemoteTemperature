@@ -1,8 +1,8 @@
 # NetatmoRemoteTemperature
 
-- Arduino base board (NodeMCU Esp8266) to retrieve temperature and humidity (DHT22).
+- Arduino base board (NodeMCU Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
 - Asp.net core 2.2 webapi application to save on SQLite all temperature retrieved.
-- Switch to manual to set new temperature target based on remote temperature manteining scheduled target temperature
+- Switch to manual and set new temperature target based on remote temperature maintaining the scheduled target temperature
 
 # Network Layout
   ![Network Layout](/NetworkLayout.png)
@@ -12,6 +12,7 @@
 - Asp.Net Core 2.2 / Docker / Raspberry pi 3
 - ESP8266 / Arduino C++
 - Netatmo public API
+- SPA / Angular7 / jQWidgets Components
 
 # Remote Sensor
 - LOLIN D1 MINI PRO v2 -  4,00 €
