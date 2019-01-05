@@ -17,7 +17,7 @@
 - LOLIN D1 MINI PRO v2 -  4,00 €
 - DHT22 or DS18B20 - 1,80 € / 0,50 €
 - Lithion Battery 18650 3000ma - 4,00 €
-- Other parts (enclosoure, battery holder, etc..) 2,00 €
+- Other parts (box, battery holder, etc..) 2,00 €
 
   Total price of around 11,00 € for each room\sensor
 
@@ -25,9 +25,9 @@
   ![DHT22](/RoomTempSender/Images/DHT22.png)
   ![DS18B20](/RoomTempSender/Images/ds18b20.png)
   ![Lithion Battery](/RoomTempSender/Images/Battery.png)
+  ![Battery holder](/RoomTempSender/Images/BatteryHolder.png)
+  ![Box](/RoomTempSender/Images/Box.png)
   
-
-  Total price of around 11,00 € for each room\sensor
 
 # Compile & Install:
 Cross platform Arm\x86
