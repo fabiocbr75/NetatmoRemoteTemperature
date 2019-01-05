@@ -2,19 +2,27 @@
 
 - Arduino base board (NodeMCU Esp8266) to retrieve temperature and humidity (DHT22).
 - Asp.net core 2.2 webapi application to save on SQLite all temperature retrieved.
-- Set "true temperature" on netatmo coud API to fix with real room temperature (also with Heat Index base both Temperature and Himudity)
+- Switch to manual to set new temperature target based on remote temperature manteining scheduled target temperature
+
+# Network Layout
+  ![Network Layout](/NetworkLayout.png)
 
 # Technology used:
 
-  - Asp.Net Core 2.2
-  - Docker
-  - Raspberry
+  - Asp.Net Core 2.2 / Docker / Raspberry pi 3
+  - ESP8266 / Arduino C++
+  - Netatmo public API
 
-  ![LOLIN D1 MINI PRO v2](/RoomTempSender/Images/d1_mini_pro_v2.png)
-  ![DHT22](/RoomTempSender/Images/DHT22.png)
+# Remote Sensor
+  - ![LOLIN D1 MINI PRO v2](/RoomTempSender/Images/d1_mini_pro_v2.png) 4,00 €
+  - ![DHT22](/RoomTempSender/Images/DHT22.png) or ![DS18B20]() 1,80 € / 0,50 €
+  - ![Lithion Battery]() 4,00 €
+  - Other parts (enclosoure, battery holder, etc..) 2,00 €
+
+  Total price of around 11,00 € for each room\sensor
 
 # Compile & Install:
-
+Cross platform Arm\x86
 To be define
 
 # Use:
