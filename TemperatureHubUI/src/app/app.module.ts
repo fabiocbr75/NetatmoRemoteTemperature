@@ -3,28 +3,19 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToolbarModule } from 'primeng/toolbar';
-import { ButtonModule } from 'primeng/button';
+import { jqxBarGaugeComponent } from 'jqwidgets-scripts/jqwidgets-ts/angular_jqxbargauge';
 import { FormsModule } from '@angular/forms';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { CalendarModule } from 'primeng/calendar';
-import { ChartModule } from 'primeng/chart';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent, jqxBarGaugeComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ToolbarModule,
-    ButtonModule,
-    MultiSelectModule,
     BrowserAnimationsModule,
-    FormsModule,
-    CalendarModule,
-    ChartModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
