@@ -13,7 +13,7 @@
 - Netatmo public API
 - SPA / Angular7 / jQWidgets Components
 
-# Remote Sensor
+# Remote Sensor (Project status 80%)
 ### Main activities:
 - Read Temperature \ Humidity
 - Read battery level
@@ -53,7 +53,7 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
 ### Use:
  - Every 10 minutes the system send to TemperatureHub all sensor data and goes into deepsleep
 
-# Temperature Hub
+# Temperature Hub (Project status 80%)
 ### Main activities:
 - Receive Remote Sensor Data
 - Read Netatmo Schedule (Cached)
@@ -63,7 +63,6 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
 ### Technology used:
 - Asp.Net Core 2.2 / Cache / Sqlite / Docker / Raspberry pi 3
 - Netatmo public API
-- SPA / Angular7 / jQWidgets Components
 
 ### Hardware
 - Raspberry Pi 3
@@ -79,6 +78,23 @@ Total price of around 57,00 € (Amazon)
 Install Rasbian - Configure Network
 Install Docker
 Cross platform Arm\x86
+To be define
+
+### Use:
+
+To be define
+
+# Temperature UI (Project status 20%)
+### Main activities:
+- Show temperature graph history
+
+### Technology used:
+- SPA / Angular7 / jQWidgets Components
+
+### Hardware
+- Hosted on TemperatureHub
+
+### Compile & Install:
 To be define
 
 ### Use:
