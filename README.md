@@ -1,8 +1,6 @@
 # NetatmoRemoteTemperature
-
-- Arduino base board (NodeMCU Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
-- Asp.net core 2.2 webapi application to save on SQLite all temperature retrieved.
-- Switch to manual and set new temperature target based on remote temperature maintaining the scheduled target temperature
+This project would like to resolve the problem related not accurate temperature retrieved by radiator's sensor installed on valves.
+To achieve this target the solution use a remote temperature sensor for each valve and one single hub that receive all sensor data, save history and call netatmo API.
 
 ## Network Layout
   ![Network Layout](/NetworkLayout.png)
@@ -14,6 +12,8 @@
 - SPA / Angular7 / jQWidgets Components
 
 # Remote Sensor (Project status 80%)
+- Arduino base board (Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
+
 ### Main activities:
 - Read Temperature \ Humidity
 - Read battery level
@@ -54,6 +54,9 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
  - Every 10 minutes the system send to TemperatureHub all sensor data and goes into deepsleep
 
 # Temperature Hub (Project status 80%)
+- Asp.net core 2.2 webapi application to save on SQLite all temperature retrieved.
+- Switch to manual and set new temperature target based on remote temperature maintaining the scheduled target temperature
+
 ### Main activities:
 - Receive Remote Sensor Data
 - Read Netatmo Schedule (Cached)
@@ -75,8 +78,31 @@ Total price of around 57,00 € (Amazon)
 ![RaspberryKit](/RoomTempSender/Images/RaspberryKit.png)
 
 ### Compile & Install:
-Install Rasbian - Configure Network
-Install Docker
+- On PC
+  - Install\Check Visual Studio 2017 
+  - Install\Check .net core 2.2
+  - Install\Check Docker for Windows
+  - Clone Git Repo
+  - Move on /TemperatureHub
+  - Run `docker build -t sensordata .`
+  - Save image as tar `docker save sensordata > sensordata.tar`
+  - Move tar file on Raspberry (ex. WinSCP)
+
+- On Raspberry
+  - Install Rasbian - Configure Network
+  - Install Docker on Raspberry
+    ```
+     curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+     sudo groupadd docker
+     sudo gpasswd -a $USER docker
+     restart
+    ```
+  - Load Docker image `docker load < sensordata.tar`
+  - Run Docker container (fill empty field)
+    ```
+    docker run -d -v ~/SensorData:/app/AppData  -p 5000:5000 -e TZ=Europe/Rome -e AppSettings:clientId='' -e AppSettings:clientSecret='' -e AppSettings:username='' -e AppSettings:password='' -e AppSettings:homeId='' --restart=always sensordata
+    ```
+
 Cross platform Arm\x86
 To be define
 
