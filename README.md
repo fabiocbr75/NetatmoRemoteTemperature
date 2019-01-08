@@ -1,5 +1,5 @@
 # NetatmoRemoteTemperature
-This project would like to resolve the problem related not accurate temperature retrieved by radiator's sensor installed on valves.
+This project would like to resolve the problem related to not accurate temperature retrieved by radiator's sensor installed on valves. The problem is not related to netatmo sensor quality but to the nearness of the sensor to the radiator.
 To achieve this target the solution use a remote temperature sensor for each valve and one single hub that receive all sensor data, save history and call netatmo API.
 
 ## Network Layout
@@ -12,7 +12,7 @@ To achieve this target the solution use a remote temperature sensor for each val
 - SPA / Angular7 / jQWidgets Components
 
 # Remote Sensor (Project status 80%)
-- Arduino base board (Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
+- Arduino compatible board (Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
 
 ### Main activities:
 - Read Temperature \ Humidity
