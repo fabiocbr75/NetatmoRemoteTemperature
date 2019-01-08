@@ -28,6 +28,14 @@ export class AppComponent implements AfterViewInit {
 
         setTimeout(_ => this.myDateTimeInput.setRange(date1, date2))
         let sensorData = this.rest.getSensorData("", date1, date2);
+        let masterData = this.rest.getSensorMasterData();
+
+        masterData.subscribe(
+            data => {
+                this.sensorList = data.map(item => ({ senderMAC: item.senderMAC, html: item.senderName }));
+            }
+        )
+        
         this.dateOnChange();
     }
 
@@ -84,19 +92,15 @@ export class AppComponent implements AfterViewInit {
             }
         ];
 
-    seriesList: string[] = ['splinearea', 'spline', 'column', 'scatter', 'stackedcolumn', 'stackedsplinearea', 'stackedspline'];
+    sensorList: string[] = [];
 
     seriesOnChange(event: any): void {
         let args = event.args;
         if (args) {
-            let value = args.item.value;
-            let isLine = value.indexOf('line') != -1;
-            let isArea = value.indexOf('area') != -1;
-            let group = this.myChart.seriesGroups()[0];
-            group.series[0].opacity = group.series[1].opacity = isArea ? 0.7 : 1;
-            group.series[0].lineWidth = group.series[1].lineWidth = isLine ? 2 : 1;
-            group.type = value;
+            let value = args.item;
+            //TODO
             this.myChart.update();
         }
     }
+  
 }

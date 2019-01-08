@@ -9,11 +9,11 @@
     </jqxNavBar>
 </div> -->
 <jqxDropDownList [theme]="'material'" (onChange)="seriesOnChange($event)"
-    [width]="200" [height]="25" [selectedIndex]="2"
-    [dropDownHeight]="100" [source]="seriesList">
+    [width]="getWidth()" [height]="30" [selectedIndex]="-1"
+    [dropDownHeight]="100" [source]="sensorList">
 </jqxDropDownList>
 <jqxDateTimeInput [theme]="'material'" #myDateTimeInput (onChange)="dateOnChange()"
-    [width]="250" [height]="30" [selectionMode]="'range'">
+    [width]="getWidth()" [height]="30" [selectionMode]="'range'">
 </jqxDateTimeInput>
 <jqxChart #myChart
     [width]="getWidth()" [height]="500"

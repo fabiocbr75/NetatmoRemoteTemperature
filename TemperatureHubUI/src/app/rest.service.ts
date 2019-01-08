@@ -33,6 +33,31 @@ export class RestService {
       map(this.extractData));
   }
 
+  getSensorMasterData(): Observable<any> {
+    return of(this.masterData);
+    //http://192.168.2.40:5000/api/sensorMasterData
+    return this.http.get(this.endpoint + 'sensorMasterData').pipe(
+      map(this.extractData));
+  }
+
+  masterData: any = [
+    {
+        "senderMAC": "80:7D:3A:57:F2:50",
+        "senderName": "Sala",
+        "roomId": "2935863693",
+        "enabled": true,
+        "html": "Sala"
+    },
+    {
+        "senderMAC": "41:7D:3A:57:F2:50",
+        "senderName": "Cucina",
+        "roomId": "2935863623",
+        "enabled": false,
+        "html": "Cucina"
+    }
+];
+
+
   data: any = [
     {
         "mac": "80:7D:3A:57:F2:50",
