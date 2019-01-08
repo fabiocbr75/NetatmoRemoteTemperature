@@ -37,6 +37,8 @@ namespace TemperatureHub.Controllers
                 tmp.Temp = item.Temperature;
                 tmp.Humidity = item.Humidity;
                 tmp.IngestionTimestamp = item.IngestionTimestamp;
+                tmp.TValve = item.TValve;
+                tmp.TScheduledTarget = item.TScheduledTarget;
                 tmp.HeatIndex = HeatHelper.GetHeatIndexCelsius(item.Temperature, item.Humidity);
                 retData.Add(tmp);
             }
