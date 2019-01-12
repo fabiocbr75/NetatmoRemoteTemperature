@@ -43,7 +43,6 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
 ![Battery holder](/RoomTempSender/Images/BatteryHolder.png)
 ![Box](/RoomTempSender/Images/Box.png)
 ![FinalVersion1](/RoomTempSender/Images/FinalVersion1.jpg)
-![FinalVersion2](/RoomTempSender/Images/FinalVersion2.jpg)
 
 ### Compile & Install:
  - Install Arduino IDE 1.8.6
