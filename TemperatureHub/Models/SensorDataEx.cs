@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TemperatureHub.Models
 {
-    public class SensorDataEx : SensorData
+    public class AggregateDataEx : AggregateData
     {
         public string SenderName { get; set; }
     }

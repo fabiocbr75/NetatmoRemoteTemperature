@@ -5,6 +5,7 @@
         public string MAC { get; set; }
         public double Temp { get; set; }
         public double Humidity { get; set; }
+        public double BatteryLevel { get; set; }
         public string IngestionTimestamp { get; set; }
     }
 }

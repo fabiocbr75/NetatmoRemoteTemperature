@@ -9,8 +9,7 @@ namespace TemperatureHub.Models
     {
         private double _temperature;
         private double _humidity;
-        private double _tScheduledTarget;
-        private double _tValve;
+        private double _batteryLevel;
 
         public string SenderMAC { get; set; }
         public double Temperature
@@ -23,17 +22,13 @@ namespace TemperatureHub.Models
             get => _humidity;
             set => _humidity = System.Math.Round(value, 1);
         }
+        public double BatteryLevel
+        {
+            get => _batteryLevel;
+            set => _batteryLevel = System.Math.Round(value, 1);
+        }
+
         public string IngestionTimestamp { get; set; }
-        public double TValve
-        {
-            get => _tValve;
-            set => _tValve = System.Math.Round(value, 1);
-        }
-        public double TScheduledTarget
-        {
-            get => _tScheduledTarget;
-            set => _tScheduledTarget = System.Math.Round(value, 1);
-        }
 
     }
 }

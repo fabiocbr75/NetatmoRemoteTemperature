@@ -42,6 +42,8 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
 ![Lithion Battery](/RoomTempSender/Images/Battery.png)
 ![Battery holder](/RoomTempSender/Images/BatteryHolder.png)
 ![Box](/RoomTempSender/Images/Box.png)
+![FinalVersion1](/RoomTempSender/Images/FinalVersion1.jpg)
+![FinalVersion2](/RoomTempSender/Images/FinalVersion1.jpg)
 
 ### Compile & Install:
  - Install Arduino IDE 1.8.6
@@ -51,7 +53,8 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
  - Compile and upload to the device
 
 ### Use:
- - Every 10 minutes the system send to TemperatureHub all sensor data and goes into deepsleep
+ - Every 10 minutes the system send to TemperatureHub all sensor data and goes into deepsleep. The remote sensor consumption during works is around of 78ma while during deep sleep the consume is around of 0,067ma.
+ The target goal is to recharge the battery every 50/60 days
 
 # Temperature Hub (Project status 80%)
 - Asp.net core 2.2 webapi application to save on SQLite all temperature retrieved.

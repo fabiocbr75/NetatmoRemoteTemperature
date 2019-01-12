@@ -8,7 +8,7 @@ namespace TemperatureHub.Repository
     {
         void AddAggregateData(AggregateData aggregateData);
         List<SensorData> LoadSensorData(string id, string from, string to);
-        List<SensorDataEx> LoadSensorDataEx(string id, string from, string to);
+        List<AggregateDataEx> LoadSensorDataEx(string id, string from, string to);
         List<SensorMasterData> LoadSensorMasterData();
     }
 }

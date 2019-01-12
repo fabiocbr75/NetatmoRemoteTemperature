@@ -28,7 +28,7 @@ namespace TemperatureHub.Controllers
         public ActionResult<IEnumerable<SensorDataExDTO>> Get(string id, [FromQuery] string from, [FromQuery] string to)
         {
             List<SensorDataExDTO> retData = new List<SensorDataExDTO>();
-            List<SensorDataEx> sensorDataList = _repository.LoadSensorDataEx(id, from, to);
+            List<AggregateDataEx> sensorDataList = _repository.LoadSensorDataEx(id, from, to);
             foreach (var item in sensorDataList)
             {
                 var tmp = new SensorDataExDTO();
@@ -39,6 +39,7 @@ namespace TemperatureHub.Controllers
                 tmp.IngestionTimestamp = item.IngestionTimestamp;
                 tmp.TValve = item.TValve;
                 tmp.TScheduledTarget = item.TScheduledTarget;
+                tmp.BatteryLevel = item.BatteryLevel;
                 tmp.HeatIndex = HeatHelper.GetHeatIndexCelsius(item.Temperature, item.Humidity);
                 retData.Add(tmp);
             }
@@ -49,7 +50,7 @@ namespace TemperatureHub.Controllers
         [HttpPost]
         public void Post([FromBody] SensorDataDTO value)
         {
-            var sensorData = new SensorData() { SenderMAC = value.MAC, Temperature = value.Temp, Humidity = value.Humidity, IngestionTimestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ") };
+            var sensorData = new SensorData() { SenderMAC = value.MAC, Temperature = value.Temp, Humidity = value.Humidity, IngestionTimestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = value.BatteryLevel };
             _processData.Add(sensorData);
         }
     }

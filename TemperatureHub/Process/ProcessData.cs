@@ -58,7 +58,7 @@ namespace TemperatureHub.Process
                         var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
 
                         var newTarget = Number.HalfRound(currentStatus.TValve + roomScheduled.TScheduledTarget - item.Temperature);
-                        Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity}");
+                        Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity} - BatteryLevel:{item.BatteryLevel}");
 
                         AggregateData aggregateData = new AggregateData()
                         {
@@ -70,7 +70,8 @@ namespace TemperatureHub.Process
                             TCurrentTarget = currentStatus.TCurrentTarget,
                             TScheduledTarget = roomScheduled.TScheduledTarget,
                             TValve = currentStatus.TValve,
-                            SetTempSended = false
+                            SetTempSended = false,
+                            BatteryLevel = item.BatteryLevel
                         };
 
                         if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) > 0.5) && masterData.Enabled)
