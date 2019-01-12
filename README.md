@@ -53,9 +53,13 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
 
 ### Use:
  - Remember to close the jumper after downloading the firmware into the board to awake from the deep sleep and to read the battery level. If you close the jumper for deep sleep you can't download the firmware.
+
 ![LolinSchema](/RoomTempSender/Images/LolinSchema.png)
+ 
  - Schema to connect the DS18B20 with the ESP8266 (in this case a NODEMCU). The components are Dallas DS18B20 temperature sensor and 4.7K resistor.
+ 
  ![DS18B20Schema](/RoomTempSender/Images/ESP8266_ds18b20_arduino.jpg)
+ 
  - Every 10 minutes the system send to TemperatureHub all sensor data and goes into deepsleep. The remote sensor consumption during works is around of 78ma while during deep sleep the consume is around of 0,067ma.
  The target goal is to recharge the battery every 50/60 days
 
