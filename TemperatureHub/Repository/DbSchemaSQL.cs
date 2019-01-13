@@ -14,8 +14,10 @@ namespace TemperatureHub.Repository
                         RoomId              TEXT NOT NULL COLLATE NOCASE,
                         Enabled             INTEGER NOT NULL
                 );
-                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:57:F2:50', 'Cucina', '2809735084', 0);
-                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5B:62', 'Sala', '2935863693', 0);
+                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:57:F2:50', 'Cucina', '2809735084', 1);
+                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5B:62', 'Sala', '2935863693', 1);
+                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5C:C5', 'Camera', '3716460054', 1);
+                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:59:86', 'Cameretta', '3702889680', 1);
 
                 CREATE TABLE IF NOT EXISTS AggregateData (
                         SenderMAC           TEXT NOT NULL,
