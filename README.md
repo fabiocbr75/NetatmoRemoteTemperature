@@ -11,7 +11,7 @@ To achieve this target the solution use a remote temperature sensor for each val
 - Netatmo public API
 - SPA / Angular7 / jQWidgets Components
 
-# Remote Sensor (Project status 80%)
+# Remote Sensor (Project status 100%)
 - Arduino compatible board (Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
 
 ### Main activities:
@@ -122,7 +122,7 @@ To be define
 
 To be define
 
-# Temperature UI (Project status 20%)
+# Temperature UI (Project status 30%)
 ### Main activities:
 - Show temperature graph history
 
