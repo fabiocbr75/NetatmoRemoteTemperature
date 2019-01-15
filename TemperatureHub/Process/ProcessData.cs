@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -17,14 +18,17 @@ namespace TemperatureHub.Process
         private readonly BlockingCollection<SensorData> _queue = new BlockingCollection<SensorData>();
         private readonly ISQLiteFileRepository _repository = null;
         private readonly INetatmoDataHandler _netatmoCloud = null;
+        private readonly ISharedData _sharedData = null;
+
         private readonly AppSettings _appsettings = null;
         private Thread _executorThd = null;
 
-        public ProcessData(ISQLiteFileRepository repository, INetatmoDataHandler netatmoCloud, IOptions<AppSettings> appSettings)
+        public ProcessData(ISQLiteFileRepository repository, INetatmoDataHandler netatmoCloud, IOptions<AppSettings> appSettings, ISharedData sharedData)
         {
             _repository = repository;
             _netatmoCloud = netatmoCloud;
             _appsettings = appSettings.Value;
+            _sharedData = sharedData;
             StartExecutionLoop();
         }
 
@@ -41,6 +45,8 @@ namespace TemperatureHub.Process
                 {
                     try
                     {
+                        _sharedData.LastSensorData[item.SenderMAC] = (Temperature: item.Temperature, IngestionTime: DateTime.ParseExact(item.IngestionTimestamp, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture));
+
                         var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
                         var masterData = _repository.LoadSensorMasterData().Where(x => x.SenderMAC == item.SenderMAC).First();
 
@@ -74,7 +80,7 @@ namespace TemperatureHub.Process
                             BatteryLevel = item.BatteryLevel
                         };
 
-                        if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) > 0.5) && masterData.Enabled)
+                        if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled)
                         {
                             //if (newTarget < currentStatus.TCurrentTarget && ((currentStatus.TCurrentTarget - currentStatus.TValve) < 0.5) ||
                             //    newTarget > currentStatus.TCurrentTarget && ((newTarget - currentStatus.TValve) < 0.5)
