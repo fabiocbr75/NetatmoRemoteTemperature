@@ -38,11 +38,18 @@ String macAddress;
     int retry = 0;
     do 
     {
+      if (retry > 10)
+      {
+        DEBUG_PRINT("NO TEMPERATURE DATA. Going into deep sleep for 600 seconds - 10 minutes");
+        ESP.deepSleep(600e6);       
+      }
+      
       if (retry > 0)
       {
-        delay(500);  
+        delay(1000);  
         DEBUG_PRINTLN("Failed to read T from DS18B20 sensor!");
       }
+
       DS18B20.requestTemperatures(); 
       t = DS18B20.getTempCByIndex(0);
 
@@ -66,9 +73,16 @@ String macAddress;
     
     do
     {
+      
+      if (retry > 10)
+      {
+        DEBUG_PRINT("NO TEMPERATURE DATA. Going into deep sleep for 600 seconds - 10 minutes");
+        ESP.deepSleep(600e6);       
+      }      
+      
       if (retry > 0)
       {
-        delay(500);  
+        delay(1000);  
         DEBUG_PRINTLN("Failed to read T from DHT sensor!");
       }
   
@@ -136,8 +150,9 @@ void setup() {
   WiFi.begin(ssid, password);
   
   
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+  while (WiFi.status() != WL_CONNECTED) 
+  {
+    delay(1000);
     DEBUG_PRINT(".");
     retry++;
     if (retry > 10)
@@ -191,7 +206,8 @@ void setup() {
   root.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
   
   int httpCode = http.POST(JSONmessageBuffer); 
-
+  DEBUG_PRINTLN(httpCode);
+  
   if (httpCode > 0) { //Check the returning code
     String payload = http.getString();   //Get the request response payload
     DEBUG_PRINTLN(payload);             //Print the response payload
