@@ -18,11 +18,13 @@ namespace TemperatureHub.Controllers
     {
         private readonly IProcessData _processData;
         private readonly ISQLiteFileRepository _repository;
-        public SensorDataController(IProcessData processData, ISQLiteFileRepository repository)
+        private readonly ISharedData _sharedData = null;
+        public SensorDataController(IProcessData processData, ISQLiteFileRepository repository, ISharedData sharedData)
         {
             _processData = processData;
             _repository = repository;
-        }
+            _sharedData = sharedData;
+    }
 
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<SensorDataExDTO>> Get(string id, [FromQuery] string from, [FromQuery] string to)
@@ -46,6 +48,13 @@ namespace TemperatureHub.Controllers
 
             return retData;
         }
+
+        [Route("LastTemperature")]
+        public ActionResult<IEnumerable<LastStatusDTO>> LastTemperature()
+        {
+            return _sharedData.LastSensorData.Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel }).ToList();
+        }
+
 
         [HttpPost]
         public void Post([FromBody] SensorDataDTO value)
