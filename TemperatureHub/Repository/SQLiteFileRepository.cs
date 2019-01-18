@@ -80,7 +80,7 @@ namespace TemperatureHub.Repository
 
             if (_dataCache.TryGetValue(aggregateData.SenderMAC, out lastData))
             {
-                if (aggregateData.Temperature == lastData.Temperature && aggregateData.Humidity == lastData.Humidity)
+                if (aggregateData.Temperature == lastData.Temperature && aggregateData.Humidity == lastData.Humidity && aggregateData.BatteryLevel == lastData.BatteryLevel)
                 {
                     Logger.Info("SQLiteFileRepository", "AddSensorData Data skipped");
                     Logger.Info("SQLiteFileRepository", "AddSensorData Get finished");
