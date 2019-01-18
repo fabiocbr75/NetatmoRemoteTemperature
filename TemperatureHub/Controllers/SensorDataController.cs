@@ -52,7 +52,7 @@ namespace TemperatureHub.Controllers
         [Route("LastTemperature")]
         public ActionResult<IEnumerable<LastStatusDTO>> LastTemperature()
         {
-            return _sharedData.LastSensorData.Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel }).ToList();
+            return _sharedData.LastSensorData.Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel, SenderName = x.Value.SenderName }).ToList();
         }
 
 

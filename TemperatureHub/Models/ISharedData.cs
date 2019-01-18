@@ -5,6 +5,6 @@ namespace TemperatureHub.Models
 {
     public interface ISharedData
     {
-        IDictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel)> LastSensorData { get; }
+        IDictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName)> LastSensorData { get; }
     }
 }
