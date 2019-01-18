@@ -25,7 +25,7 @@ namespace TemperatureHub.Models
         public double BatteryLevel
         {
             get => _batteryLevel;
-            set => _batteryLevel = System.Math.Round(value, 1);
+            set => _batteryLevel = System.Math.Round(value, 2);
         }
 
         public string IngestionTimestamp { get; set; }
