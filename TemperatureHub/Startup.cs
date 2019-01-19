@@ -122,39 +122,43 @@ namespace TemperatureHub
 
         private static void TimerTask(object sharedData)
         {
-            List<string> sensorNotReceived = new List<string>();
+            List<string> mailMessages = new List<string>();
             var sensorData = sharedData as ISharedData;
             foreach (var item in sensorData.LastSensorData)
             {
                 var delta = DateTime.UtcNow - item.Value.IngestionTime.ToUniversalTime();
                 if (delta.TotalMinutes > 60) // Not seen for at least 1 hour
                 {
-                    sensorNotReceived.Add($"Sensor not received = {item.Key}. Last seens: {item.Value.IngestionTime}");
+                    mailMessages.Add($"Sensor not received = {item.Key}. Last seens: {item.Value.IngestionTime}");
                 }
+
+                if (item.Value.BatteryLevel <= 3.0)
+                {
+                    mailMessages.Add($"Recharge battery = {item.Key}. Last seens: {item.Value.IngestionTime}");
+                }
+
             }
 
-            if (sensorNotReceived.Count > 0)
+            if (mailMessages.Count > 0)
             {
-                SendMail(sensorNotReceived);
+                SendMail(mailMessages);
             }
         }
 
-        private static void SendMail(List<string> sensorNotReceived)
+        private static void SendMail(List<string> mailMessages)
         {
             // TODO Read Data from configuration or database
 
-            /*
-            SmtpClient client = new SmtpClient("");
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("", "");
+            //SmtpClient client = new SmtpClient("");
+            //client.UseDefaultCredentials = false;
+            //client.Credentials = new NetworkCredential("", "");
 
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("");
-            mailMessage.To.Add("");
-            mailMessage.Body = string.Join("\n", sensorNotReceived.ToArray()); 
-            mailMessage.Subject = "SensorNotReceived";
-            client.Send(mailMessage);
-            */
+            //MailMessage mailMessage = new MailMessage();
+            //mailMessage.From = new MailAddress("");
+            //mailMessage.To.Add("");
+            //mailMessage.Body = string.Join("\n", mailMessages.ToArray()); 
+            //mailMessage.Subject = "SensorNotReceived";
+            //client.Send(mailMessage);
         }
     }
 }
