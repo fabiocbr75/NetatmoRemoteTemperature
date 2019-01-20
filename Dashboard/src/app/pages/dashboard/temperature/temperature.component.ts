@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { Temperature, TemperatureHumidityData } from '../../../@core/data/temperature-humidity';
 import { takeWhile } from 'rxjs/operators';
@@ -13,15 +13,12 @@ export class TemperatureComponent implements OnDestroy {
 
   private alive = true;
 
+  @Input() senderName :string = ''
+  @Input() senderMAC :string = ''
+
   temperatureData: Temperature;
   temperature: number;
   temperatureOff = false;
-  temperatureMode = 'cool';
-
-  humidityData: Temperature;
-  humidity: number;
-  humidityOff = false;
-  humidityMode = 'heat';
 
   colors: any;
   themeSubscription: any;
@@ -41,9 +38,6 @@ export class TemperatureComponent implements OnDestroy {
       .subscribe(([temperatureData, humidityData]: [Temperature, Temperature]) => {
         this.temperatureData = temperatureData;
         this.temperature = this.temperatureData.value;
-
-        this.humidityData = humidityData;
-        this.humidity = this.humidityData.value;
       });
   }
 

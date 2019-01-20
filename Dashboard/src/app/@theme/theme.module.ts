@@ -61,9 +61,7 @@ import {
   EvaIconsPipe,
 } from './pipes';
 import {
-  OneColumnLayoutComponent,
   SampleLayoutComponent,
-  TwoColumnsLayoutComponent,
 } from './layouts';
 import { DEFAULT_THEME } from './styles/theme.default';
 import { COSMIC_THEME } from './styles/theme.cosmic';
@@ -117,9 +115,7 @@ const COMPONENTS = [
   SearchInputComponent,
   ThemeSettingsComponent,
   TinyMCEComponent,
-  OneColumnLayoutComponent,
   SampleLayoutComponent,
-  TwoColumnsLayoutComponent,
   ToggleSettingsButtonComponent,
 ];
 
