@@ -17,7 +17,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     max: 100,
   };
 
-  getTemperatureData(): Observable<Temperature> {
+  getTemperatureData(senderMAC: string): Observable<Temperature> {
     return observableOf(this.temperatureDate);
   }
 

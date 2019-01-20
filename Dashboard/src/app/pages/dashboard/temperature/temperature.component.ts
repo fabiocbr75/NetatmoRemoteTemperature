@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, Input, OnInit } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { Temperature, TemperatureHumidityData } from '../../../@core/data/temperature-humidity';
 import { takeWhile } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./temperature.component.scss'],
   templateUrl: './temperature.component.html',
 })
-export class TemperatureComponent implements OnDestroy {
+export class TemperatureComponent implements OnDestroy, OnInit {
 
   private alive = true;
 
@@ -31,8 +31,11 @@ export class TemperatureComponent implements OnDestroy {
       this.colors = config.variables;
     });
 
+  }
+  
+  ngOnInit() {
     forkJoin(
-      this.temperatureHumidityService.getTemperatureData(),
+      this.temperatureHumidityService.getTemperatureData(this.senderMAC),
       this.temperatureHumidityService.getHumidityData(),
     )
       .subscribe(([temperatureData, humidityData]: [Temperature, Temperature]) => {
@@ -40,7 +43,7 @@ export class TemperatureComponent implements OnDestroy {
         this.temperature = this.temperatureData.value;
       });
   }
-
+  
   ngOnDestroy() {
     this.alive = false;
   }

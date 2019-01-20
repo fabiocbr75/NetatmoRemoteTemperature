@@ -15,7 +15,7 @@
 
 <div class="row">
   <div *ngFor="let sensor of SensorMasterData" class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
-    <ngx-temperature senderName={{sensor.senderName}} senderMAC={{sensor.senderMAC}}></ngx-temperature>
+    <ngx-temperature *ngIf="sensor.enabled" senderName={{sensor.senderName}} senderMAC={{sensor.senderMAC}}></ngx-temperature>
   </div>
 </div>
 
