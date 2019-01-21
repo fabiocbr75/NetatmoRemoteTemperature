@@ -44,6 +44,7 @@ import { TrafficBarService } from './mock/traffic-bar.service';
 import { ProfitBarAnimationChartService } from './mock/profit-bar-animation-chart.service';
 // import { TemperatureHumidityService } from './mock/temperature-humidity.service';
 import { TemperatureHumidityService } from './services/temperature-humidity.service';
+import { SensorsService } from './services/sensors.service';
 import { SolarService } from './mock/solar.service';
 import { TrafficChartService } from './mock/traffic-chart.service';
 import { StatsBarService } from './mock/stats-bar.service';
@@ -52,6 +53,7 @@ import { StatsProgressBarService } from './mock/stats-progress-bar.service';
 import { VisitorsAnalyticsService } from './mock/visitors-analytics.service';
 import { SecurityCamerasService } from './mock/security-cameras.service';
 import { MockDataModule } from './mock/mock-data.module';
+import { SensorsData } from './data/sensors';
 
 const socialLinks = [
   {
@@ -91,6 +93,7 @@ const DATA_SERVICES = [
   { provide: StatsProgressBarData, useClass: StatsProgressBarService },
   { provide: VisitorsAnalyticsData, useClass: VisitorsAnalyticsService },
   { provide: SecurityCamerasData, useClass: SecurityCamerasService },
+  { provide: SensorsData, useClass: SensorsService},
 ];
 
 export class NbSimpleRoleProvider extends NbRoleProvider {
