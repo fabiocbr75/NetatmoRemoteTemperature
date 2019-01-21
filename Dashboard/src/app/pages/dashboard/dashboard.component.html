@@ -1,0 +1,21 @@
+<div class="row">
+  <ng-container *ngFor="let sensor of sensorMasterData">
+    <div *ngIf="sensor.enabled" class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
+      <ngx-temperature  senderName={{sensor.senderName}} senderMAC={{sensor.senderMAC}}></ngx-temperature>
+    </div>
+  </ng-container>
+</div>
+
+<div class="row">
+    <div class="col-xxxl-3 col-xxl-4 col-md-5">
+        <ngx-weather></ngx-weather>
+   </div>
+
+    <div class="col-xxxl-9 col-xxl-8 col-lg-7 col-md-6">
+      <ngx-electricity></ngx-electricity>
+    </div>
+
+     <div class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
+      <ngx-solar [chartValue]="solarValue"></ngx-solar>
+    </div>
+</div>

@@ -9,7 +9,7 @@ To achieve this target the solution use a remote temperature sensor for each val
 - Asp.Net Core 2.2 / Docker / Raspberry pi 3
 - ESP8266 / Arduino C++
 - Netatmo public API
-- SPA / Angular7 / jQWidgets Components
+- SPA / Angular7 / ngx-admin / jQWidgets Components
 
 # Remote Sensor (Project status 100%)
 - Arduino compatible board (Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
@@ -127,7 +127,7 @@ To be define
 - Show temperature graph history
 
 ### Technology used:
-- SPA / Angular7 / jQWidgets Components
+- SPA / Angular7 / ngx-admin / jQWidgets Components
 
 ### Hardware
 - Hosted on TemperatureHub

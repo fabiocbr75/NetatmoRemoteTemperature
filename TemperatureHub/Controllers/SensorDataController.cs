@@ -55,6 +55,11 @@ namespace TemperatureHub.Controllers
             return _sharedData.LastSensorData.Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel, SenderName = x.Value.SenderName }).ToList();
         }
 
+        [Route("LastTemperature/{id}")]
+        public ActionResult<LastStatusDTO> LastTemperature(string id)
+        {
+            return _sharedData.LastSensorData.Where(z => z.Key == id).Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel, SenderName = x.Value.SenderName }).FirstOrDefault();
+        }
 
         [HttpPost]
         public void Post([FromBody] SensorDataDTO value)
