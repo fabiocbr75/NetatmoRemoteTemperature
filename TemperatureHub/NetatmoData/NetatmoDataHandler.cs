@@ -67,7 +67,7 @@ namespace TemperatureHub.NetatmoData
             return JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
         }
 
-        public async Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken)
+        public async Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken, long endSchedulateTime)
         {
             Logger.Info("NetatmoDataHandler", "GetRoomStatus Get started");
             string key = $"RoomStatus4HomeId_{homeId}";
@@ -103,9 +103,13 @@ namespace TemperatureHub.NetatmoData
                             TValve = x["therm_measured_temperature"].ToObject<double>()
                         }).ToList();
 
+
+                        long simulateCacheTo = new DateTimeOffset(DateTime.UtcNow.AddMinutes(9)).ToUnixTimeSeconds();
+                        long endCacheTime = simulateCacheTo > endSchedulateTime ? endSchedulateTime : simulateCacheTo;
+
                         _cache.Set<List<RoomData>>(key, roomData, new MemoryCacheEntryOptions
                         {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(9) //Every 10 minute there is a sensor recording
+                            AbsoluteExpiration = DateTimeOffset.FromUnixTimeSeconds(endCacheTime)
                         });
                     }
                     else
