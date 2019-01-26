@@ -7,7 +7,7 @@ namespace TemperatureHub.NetatmoData
     public interface INetatmoDataHandler
     {
         Task<Schedule> GetActiveRoomSchedule(string homeId, string accessToken);
-        Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken);
+        Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken, long endSchedulateTime);
         Task<List<Schedule>> GetSchedule(string homeId, string accessToken);
         Task<NetatmoToken> GetToken(string clientId, string clientSecret, string userName, string password);
         Task<NetatmoToken> GetTokenByRefresh(string clientId, string clientSecret, string refreshToken);

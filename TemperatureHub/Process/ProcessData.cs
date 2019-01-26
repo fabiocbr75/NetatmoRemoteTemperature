@@ -50,13 +50,14 @@ namespace TemperatureHub.Process
 
                         _sharedData.LastSensorData[item.SenderMAC] = (Temperature: item.Temperature, IngestionTime: DateTime.ParseExact(item.IngestionTimestamp, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture), BatteryLevel: item.BatteryLevel, SenderName: masterData.SenderName);
 
-                        var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token))?.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
-                        if (currentStatus == null)
+                        var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
+                        if (schedule == null)
                         {
                             continue;
                         }
-                        var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
-                        if (schedule == null)
+
+                        var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token, schedule.EndTime))?.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
+                        if (currentStatus == null)
                         {
                             continue;
                         }

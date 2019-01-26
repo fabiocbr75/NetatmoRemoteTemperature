@@ -15,7 +15,7 @@ import { SensorsData, Sensor } from '../@core/data/sensors';
 
 export class PagesComponent implements OnInit {
   private menuItem: any[] = [];
-  private menu: NbMenuItem[] = [];
+  menu: NbMenuItem[] = [];
 
   constructor(private sensorsService: SensorsData ) {
   }
