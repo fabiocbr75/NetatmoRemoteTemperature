@@ -43,7 +43,7 @@ export class TemperatureComponent implements OnDestroy, OnInit {
         this.temperatureData = temperatureData;
         this.temperature = this.temperatureData.value;
         var date = new Date(this.temperatureData.ingestionTimestamp);
-        var time = date.getHours() + ":" + date.getMinutes();
+        var time = ('0'+ date.getHours()).slice(-2) + ":" + ('0'+ date.getMinutes()).slice(-2);
         this.info =  time + ' - ' + temperatureData.batteryLevel + 'v';
       });
   }
