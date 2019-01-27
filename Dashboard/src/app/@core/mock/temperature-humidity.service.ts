@@ -9,12 +9,16 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     value: 24,
     min: 12,
     max: 30,
+    ingestionTimestamp: '',
+    batteryLevel: '',
   };
 
   private humidityDate: Temperature = {
     value: 87,
     min: 0,
     max: 100,
+    ingestionTimestamp: '',
+    batteryLevel: '',
   };
 
   getTemperatureData(senderMAC: string): Observable<Temperature> {

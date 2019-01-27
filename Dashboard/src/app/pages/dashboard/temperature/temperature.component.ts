@@ -18,6 +18,7 @@ export class TemperatureComponent implements OnDestroy, OnInit {
 
   temperatureData: Temperature;
   temperature: number;
+  info: string = '';
   temperatureOff = false;
 
   colors: any;
@@ -41,6 +42,9 @@ export class TemperatureComponent implements OnDestroy, OnInit {
       .subscribe(([temperatureData, humidityData]: [Temperature, Temperature]) => {
         this.temperatureData = temperatureData;
         this.temperature = this.temperatureData.value;
+        var date = new Date(this.temperatureData.ingestionTimestamp);
+        var time = date.getHours() + ":" + date.getMinutes();
+        this.info =  time + ' - ' + temperatureData.batteryLevel + 'v';
       });
   }
   

@@ -12,8 +12,8 @@
             <div class="value temperature">
               {{ temperatureOff ? '--' : (temperature | ngxRound) }}
             </div>
-            <div class="desc">
-              Celsius
+            <div class="desc" [innerHTML]="info">
+              
             </div>
           </div>
         </ngx-temperature-dragger>

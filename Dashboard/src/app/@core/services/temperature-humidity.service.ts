@@ -22,6 +22,8 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     value: 87,
     min: 0,
     max: 100,
+    ingestionTimestamp: '',
+    batteryLevel: '',
   };
 
   private extractData(res: Response): Temperature {
@@ -30,7 +32,9 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     let ret: Temperature = {
         min: 10,
         max: 30,
-        value: body.temp
+        value: body.temp,
+        ingestionTimestamp: body.ingestionTimestamp,
+        batteryLevel: body.batteryLevel,
     }
 
 
