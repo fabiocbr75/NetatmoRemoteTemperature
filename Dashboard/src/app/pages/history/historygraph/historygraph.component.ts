@@ -1,5 +1,6 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { NbThemeService, NbColorHelper } from '@nebular/theme';
+import { SensorDataEx } from '../../../@core/data/temperature-humidity';
 
 @Component({
   selector: 'ngx-historygraph',
@@ -7,6 +8,7 @@ import { NbThemeService, NbColorHelper } from '@nebular/theme';
   templateUrl: './historygraph.component.html',
 })
 export class HistoryGraphComponent implements OnDestroy {
+  @Input() sensorDataEx: SensorDataEx[];
   data: any;
   options: any;
   themeSubscription: any;

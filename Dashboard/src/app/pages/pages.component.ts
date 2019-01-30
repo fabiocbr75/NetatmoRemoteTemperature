@@ -22,7 +22,7 @@ export class PagesComponent implements OnInit {
   
   ngOnInit() {
     
-    let restCall = this.sensorsService.getSensorsData();
+    let restCall = this.sensorsService.getSensorMasterData();
     restCall.subscribe((data) => {
           this.menuItem = data.map((item) => {
             return {

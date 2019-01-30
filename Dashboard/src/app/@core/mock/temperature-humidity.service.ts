@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of as observableOf,  Observable } from 'rxjs';
-import { TemperatureHumidityData, Temperature } from '../data/temperature-humidity';
+import { TemperatureHumidityData, Temperature, SensorDataEx } from '../data/temperature-humidity';
 
 @Injectable()
 export class TemperatureHumidityService extends TemperatureHumidityData {
@@ -21,8 +21,24 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     batteryLevel: '',
   };
 
+  private sensorDataEx: SensorDataEx[] = [{
+    mac: '',
+    name: '',
+    temp: 0,
+    heatIndex: 0,
+    humidity: 0,
+    batteryLevel: '',
+    ingestionTimestamp: '',
+    tValve: 0,
+    tScheduledTarget: 0,
+  }]
+
   getTemperatureData(senderMAC: string): Observable<Temperature> {
     return observableOf(this.temperatureDate);
+  }
+
+  getSensorDataEx(senderMAC: string, from: string, to:string): Observable<SensorDataEx[]> {
+    return observableOf(this.sensorDataEx);
   }
 
   getHumidityData(): Observable<Temperature> {

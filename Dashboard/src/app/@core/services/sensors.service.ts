@@ -34,10 +34,9 @@ export class SensorsService extends SensorsData {
     return ret;
   }
 
-  getSensorsData(): Observable<Sensor[]> {
+  getSensorMasterData(): Observable<Sensor[]> {
     return this.http.get(this.endpoint + 'sensorMasterData').pipe(
         map(this.extractData));
-    
   }
 
 }

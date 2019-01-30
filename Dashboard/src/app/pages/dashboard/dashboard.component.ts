@@ -25,7 +25,7 @@ export class DashboardComponent implements OnDestroy {
     //   .subscribe(theme => {
     //     // this.statusCards = this.statusCardsByThemes[theme.name];
     // });
-    this.sensorsService.getSensorsData()
+    this.sensorsService.getSensorMasterData()
                 .subscribe((data) => {
                   this.sensorMasterData = data;
                 });

@@ -7,5 +7,5 @@ export interface Sensor {
 }
 
 export abstract class SensorsData {
-  abstract getSensorsData(): Observable<Sensor[]>;
+  abstract getSensorMasterData(): Observable<Sensor[]>;
 }
