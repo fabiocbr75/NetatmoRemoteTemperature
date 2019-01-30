@@ -12,9 +12,6 @@ const routes: Routes = [{
     path: 'iot-dashboard',
     component: DashboardComponent,
   }, {
-    path: 'charts',
-    loadChildren: './charts/charts.module#ChartsModule',
-  }, {
     path: '',
     redirectTo: 'iot-dashboard',
     pathMatch: 'full',
