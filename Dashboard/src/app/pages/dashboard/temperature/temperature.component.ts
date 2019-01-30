@@ -2,7 +2,6 @@ import { Component, OnDestroy, Input, OnInit } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { Temperature, TemperatureHumidityData } from '../../../@core/data/temperature-humidity';
 import { takeWhile } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'ngx-temperature',
@@ -35,11 +34,8 @@ export class TemperatureComponent implements OnDestroy, OnInit {
   }
   
   ngOnInit() {
-    forkJoin(
-      this.temperatureHumidityService.getTemperatureData(this.senderMAC),
-      this.temperatureHumidityService.getHumidityData(),
-    )
-      .subscribe(([temperatureData, humidityData]: [Temperature, Temperature]) => {
+    this.temperatureHumidityService.getTemperatureData(this.senderMAC)
+      .subscribe((temperatureData: Temperature) => {
         this.temperatureData = temperatureData;
         this.temperature = this.temperatureData.value;
         var date = new Date(this.temperatureData.ingestionTimestamp);
