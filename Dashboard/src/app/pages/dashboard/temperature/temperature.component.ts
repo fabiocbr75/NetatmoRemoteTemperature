@@ -15,8 +15,8 @@ export class TemperatureComponent implements OnDestroy, OnInit {
   @Input() senderName :string = ''
   @Input() senderMAC :string = ''
 
-  temperatureData: Temperature;
-  temperature: number;
+  temperatureData: Temperature = { min : 0, max: 100, value: 0, batteryLevel: '', ingestionTimestamp: ''};
+  temperature: number = 0.0;
   info: string = '';
   temperatureOff = false;
 

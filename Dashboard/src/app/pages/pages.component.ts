@@ -27,7 +27,7 @@ export class PagesComponent implements OnInit {
           this.menuItem = data.map((item) => {
             return {
               title: item.senderName,
-              link: '',
+              link: '/pages/history/' + item.senderMAC,
             };
           });
           this.menu = [
