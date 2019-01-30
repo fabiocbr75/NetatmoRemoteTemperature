@@ -7,44 +7,6 @@
     flex: 0.15 !important;
   }
 
-  nb-sidebar.settings-sidebar {
-    $sidebar-width: 19rem;
-
-    transition: transform 0.3s ease;
-    width: $sidebar-width;
-    overflow: hidden;
-    @include nb-ltr(transform, translateX(100%));
-    @include nb-rtl(transform, translateX(-100%));
-    &.start {
-      @include nb-ltr(transform, translateX(-100%));
-      @include nb-rtl(transform, translateX(100%));
-    }
-
-    &.expanded, &.expanded.start {
-      transform: translateX(0);
-    }
-
-    /deep/ .scrollable {
-      width: $sidebar-width;
-      padding: 3.4rem 0.25rem;
-    }
-
-    /deep/ .main-container {
-      width: $sidebar-width;
-      background: nb-theme(color-bg);
-      transition: width 0.3s ease;
-      overflow: hidden;
-
-      .scrollable {
-        width: $sidebar-width;
-      }
-
-      @include nb-for-theme(cosmic) {
-        background: nb-theme(layout-bg);
-      }
-    }
-  }
-
   nb-sidebar.menu-sidebar {
 
     margin-top: nb-theme(sidebar-header-gap);
