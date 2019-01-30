@@ -132,7 +132,20 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorMasterData Get finished");
             return ret;
         }
-   
+
+        public List<EmailInfo> LoadEmailInfo()
+        {
+            Logger.Info("SQLiteFileRepository", "LoadEmailInfo");
+
+            var ret = ExecuteOnThreadPool<List<EmailInfo>>(() => {
+                var result = GetDbInstance().Query<EmailInfo>("SELECT SmtpServer, SmtpUserName, SmtpPassword, FromMailAddress, ToMailAddress FROM EmailInfo");
+                return result;
+            });
+        
+        Logger.Info("SQLiteFileRepository", "LoadEmailInfo Get finished");
+            return ret;
+        }
+
         // Don't use Dispose pattern for static members. Better specific CleanUp when Application shutdown.
         public static void CleanUp()
         {
