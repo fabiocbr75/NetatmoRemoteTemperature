@@ -1,8 +1,7 @@
 @import '../../@theme/styles/themes';
 
 @include nb-install-component() {
-  ngx-historygraph,
-  {
+  ngx-historygraph {
     display: block;
     height: nb-theme(card-height-xlarge);
     width: 100%;
