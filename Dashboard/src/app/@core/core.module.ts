@@ -20,11 +20,9 @@ import { ProfitChartData } from './data/profit-chart';
 import { TrafficListData } from './data/traffic-list';
 import { EarningData } from './data/earning';
 import { OrdersProfitChartData } from './data/orders-profit-chart';
-import { TrafficBarData } from './data/traffic-bar';
 import { ProfitBarAnimationChartData } from './data/profit-bar-animation-chart';
 import { TemperatureHumidityData } from './data/temperature-humidity';
 import { SolarData } from './data/solar';
-import { TrafficChartData } from './data/traffic-chart';
 import { StatsBarData } from './data/stats-bar';
 import { CountryOrderData } from './data/country-order';
 import { StatsProgressBarData } from './data/stats-progress-bar';
@@ -37,16 +35,13 @@ import { SmartTableService } from './mock/smart-table.service';
 import { UserActivityService } from './mock/user-activity.service';
 import { OrdersChartService } from './mock/orders-chart.service';
 import { ProfitChartService } from './mock/profit-chart.service';
-import { TrafficListService } from './mock/traffic-list.service';
 import { EarningService } from './mock/earning.service';
 import { OrdersProfitChartService } from './mock/orders-profit-chart.service';
-import { TrafficBarService } from './mock/traffic-bar.service';
 import { ProfitBarAnimationChartService } from './mock/profit-bar-animation-chart.service';
 // import { TemperatureHumidityService } from './mock/temperature-humidity.service';
 import { TemperatureHumidityService } from './services/temperature-humidity.service';
 import { SensorsService } from './services/sensors.service';
 import { SolarService } from './mock/solar.service';
-import { TrafficChartService } from './mock/traffic-chart.service';
 import { StatsBarService } from './mock/stats-bar.service';
 import { CountryOrderService } from './mock/country-order.service';
 import { StatsProgressBarService } from './mock/stats-progress-bar.service';
@@ -80,14 +75,11 @@ const DATA_SERVICES = [
   { provide: UserActivityData, useClass: UserActivityService },
   { provide: OrdersChartData, useClass: OrdersChartService },
   { provide: ProfitChartData, useClass: ProfitChartService },
-  { provide: TrafficListData, useClass: TrafficListService },
   { provide: EarningData, useClass: EarningService },
   { provide: OrdersProfitChartData, useClass: OrdersProfitChartService },
-  { provide: TrafficBarData, useClass: TrafficBarService },
   { provide: ProfitBarAnimationChartData, useClass: ProfitBarAnimationChartService },
   { provide: TemperatureHumidityData, useClass: TemperatureHumidityService },
   { provide: SolarData, useClass: SolarService },
-  { provide: TrafficChartData, useClass: TrafficChartService },
   { provide: StatsBarData, useClass: StatsBarService },
   { provide: CountryOrderData, useClass: CountryOrderService },
   { provide: StatsProgressBarData, useClass: StatsProgressBarService },
