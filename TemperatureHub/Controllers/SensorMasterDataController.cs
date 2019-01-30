@@ -32,6 +32,7 @@ namespace TemperatureHub.Controllers
                 tmp.SenderName= item.SenderName;
                 tmp.RoomId = item.RoomId;
                 tmp.Enabled = item.Enabled;
+                tmp.ExternalSensor = item.ExternalSensor;
                 retData.Add(tmp);
             }
 

@@ -45,49 +45,51 @@ namespace TemperatureHub.Process
                 {
                     try
                     {
+                        AggregateData aggregateData = new AggregateData();
+
                         var masterData = _repository.LoadSensorMasterData().Where(x => x.SenderMAC == item.SenderMAC).First();
                         _sharedData.LastSensorData[item.SenderMAC] = (Temperature: item.Temperature, IngestionTime: DateTime.ParseExact(item.IngestionTimestamp, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture), BatteryLevel: item.BatteryLevel, SenderName: masterData.SenderName);
 
-                        var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
-                        var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
-                        if (schedule == null)
+                        aggregateData.IngestionTimestamp = item.IngestionTimestamp;
+                        aggregateData.SenderMAC = item.SenderMAC;
+                        aggregateData.Temperature = item.Temperature;
+                        aggregateData.Humidity = item.Humidity;
+                        aggregateData.SetTempSended = false;
+                        aggregateData.BatteryLevel = item.BatteryLevel;
+
+                        if (!masterData.ExternalSensor)
                         {
-                            continue;
-                        }
+                            var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
+                            var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
+                            if (schedule == null)
+                            {
+                                continue;
+                            }
 
-                        var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token, schedule.EndTime))?.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
-                        if (currentStatus == null)
-                        {
-                            continue;
-                        }
+                            var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token, schedule.EndTime))?.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
+                            if (currentStatus == null)
+                            {
+                                continue;
+                            }
 
-                        var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
+                            var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
 
-                        var newTarget = Number.HalfRound(currentStatus.TValve + roomScheduled.TScheduledTarget - item.Temperature);
-                        Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity} - BatteryLevel:{item.BatteryLevel}");
+                            var newTarget = Number.HalfRound(currentStatus.TValve + roomScheduled.TScheduledTarget - item.Temperature);
 
-                        AggregateData aggregateData = new AggregateData()
-                        {
-                            IngestionTimestamp = item.IngestionTimestamp,
-                            SenderMAC = item.SenderMAC,
-                            Temperature = item.Temperature,
-                            Humidity = item.Humidity,
-                            TCalculateTarget = newTarget,
-                            TCurrentTarget = currentStatus.TCurrentTarget,
-                            TScheduledTarget = roomScheduled.TScheduledTarget,
-                            TValve = currentStatus.TValve,
-                            SetTempSended = false,
-                            BatteryLevel = item.BatteryLevel
-                        };
+                            Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity} - BatteryLevel:{item.BatteryLevel}");
 
-                        if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled)
-                        {
-                            //if (newTarget < currentStatus.TCurrentTarget && ((currentStatus.TCurrentTarget - currentStatus.TValve) < 0.5) ||
-                            //    newTarget > currentStatus.TCurrentTarget && ((newTarget - currentStatus.TValve) < 0.5)
-                            //   )
-                            var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
-                            aggregateData.SetTempSended = true;
-                            Logger.Message("ProcessData", $"Set NewTarget!!: {result}");
+                            aggregateData.TCalculateTarget = newTarget;
+                            aggregateData.TCurrentTarget = currentStatus.TCurrentTarget;
+                            aggregateData.TScheduledTarget = roomScheduled.TScheduledTarget;
+                            aggregateData.TValve = currentStatus.TValve;
+                            aggregateData.SetTempSended = false;
+
+                            if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled)
+                            {
+                                var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
+                                aggregateData.SetTempSended = true;
+                                Logger.Message("ProcessData", $"Set NewTarget!!: {result}");
+                            }
                         }
 
                         _repository.AddAggregateData(aggregateData);
