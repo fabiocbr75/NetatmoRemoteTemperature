@@ -1,15 +1,32 @@
-<div class="row">
-  <div class="col-md-12">
-    <nb-card>
-      <nb-card-body>
-        <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
-          <h2 class="title">404 Page Not Found</h2>
-          <small class="sub-title">The page you were looking for doesn't exist</small>
-          <button (click)="goToHome()" type="button" class="btn btn-block btn-hero-primary">
-            Take me home
-          </button>
+
+    <chart type="line" [data]="data" [options]="options"></chart>
+
+<!-- <nb-card size="large">
+  <div class="chart-container">
+   <div class="chart-header">
+      <div class="header-stats">
+        <div class="stats-block">
+          <div class="subtitle">Current Temperature:</div>
+          <div>
+            <span class="value">20</span>
+            <span class="unit">°C</span>
+          </div>
         </div>
-      </nb-card-body>
-    </nb-card>
+       
+      </div>
+
+      <div class="dropdown"
+           [ngClass]="{ 'ghost-dropdown': currentTheme === 'corporate' }"
+           ngbDropdown>
+        <button type="button" ngbDropdownToggle class="btn"
+                [ngClass]="{ 'btn-outline-success': currentTheme == 'default', 'btn-primary': currentTheme != 'default'}">
+          {{ type }}
+        </button>
+        <ul class="dropdown-menu" ngbDropdownMenu>
+          <li class="dropdown-item" *ngFor="let t of types" (click)="type = t">{{ t }}</li>
+        </ul>
+      </div>
+    </div>
+    <chart type="line" [data]="data" [options]="options"></chart>
   </div>
-</div>
+</nb-card> -->

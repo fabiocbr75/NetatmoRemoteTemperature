@@ -1,8 +1,11 @@
 <div class="row">
-  <ng-container *ngFor="let sensor of sensorMasterData">
-    <div *ngIf="sensor.enabled" class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
-      <!-- <ngx-temperature  senderName={{sensor.senderName}} senderMAC={{sensor.senderMAC}}></ngx-temperature> -->
-    </div>
-  </ng-container>
+  <div class="col-lg-12">
+    <nb-card>
+      <nb-card-header>Line</nb-card-header>
+      <nb-card-body>
+        <ngx-historygraph></ngx-historygraph>
+      </nb-card-body>
+    </nb-card>
+  </div>
 </div>
 
