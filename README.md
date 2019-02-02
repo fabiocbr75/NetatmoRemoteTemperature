@@ -9,7 +9,7 @@ To achieve this target the solution use a remote temperature sensor for each val
 - Asp.Net Core 2.2 / Docker / Raspberry pi 3
 - ESP8266 / Arduino C++
 - Netatmo public API
-- SPA / Angular7 / ngx-admin / jQWidgets Components
+- SPA / Angular7 / ngx-admin / node-nginx / Docker
 
 # Remote Sensor (Project status 100%)
 - Arduino compatible board (Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
@@ -122,18 +122,43 @@ To be define
 
 To be define
 
-# Temperature UI (Project status 30%)
+# Temperature UI (Project status 60%)
 ### Main activities:
-- Show temperature graph history
+- Show current temperature status and graph history
 
 ### Technology used:
-- SPA / Angular7 / ngx-admin / jQWidgets Components
+- SPA / Angular7 / ngx-admin / node-nginx / Docker
 
 ### Hardware
-- Hosted on TemperatureHub
+- Hosted on TemperatureHub (Raspberry) on Docker container (node-nginx)
 
 ### Compile & Install:
-To be define
+- On PC
+  - Install\Check Visual Studio Code
+  - Install\Check node (v10)
+  - Install\Angular7 cli
+  - Install\Check Docker for Windows
+  - Clone Git Repo
+  - Move on /Dashboard
+  - Run `docker build -t dashboard .`
+  - Save image as tar `docker save dashboard > dashboard.tar`
+  - Move tar file on Raspberry (ex. WinSCP)
+
+- On Raspberry
+  - Install Rasbian - Configure Network
+  - Install Docker on Raspberry
+    ```
+     curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+     sudo groupadd docker
+     sudo gpasswd -a $USER docker
+     restart
+    ```
+  - Load Docker image `docker load < dashboard.tar`
+  - Run Docker container (fill empty field)
+    ```
+	docker run -d -p 8080:80 -e TZ=Europe/Rome --restart=always dashboard
+    ```
+
 
 ### Use:
 
