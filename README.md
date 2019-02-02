@@ -122,7 +122,7 @@ To be define
 
 To be define
 
-# Temperature UI (Project status 60%)
+# Dashboard (Project status 60%)
 ### Main activities:
 - Show current temperature status and graph history
 
