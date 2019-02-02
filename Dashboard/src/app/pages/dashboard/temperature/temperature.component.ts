@@ -15,7 +15,7 @@ export class TemperatureComponent implements OnDestroy, OnInit {
   @Input() senderName :string = ''
   @Input() senderMAC :string = ''
 
-  temperatureData: Temperature = { min : 0, max: 100, value: 0, batteryLevel: '', ingestionTimestamp: ''};
+  temperatureData: Temperature = { min : 0, max: 100, value: 0, batteryLevel: '', ingestionTimestamp: '', scheduledTemperature: 0};
   temperature: number = 0.0;
   info: string = '';
   temperatureOff = false;
@@ -40,7 +40,7 @@ export class TemperatureComponent implements OnDestroy, OnInit {
         this.temperature = this.temperatureData.value;
         var date = new Date(this.temperatureData.ingestionTimestamp);
         var time = ('0'+ date.getHours()).slice(-2) + ":" + ('0'+ date.getMinutes()).slice(-2);
-        this.info =  time + ' - ' + temperatureData.batteryLevel + 'v';
+        this.info =  time + ' - ' + temperatureData.scheduledTemperature + '° - ' + temperatureData.batteryLevel + 'v';
       });
   }
   

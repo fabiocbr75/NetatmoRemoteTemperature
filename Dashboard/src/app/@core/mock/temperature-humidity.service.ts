@@ -11,6 +11,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     max: 30,
     ingestionTimestamp: '',
     batteryLevel: '',
+    scheduledTemperature: 0,
   };
 
   private humidityDate: Temperature = {
@@ -19,6 +20,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     max: 100,
     ingestionTimestamp: '',
     batteryLevel: '',
+    scheduledTemperature: 0,
   };
 
   private sensorDataEx: SensorDataEx[] = [{

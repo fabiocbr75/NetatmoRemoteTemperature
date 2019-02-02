@@ -9,8 +9,8 @@ namespace TemperatureHub.Models
     {
         public SharedData()
         {
-            LastSensorData = new Dictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName)>();
+            LastSensorData = new Dictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName, double ScheduledTemperature)>();
         }
-        public IDictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName)> LastSensorData { get; private set; }
+        public IDictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName, double ScheduledTemperature)> LastSensorData { get; private set; }
     }
 }

@@ -8,6 +8,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular
 export class TemperatureHumidityService extends TemperatureHumidityData {
     
   private endpoint: string = 'http://192.168.2.40:5000/api/';
+  // private endpoint: string = 'http://192.168.2.63:5000/api/';
   private httpOptions: any = {
     headers: new HttpHeaders({
         'Content-Type':  'application/json'
@@ -24,6 +25,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     max: 100,
     ingestionTimestamp: '',
     batteryLevel: '',
+    scheduledTemperature: 0,
   };
 
   private extractData(res: Response): Temperature {
@@ -35,6 +37,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
         value: body.temp,
         ingestionTimestamp: body.ingestionTimestamp,
         batteryLevel: body.batteryLevel,
+        scheduledTemperature: body.scheduledTemperature,
     }
 
     return ret;

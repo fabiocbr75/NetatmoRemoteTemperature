@@ -6,6 +6,7 @@ export interface Temperature {
   max: number;
   ingestionTimestamp: string;
   batteryLevel: string;
+  scheduledTemperature: number;
 }
 
 export interface SensorDataEx {

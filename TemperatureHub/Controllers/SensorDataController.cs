@@ -52,13 +52,18 @@ namespace TemperatureHub.Controllers
         [Route("LastTemperature")]
         public ActionResult<IEnumerable<LastStatusDTO>> LastTemperature()
         {
-            return _sharedData.LastSensorData.Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel, SenderName = x.Value.SenderName }).ToList();
+            return _sharedData.LastSensorData.Select(x => new LastStatusDTO() { MAC = x.Key,
+                                                                               Temp = x.Value.Temperature,
+                                                                               IngestionTimestamp = x.Value.IngestionTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                                                                               BatteryLevel = x.Value.BatteryLevel,
+                                                                               SenderName = x.Value.SenderName,
+                                                                               ScheduledTemperature = x.Value.ScheduledTemperature }).ToList();
         }
 
         [Route("LastTemperature/{id}")]
         public ActionResult<LastStatusDTO> LastTemperature(string id)
         {
-            return _sharedData.LastSensorData.Where(z => z.Key == id).Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel, SenderName = x.Value.SenderName }).FirstOrDefault();
+            return _sharedData.LastSensorData.Where(z => z.Key == id).Select(x => new LastStatusDTO() { MAC = x.Key, Temp = x.Value.Temperature, IngestionTimestamp = x.Value.IngestionTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"), BatteryLevel = x.Value.BatteryLevel, SenderName = x.Value.SenderName, ScheduledTemperature = x.Value.ScheduledTemperature }).FirstOrDefault();
         }
 
         [HttpPost]

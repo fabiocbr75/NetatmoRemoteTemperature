@@ -48,7 +48,6 @@ namespace TemperatureHub.Process
                         AggregateData aggregateData = new AggregateData();
 
                         var masterData = _repository.LoadSensorMasterData().Where(x => x.SenderMAC == item.SenderMAC).First();
-                        _sharedData.LastSensorData[item.SenderMAC] = (Temperature: item.Temperature, IngestionTime: DateTime.ParseExact(item.IngestionTimestamp, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture), BatteryLevel: item.BatteryLevel, SenderName: masterData.SenderName);
 
                         aggregateData.IngestionTimestamp = item.IngestionTimestamp;
                         aggregateData.SenderMAC = item.SenderMAC;
@@ -91,6 +90,11 @@ namespace TemperatureHub.Process
                                 Logger.Message("ProcessData", $"Set NewTarget!!: {result}");
                             }
                         }
+                        _sharedData.LastSensorData[item.SenderMAC] = (Temperature: item.Temperature, 
+                                                                      IngestionTime: DateTime.ParseExact(item.IngestionTimestamp, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture), 
+                                                                      BatteryLevel: item.BatteryLevel, 
+                                                                      SenderName: masterData.SenderName, 
+                                                                      ScheduledTemperature: aggregateData.TScheduledTarget);
 
                         _repository.AddAggregateData(aggregateData);
                     }
