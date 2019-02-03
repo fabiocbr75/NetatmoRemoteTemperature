@@ -53,42 +53,44 @@ namespace TemperatureHub.Process
                         aggregateData.SenderMAC = item.SenderMAC;
                         aggregateData.Temperature = item.Temperature;
                         aggregateData.Humidity = item.Humidity;
-                        aggregateData.SetTempSended = false;
                         aggregateData.BatteryLevel = item.BatteryLevel;
 
                         if (!masterData.ExternalSensor)
                         {
                             var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
                             var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
-                            if (schedule == null)
+                            if (schedule != null)
                             {
-                                continue;
+                                var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
+                                aggregateData.TScheduledTarget = roomScheduled.TScheduledTarget;
+
+                                var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token, schedule.EndTime))?.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
+                                if (currentStatus != null)
+                                {
+                                    var newTarget = Number.HalfRound(currentStatus.TValve + roomScheduled.TScheduledTarget - item.Temperature);
+
+                                    aggregateData.TCalculateTarget = newTarget;
+                                    aggregateData.TCurrentTarget = currentStatus.TCurrentTarget;
+                                    aggregateData.TValve = currentStatus.TValve;
+
+                                    if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled)
+                                    {
+                                        var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
+                                        aggregateData.SetTempSended = true;
+                                        Logger.Message("ProcessData", $"Set NewTarget!!: {result}");
+                                    }
+                                    Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity} - BatteryLevel:{item.BatteryLevel}");
+                                }
+                                else
+                                {
+                                    Logger.Warn("ProcessData", $"The is no status for roomid:{masterData.RoomId} - MAC:{masterData.SenderMAC} - Name: {masterData.SenderName}");
+                                }
+                            }
+                            else
+                            {
+                                Logger.Warn("ProcessData", "schedule is null");
                             }
 
-                            var currentStatus = (await _netatmoCloud.GetRoomStatus(_appsettings.HomeId, token.Access_token, schedule.EndTime))?.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
-                            if (currentStatus == null)
-                            {
-                                continue;
-                            }
-
-                            var roomScheduled = schedule.RoomSchedules.Where(x => x.RoomId == masterData.RoomId).FirstOrDefault();
-
-                            var newTarget = Number.HalfRound(currentStatus.TValve + roomScheduled.TScheduledTarget - item.Temperature);
-
-                            Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity} - BatteryLevel:{item.BatteryLevel}");
-
-                            aggregateData.TCalculateTarget = newTarget;
-                            aggregateData.TCurrentTarget = currentStatus.TCurrentTarget;
-                            aggregateData.TScheduledTarget = roomScheduled.TScheduledTarget;
-                            aggregateData.TValve = currentStatus.TValve;
-                            aggregateData.SetTempSended = false;
-
-                            if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled)
-                            {
-                                var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
-                                aggregateData.SetTempSended = true;
-                                Logger.Message("ProcessData", $"Set NewTarget!!: {result}");
-                            }
                         }
                         _sharedData.LastSensorData[item.SenderMAC] = (Temperature: item.Temperature, 
                                                                       IngestionTime: DateTime.ParseExact(item.IngestionTimestamp, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture), 

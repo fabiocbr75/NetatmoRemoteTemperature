@@ -95,6 +95,7 @@ namespace TemperatureHub
             Logger.Info("Startup", $"Password(last 3 char):{sett.Password.Substring(sett.Password.Length - 3)}");
 
             var sharedData = app.ApplicationServices.GetService<ISharedData>();
+            Logger.SetSharedData(sharedData);
             var repo = app.ApplicationServices.GetService<ISQLiteFileRepository>();
             var allSensor = repo.LoadSensorMasterData().Where(x => x.Enabled == true);
             foreach (var item in allSensor)
@@ -137,7 +138,12 @@ namespace TemperatureHub
                 {
                     mailMessages.Add($"Recharge battery = {item.Key}. Last seens: {item.Value.IngestionTime}");
                 }
+            }
 
+            (int ErrorType, string Context, string Message) logItem;
+            while (sensorData.LogQueue.TryDequeue(out logItem))
+            {
+                mailMessages.Add($"Log type: {logItem.ErrorType}. Context: {logItem.Context}; Message: {logItem.Message}");
             }
 
             if (mailMessages.Count > 0)

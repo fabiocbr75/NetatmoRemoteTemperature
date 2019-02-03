@@ -96,21 +96,23 @@ namespace TemperatureHub.NetatmoData
                 {
                     if (jobj["body"]["errors"] == null)
                     {
-                        roomData = jobj["body"]["home"]["rooms"].Select(x => new RoomData()
+                        roomData = jobj["body"]["home"]["rooms"].Where(z => z["reachable"].ToObject<bool>() == true).Select(x => new RoomData()
                         {
                             RoomId = x["id"].ToString(),
                             TCurrentTarget = x["therm_setpoint_temperature"].ToObject<double>(),
                             TValve = x["therm_measured_temperature"].ToObject<double>()
                         }).ToList();
 
+                        if (!jobj["body"]["home"]["rooms"].Any(z => z["reachable"].ToObject<bool>() == false))
+                        { //Cacheble only if all sensor are reachable
+                            long simulateCacheTo = new DateTimeOffset(DateTime.UtcNow.AddMinutes(9)).ToUnixTimeSeconds();
+                            long endCacheTime = simulateCacheTo > endSchedulateTime ? endSchedulateTime : simulateCacheTo;
 
-                        long simulateCacheTo = new DateTimeOffset(DateTime.UtcNow.AddMinutes(9)).ToUnixTimeSeconds();
-                        long endCacheTime = simulateCacheTo > endSchedulateTime ? endSchedulateTime : simulateCacheTo;
-
-                        _cache.Set<List<RoomData>>(key, roomData, new MemoryCacheEntryOptions
-                        {
-                            AbsoluteExpiration = DateTimeOffset.FromUnixTimeSeconds(endCacheTime)
-                        });
+                            _cache.Set<List<RoomData>>(key, roomData, new MemoryCacheEntryOptions
+                            {
+                                AbsoluteExpiration = DateTimeOffset.FromUnixTimeSeconds(endCacheTime)
+                            });
+                        }
                     }
                     else
                     {
