@@ -101,7 +101,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorData");
 
             var ret = ExecuteOnThreadPool<List<SensorData>>(() => {
-                var result = GetDbInstance().Query<SensorData>("SELECT SenderMAC, Temperature, Humidity, IngestionTimestamp FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
+                var result = GetDbInstance().Query<SensorData>("SELECT SenderMAC, Temperature, Humidity, IngestionTimestamp FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ? ORDER BY IngestionTimestamp", mac, from, to);
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadSensorData Get finished");
@@ -113,7 +113,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorData");
 
             var ret = ExecuteOnThreadPool<List<AggregateDataEx>>(() => {
-                var result = GetDbInstance().Query<AggregateDataEx>("SELECT SD.SenderMAC, SMD.SenderName, SD.Temperature, SD.Humidity, SD.IngestionTimestamp, SD.TValve, SD.TScheduledTarget, SD.BatteryLevel FROM AggregateData SD JOIN SensorMasterData SMD ON  SMD.SenderMAC = SD.SenderMAC WHERE SD.SenderMAC = ? AND SD.IngestionTimestamp BETWEEN ? AND ?", mac, from, to);
+                var result = GetDbInstance().Query<AggregateDataEx>("SELECT SD.SenderMAC, SMD.SenderName, SD.Temperature, SD.Humidity, SD.IngestionTimestamp, SD.TValve, SD.TScheduledTarget, SD.BatteryLevel FROM AggregateData SD JOIN SensorMasterData SMD ON  SMD.SenderMAC = SD.SenderMAC WHERE SD.SenderMAC = ? AND SD.IngestionTimestamp BETWEEN ? AND ? ORDER BY SD.IngestionTimestamp", mac, from, to);
                 return result;
             });
 

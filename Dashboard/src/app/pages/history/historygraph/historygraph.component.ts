@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input } from '@angular/core';
+import { Component, OnDestroy, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { NbThemeService, NbColorHelper } from '@nebular/theme';
 import { SensorDataEx } from '../../../@core/data/temperature-humidity';
 
@@ -7,37 +7,57 @@ import { SensorDataEx } from '../../../@core/data/temperature-humidity';
   styleUrls: ['./historygraph.component.scss'],
   templateUrl: './historygraph.component.html',
 })
-export class HistoryGraphComponent implements OnDestroy {
-  @Input() sensorDataEx: SensorDataEx[];
+export class HistoryGraphComponent implements OnDestroy, OnChanges {
+  @Input() sensorDataEx: SensorDataEx[] = [];
+  @ViewChild('chartGraph') chartGraph; 
   data: any;
   options: any;
   themeSubscription: any;
-
+  
   ngOnDestroy(): void {
     this.themeSubscription.unsubscribe();
   }
 
-  constructor( private theme: NbThemeService) {
+  ngOnChanges (changes: SimpleChanges) {
+
+    for (let propName in changes) {  
+      let change = changes[propName];
+      if (change.currentValue == null) {
+        continue;
+      }
+
+      if (propName == "sensorDataEx")
+      {
+        this.data.labels = this.sensorDataEx.map(item => item.ingestionTimestamp);
+        this.data.datasets[0].data = this.sensorDataEx.map(item => item.temp);
+        this.data.datasets[1].data = this.sensorDataEx.map(item => item.tValve);
+        this.data.datasets[2].data = this.sensorDataEx.map(item => item.tScheduledTarget);
+        this.chartGraph.chart.update();
+      }
+    }
+  }
+
+  constructor(private theme: NbThemeService) {
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
       const colors: any = config.variables;
       const chartjs: any = config.variables.chartjs;
 
       this.data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        labels: [],
         datasets: [{
-          data: [65, 59, 80, 81, 56, 55, 40],
-          label: 'Series A',
+          data: [],
+          label: 'Temp',
           backgroundColor: NbColorHelper.hexToRgbA(colors.primary, 0.3),
           borderColor: colors.primary,
         }, {
-          data: [28, 48, 40, 19, 86, 27, 90],
-          label: 'Series B',
+          data: [],
+          label: 'T Valve',
           backgroundColor: NbColorHelper.hexToRgbA(colors.danger, 0.3),
           borderColor: colors.danger,
         }, {
-          data: [18, 48, 77, 9, 100, 27, 40],
-          label: 'Series C',
+          data: [],
+          label: 'T Scheduled',
           backgroundColor: NbColorHelper.hexToRgbA(colors.info, 0.3),
           borderColor: colors.info,
         },
