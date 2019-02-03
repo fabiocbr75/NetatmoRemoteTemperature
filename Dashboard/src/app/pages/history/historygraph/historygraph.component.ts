@@ -28,10 +28,25 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
 
       if (propName == "sensorDataEx")
       {
-        this.data.labels = this.sensorDataEx.map(item => item.ingestionTimestamp);
-        this.data.datasets[0].data = this.sensorDataEx.map(item => item.temp);
-        this.data.datasets[1].data = this.sensorDataEx.map(item => item.tValve);
-        this.data.datasets[2].data = this.sensorDataEx.map(item => item.tScheduledTarget);
+        this.data.datasets[0].data = this.sensorDataEx.map(item => { 
+          return { 
+            y: item.temp,
+            t: item.ingestionTimestamp
+          }
+        });
+        this.data.datasets[1].data = this.sensorDataEx.map(item => { 
+          return { 
+            y: item.tValve,
+            t: item.ingestionTimestamp
+          }
+        });
+        this.data.datasets[2].data = this.sensorDataEx.map(item => { 
+          return { 
+            y: item.tScheduledTarget,
+            t: item.ingestionTimestamp
+          }
+        });
+
         this.chartGraph.chart.update();
       }
     }
@@ -66,10 +81,14 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
 
       this.options = {
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         scales: {
           xAxes: [
             {
+              type: 'time',
+              time: {
+                unit: 'minute'
+              },
               gridLines: {
                 display: true,
                 color: chartjs.axisLineColor,
