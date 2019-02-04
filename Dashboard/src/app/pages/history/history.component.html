@@ -1,7 +1,13 @@
 <div class="row">
   <div class="col-lg-12">
     <nb-card>
-      <nb-card-header>History graph</nb-card-header>
+      <nb-card-header>
+        History graph
+        <p></p>
+        <input #inputpicker nbInput placeholder="Range Picker" [nbDatepicker]="rangepicker">
+        <nb-rangepicker #rangepicker></nb-rangepicker>
+        <!-- <nb-calendar-range [(range)]="range" #rangepicker></nb-calendar-range> -->
+      </nb-card-header>
       <nb-card-body>
         <ngx-historygraph [sensorDataEx]="sensorDataEx"  ></ngx-historygraph>
       </nb-card-body>
