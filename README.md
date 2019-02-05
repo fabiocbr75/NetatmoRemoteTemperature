@@ -122,7 +122,7 @@ To be define
 
 To be define
 
-# Dashboard (Project status 60%)
+# Dashboard (Project status 80%)
 ### Main activities:
 - Show current temperature status and graph history
 
@@ -163,3 +163,8 @@ To be define
 ### Use:
 
 To be define
+
+### Screenshot:
+![IoT Dashboard](/IoTDashboard_Light.png)
+![History Graph](/HistoryGraph_Light.png)
+![Costmic Theme](/IoTDashboard_Cosmic.png)

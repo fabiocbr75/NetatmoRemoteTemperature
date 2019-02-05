@@ -27,7 +27,7 @@ export class HistoryComponent  implements OnInit, OnDestroy {
     this.from = startDay.toISOString();
   }
   ngOnDestroy() {
-    this.rangepicker.rangeChange.unsubscribe();
+
   }
 
 
