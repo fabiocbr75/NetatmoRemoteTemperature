@@ -28,6 +28,8 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
 
       if (propName == "sensorDataEx")
       {
+        var maxValue: number = 0;
+        var minValue: number = 100;
         var tempArray = [];
         var tValveArray = [];
         var tSchedArray = [];
@@ -51,11 +53,63 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           tempArray.push({y: this.sensorDataEx[_i].temp, t: this.sensorDataEx[_i].ingestionTimestamp});
           tValveArray.push({y: this.sensorDataEx[_i].tValve, t: this.sensorDataEx[_i].ingestionTimestamp});
           tSchedArray.push({y: this.sensorDataEx[_i].tScheduledTarget, t: this.sensorDataEx[_i].ingestionTimestamp});
+
+          if (maxValue < this.sensorDataEx[_i].temp && this.sensorDataEx[_i].temp > 0)  {
+            maxValue = this.sensorDataEx[_i].temp;
+          }
+          if (maxValue < this.sensorDataEx[_i].tValve && this.sensorDataEx[_i].tValve > 0) {
+            maxValue = this.sensorDataEx[_i].tValve;
+          }
+          if (maxValue < this.sensorDataEx[_i].tScheduledTarget && this.sensorDataEx[_i].tScheduledTarget > 0) {
+            maxValue = this.sensorDataEx[_i].tScheduledTarget;
+          }
+
+          if (minValue > this.sensorDataEx[_i].temp && this.sensorDataEx[_i].temp > 0) {
+            minValue = this.sensorDataEx[_i].temp;
+          }
+          if (minValue > this.sensorDataEx[_i].tValve && this.sensorDataEx[_i].tValve > 0) {
+            minValue = this.sensorDataEx[_i].tValve;
+          }
+          if (minValue > this.sensorDataEx[_i].tScheduledTarget && this.sensorDataEx[_i].tScheduledTarget > 0) {
+            minValue = this.sensorDataEx[_i].tScheduledTarget;
+          }
         }
         this.data.datasets[0].data = tempArray;
         this.data.datasets[1].data = tValveArray;
         this.data.datasets[2].data = tSchedArray;
 
+        this.options = {
+          responsive: true,
+          maintainAspectRatio: true,
+          scales: {
+            xAxes: [
+              {
+                type: 'time',
+                time: {
+                  unit: 'minute',
+                  tooltipFormat: 'h:mm a'
+                },
+                gridLines: {
+                  display: true,
+                },
+              },
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                },
+                ticks: {
+                  beginAtZero: true,
+                  stepSize: 0.5,
+                  min: minValue - 1,
+                  max: maxValue + 1,
+                },
+              },
+            ],
+          },
+        };
+       
         this.chartGraph.chart.update();
       }
     }
