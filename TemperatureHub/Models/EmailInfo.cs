@@ -8,4 +8,5 @@
         public string FromMailAddress { get; set; }
         public string ToMailAddress { get; set; }
     }
+
 }

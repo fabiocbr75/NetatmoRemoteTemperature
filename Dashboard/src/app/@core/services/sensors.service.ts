@@ -26,6 +26,7 @@ export class SensorsService extends SensorsData {
         senderMAC: item.senderMAC,
         senderName: item.senderName,
         enabled: item.enabled,
+        externalSensor: item.externalSensor,
       }
     });
 

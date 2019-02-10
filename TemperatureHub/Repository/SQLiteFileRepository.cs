@@ -145,6 +145,20 @@ namespace TemperatureHub.Repository
         Logger.Info("SQLiteFileRepository", "LoadEmailInfo Get finished");
             return ret;
         }
+        public List<WeatherInfo> LoadWeatherInfo(string mac, int lastDays)
+        {
+            Logger.Info("SQLiteFileRepository", "LoadWeatherInfo");
+
+            var firstDay = DateTime.UtcNow.Subtract(TimeSpan.FromDays(lastDays)).ToString("yyyy-MM-ddT00:00:00Z");
+
+            var ret = ExecuteOnThreadPool<List<WeatherInfo>>(() => {
+                var result = GetDbInstance().Query<WeatherInfo>($"select SenderMAC, substr(ingestiontimestamp,1,10) AS DAY, min(Temperature) as Min, max(Temperature) as Max from AggregateData where SenderMAC = '{mac}' and ingestiontimestamp > '{firstDay}' group by SenderMAC, DAY ORDER BY DAY DESC;");
+                return result;
+            });
+
+            Logger.Info("SQLiteFileRepository", "LoadWeatherInfo Get finished");
+            return ret;
+        }
 
         // Don't use Dispose pattern for static members. Better specific CleanUp when Application shutdown.
         public static void CleanUp()

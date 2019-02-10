@@ -4,6 +4,7 @@ export interface Sensor {
   senderMAC: string;
   senderName: string;
   enabled: boolean;
+  externalSensor: boolean;
 }
 
 export abstract class SensorsData {

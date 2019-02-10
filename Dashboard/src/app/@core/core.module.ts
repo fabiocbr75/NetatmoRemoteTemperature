@@ -32,6 +32,8 @@ import { StatsBarService } from './mock/stats-bar.service';
 import { StatsProgressBarService } from './mock/stats-progress-bar.service';
 import { MockDataModule } from './mock/mock-data.module';
 import { SensorsData } from './data/sensors';
+import { WeathersData } from './data/weathers';
+import { WeatherService } from './services/weather.service';
 
 const socialLinks = [
   {
@@ -61,6 +63,7 @@ const DATA_SERVICES = [
   { provide: StatsBarData, useClass: StatsBarService },
   { provide: StatsProgressBarData, useClass: StatsProgressBarService },
   { provide: SensorsData, useClass: SensorsService},
+  { provide: WeathersData, useClass: WeatherService},
 ];
 
 export class NbSimpleRoleProvider extends NbRoleProvider {

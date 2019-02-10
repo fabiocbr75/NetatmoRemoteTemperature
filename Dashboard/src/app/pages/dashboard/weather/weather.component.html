@@ -1,59 +1,59 @@
 <nb-card size="medium">
   <nb-card-body>
     <div class="location">
-      <span>Genoa</span>
+      <span [innerHTML]="senderName"></span>
     </div>
     <div class="date">
-      <span>Mon 29 May</span>
+      <span [innerHTML]="date"></span>
     </div>
     <div class="daily-forecast">
       <div class="info">
         <div class="temperature">
-          <span>20&deg;</span>
+          <span [innerHTML]="temperature"></span>
         </div>
+        <!-- <div class="icon">
+          <i class="ion-thermometer"></i>
+        </div> -->
         <div class="icon">
-          <i class="ion-ios-sunny-outline"></i>
+          <!-- <i class="ion-ios-sunny-outline"></i> -->
+          <!-- <i class="ion-arrow-graph-up-right"></i> -->
+          <!-- <i class="ion-ios-partlysunny-outline"></i> -->
+          <i class="ion-ios-pulse"></i>
+          <!-- <i class="fas fa-thermometer-half"></i> -->
+          
         </div>
       </div>
       <div class="details">
         <div class="parameter">
           <span class="parameter-name">max</span>
-          <span class="parameter-value">23&deg;</span>
+          <span class="parameter-value" [innerHTML]="lastWeather[0].max"></span>
         </div>
         <div class="parameter">
           <span class="parameter-name">min</span>
-          <span class="parameter-value">19&deg;</span>
-        </div>
-        <div class="parameter">
-          <span class="parameter-name">wind</span>
-          <span class="parameter-value">4 km/h</span>
-        </div>
-        <div class="parameter">
-          <span class="parameter-name">hum</span>
-          <span class="parameter-value">87%</span>
+          <span class="parameter-value" [innerHTML]="lastWeather[0].min"></span>
         </div>
       </div>
     </div>
     <div class="weekly-forecast">
       <div class="day">
-        <span class="caption">Sun</span>
-        <i class="ion-ios-cloudy-outline"></i>
-        <span class="temperature">17&deg;</span>
+        <span class="caption" [innerHTML]="lastWeather[4].dateOfWeek"></span>
+        <span class="temperature" [innerHTML]="lastWeather[4].max"></span>
+        <span class="temperature" [innerHTML]="lastWeather[4].min"></span>
       </div>
       <div class="day">
-        <span class="caption">Mon</span>
-        <i class="ion-ios-sunny-outline"></i>
-        <span class="temperature">19&deg;</span>
+        <span class="caption" [innerHTML]="lastWeather[3].dateOfWeek"></span>
+        <span class="temperature" [innerHTML]="lastWeather[3].max"></span>
+        <span class="temperature" [innerHTML]="lastWeather[3].min"></span>
       </div>
       <div class="day">
-        <span class="caption">Tue</span>
-        <i class="ion-ios-rainy-outline"></i>
-        <span class="temperature">22&deg;</span>
+        <span class="caption" [innerHTML]="lastWeather[2].dateOfWeek"></span>
+        <span class="temperature" [innerHTML]="lastWeather[2].max"></span>
+        <span class="temperature" [innerHTML]="lastWeather[2].min"></span>
       </div>
       <div class="day">
-        <span class="caption">Wed</span>
-        <i class="ion-ios-partlysunny-outline"></i>
-        <span class="temperature">21&deg;</span>
+        <span class="caption" [innerHTML]="lastWeather[1].dateOfWeek"></span>
+        <span class="temperature" [innerHTML]="lastWeather[1].max"></span>
+        <span class="temperature" [innerHTML]="lastWeather[1].min"></span>
       </div>
     </div>
   </nb-card-body>

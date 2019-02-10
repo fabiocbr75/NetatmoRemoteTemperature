@@ -16,11 +16,11 @@ namespace TemperatureHub.Repository
                         ExternalSensor      INTEGER NOT NULL DEFAULT 0
                 );
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5B:62', 'Cucina', '2809735084', 1, 0);
-                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:57:F2:50', 'Sala', '2935863693', 1, 0);
+                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5C:B2', 'Sala', '2935863693', 1, 0);
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5C:C5', 'Camera', '3716460054', 1, 0);
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:59:86', 'Cameretta', '3702889680', 1, 0);
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('84:F3:EB:0D:BC:23', 'Bagno', '3575883469', 1, 0);
-                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5C:B2', 'Studio', '1541168514', 0, 0);
+                INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:57:F2:50', 'Genoa', '0000000000', 0, 1);
 
 
 
