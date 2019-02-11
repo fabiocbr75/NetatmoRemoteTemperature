@@ -19,6 +19,7 @@ export interface SensorDataEx {
   ingestionTimestamp: string;
   tValve: number;
   tScheduledTarget: number;
+  setTempSended: boolean;
 }
 
 export abstract class TemperatureHumidityData {

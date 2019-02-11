@@ -33,6 +33,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     ingestionTimestamp: '',
     tValve: 0,
     tScheduledTarget: 0,
+    setTempSended: false,
   }]
 
   getTemperatureData(senderMAC: string): Observable<Temperature> {

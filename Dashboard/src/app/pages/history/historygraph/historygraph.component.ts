@@ -33,6 +33,10 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
         var tempArray = [];
         var tValveArray = [];
         var tSchedArray = [];
+        var pointRadius0=[];
+        var pointRadius1=[];
+        var pointRadius2=[];
+
         for (var _i = 0; _i < this.sensorDataEx.length; _i++)
         {
           if (_i > 0)
@@ -48,11 +52,23 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
               tempArray.push({y: this.sensorDataEx[_i-1].temp, t: dateIso});
               tValveArray.push({y: this.sensorDataEx[_i-1].tValve, t: dateIso});
               tSchedArray.push({y: this.sensorDataEx[_i-1].tScheduledTarget, t: dateIso});
+              pointRadius0.push(1);
+              pointRadius1.push(1);
+              pointRadius2.push(1);                  
             }
           }
           tempArray.push({y: this.sensorDataEx[_i].temp, t: this.sensorDataEx[_i].ingestionTimestamp});
           tValveArray.push({y: this.sensorDataEx[_i].tValve, t: this.sensorDataEx[_i].ingestionTimestamp});
           tSchedArray.push({y: this.sensorDataEx[_i].tScheduledTarget, t: this.sensorDataEx[_i].ingestionTimestamp});
+
+          if (this.sensorDataEx[_i].setTempSended == true) {
+            pointRadius0.push(4);
+          } else {
+            pointRadius0.push(1);
+          }
+
+          pointRadius1.push(1);
+          pointRadius2.push(1);          
 
           if (maxValue < this.sensorDataEx[_i].temp && this.sensorDataEx[_i].temp > 0)  {
             maxValue = this.sensorDataEx[_i].temp;
@@ -74,9 +90,15 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
             minValue = this.sensorDataEx[_i].tScheduledTarget;
           }
         }
+
         this.data.datasets[0].data = tempArray;
         this.data.datasets[1].data = tValveArray;
         this.data.datasets[2].data = tSchedArray;
+        
+        this.data.datasets[0].pointRadius = pointRadius0;
+        this.data.datasets[1].pointRadius = pointRadius1;
+        this.data.datasets[2].pointRadius = pointRadius2;
+
 
         this.options = {
           responsive: true,

@@ -43,6 +43,7 @@ namespace TemperatureHub.Controllers
                 tmp.TScheduledTarget = item.TScheduledTarget;
                 tmp.BatteryLevel = item.BatteryLevel;
                 tmp.HeatIndex = HeatHelper.GetHeatIndexCelsius(item.Temperature, item.Humidity);
+                tmp.SetTempSended = item.SetTempSended;
                 retData.Add(tmp);
             }
 
