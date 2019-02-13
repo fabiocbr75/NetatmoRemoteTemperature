@@ -2,6 +2,7 @@
 {
     public class SensorMasterData
     {
+        [SQLite.PrimaryKey]
         public string SenderMAC { get; set; }
         public string SenderName { get; set; }
         public string RoomId { get; set; }

@@ -29,15 +29,34 @@ export class SensorsService extends SensorsData {
         externalSensor: item.externalSensor,
       }
     });
-
-    
     
     return ret;
   }
 
+  
+  private extractSingleData(res: Response): Sensor {
+    let item: any = res;
+
+    let ret: Sensor =
+      { 
+        senderMAC: item.senderMAC,
+        senderName: item.senderName,
+        enabled: item.enabled,
+        externalSensor: item.externalSensor,
+      };
+
+      return ret;
+    }
+
+
   getSensorMasterData(): Observable<Sensor[]> {
     return this.http.get(this.endpoint + 'sensorMasterData').pipe(
         map(this.extractData));
+  }
+  
+  postSwitchPowerSensorMasterData(senderMAC: string, powerValue: boolean): Observable<Sensor> {
+    return this.http.post(this.endpoint + 'sensorMasterData/SwitchPower/' + senderMAC + '?power=' + powerValue, null, ).pipe(
+        map(this.extractSingleData));
   }
 
 }

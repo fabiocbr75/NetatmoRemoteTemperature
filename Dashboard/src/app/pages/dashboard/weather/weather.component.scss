@@ -119,6 +119,11 @@
         font-family: nb-theme(font-secondary);
         font-weight: nb-theme(font-weight-bold);
         font-size: 1.25rem;
+        
+        &::after {
+          content: '°';
+        }
+  
       }
     }
   }

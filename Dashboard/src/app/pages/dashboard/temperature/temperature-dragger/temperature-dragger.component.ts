@@ -1,5 +1,5 @@
 import {
-  Component, HostListener, ViewChild, ElementRef, Input, Output, EventEmitter, AfterViewInit, OnChanges,
+  Component, HostListener, ViewChild, ElementRef, Input, Output, EventEmitter, AfterViewInit, OnChanges, OnInit
 } from '@angular/core';
 
 const VIEW_BOX_SIZE = 300;
@@ -20,6 +20,7 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
   @Input() thumbRadius = 16; // CSS pixels
   @Input() thumbBorder = 3;
   @Input() maxLeap = 0.4;
+  @Input() off = false;
 
   value = 50;
   @Output() valueChange = new EventEmitter<Number>();
@@ -35,22 +36,19 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
 
   @HostListener('window:mouseup', ['$event'])
   onMouseUp(event) {
-    this.recalculateValue(event);
+    // this.recalculateValue(event);
     this.isMouseDown = false;
   }
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
-    this.recalculateValue(event);
+    // this.recalculateValue(event);
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.invalidate();
   }
-
-  off = false;
-  oldValue: number;
 
   svgControlId = new Date().getTime();
   scaleFactor = 1;
@@ -76,7 +74,6 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
   private init = false;
 
   constructor() {
-    this.oldValue = this.value;
   }
 
   ngAfterViewInit(): void {
@@ -87,6 +84,10 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
     });
   }
 
+  ngOnInit() {
+
+  }
+
   ngOnChanges(): void {
     if (this.init) {
       this.invalidate();
@@ -95,21 +96,14 @@ export class TemperatureDraggerComponent implements AfterViewInit, OnChanges {
 
   mouseDown(event) {
     this.isMouseDown = true;
-    if (!this.off) {
-      this.recalculateValue(event, true);
-    }
+    // if (!this.off) {
+    //   this.recalculateValue(event, true);
+    // }
   }
 
   switchPower() {
     this.off = !this.off;
     this.power.emit(!this.off);
-
-    if (this.off) {
-      this.oldValue = this.value;
-      this.value = this.min;
-    } else {
-      this.value = this.oldValue;
-    }
 
     this.invalidatePinPosition();
   }

@@ -1,12 +1,12 @@
 <div class="row">
   <ng-container *ngFor="let sensor of sensorMasterData">
     <div *ngIf="sensor.externalSensor == true" class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
-      <ngx-weather senderName={{sensor.senderName}} senderMAC={{sensor.senderMAC}}></ngx-weather>
+      <ngx-weather [senderName]=sensor.senderName [senderMAC]=sensor.senderMAC></ngx-weather>
     </div>
   </ng-container>
   <ng-container *ngFor="let sensor of sensorMasterData">
     <div *ngIf="sensor.externalSensor == false" class="col-xxxl-3 col-xxl-4 col-lg-5 col-md-6">
-      <ngx-temperature  senderName={{sensor.senderName}} senderMAC={{sensor.senderMAC}}></ngx-temperature>
+      <ngx-temperature  [senderName]=sensor.senderName [senderMAC]=sensor.senderMAC [temperatureOff]=!sensor.enabled></ngx-temperature>
     </div>
   </ng-container>
 </div>

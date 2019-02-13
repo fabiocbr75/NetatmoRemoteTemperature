@@ -38,5 +38,20 @@ namespace TemperatureHub.Controllers
 
             return retData;
         }
+
+        [Route("SwitchPower/{id}")]
+        public ActionResult<SensorMasterDataDTO> SwitchPower(string id, bool power)
+        {
+            var item = _repository.SwitchPower(id, power);
+
+            var ret = new SensorMasterDataDTO();
+            ret.SenderMAC = item.SenderMAC;
+            ret.SenderName = item.SenderName;
+            ret.RoomId = item.RoomId;
+            ret.Enabled = item.Enabled;
+            ret.ExternalSensor = item.ExternalSensor;
+
+            return ret;
+        }
     }
 }

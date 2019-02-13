@@ -15,7 +15,11 @@ export class WeatherComponent implements OnDestroy, OnInit {
   @Input() senderName: string;
   temperature: string;
   date: string;
-  lastWeather: WeatherValue[];
+  lastWeather: WeatherValue[] = [ {dateOfWeek: "", min: 0, max: 0},
+                                  {dateOfWeek: "", min: 0, max: 0},
+                                  {dateOfWeek: "", min: 0, max: 0},
+                                  {dateOfWeek: "", min: 0, max: 0},
+                                  {dateOfWeek: "", min: 0, max: 0}];
 
   private alive = true;
   colors: any;

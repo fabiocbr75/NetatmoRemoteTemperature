@@ -1,6 +1,7 @@
 import { Component, OnDestroy, Input, OnInit } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 import { Temperature, TemperatureHumidityData } from '../../../@core/data/temperature-humidity';
+import { Sensor, SensorsData } from '../../../@core/data/sensors';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
@@ -12,19 +13,21 @@ export class TemperatureComponent implements OnDestroy, OnInit {
 
   private alive = true;
 
-  @Input() senderName :string = ''
-  @Input() senderMAC :string = ''
+  @Input() senderName: string = ''
+  @Input() senderMAC: string = ''
+  @Input() temperatureOff: boolean = false;
 
   temperatureData: Temperature = { min : 0, max: 100, value: 0, batteryLevel: '', ingestionTimestamp: '', scheduledTemperature: 0};
   temperature: number = 0.0;
   info: string = '';
-  temperatureOff = false;
+  
 
   colors: any;
   themeSubscription: any;
 
   constructor(private theme: NbThemeService,
-              private temperatureHumidityService: TemperatureHumidityData) {
+              private temperatureHumidityService: TemperatureHumidityData,
+              private sensorDataService: SensorsData) {
     this.theme.getJsTheme()
       .pipe(takeWhile(() => this.alive))
       .subscribe(config => {
@@ -43,6 +46,14 @@ export class TemperatureComponent implements OnDestroy, OnInit {
         this.info =  time + ' - ' + temperatureData.scheduledTemperature + '° - ' + temperatureData.batteryLevel + 'v';
       });
   }
+
+  switchPower(event) {
+    this.sensorDataService.postSwitchPowerSensorMasterData(this.senderMAC, event).subscribe((sensorData: Sensor) => {
+      this.temperatureOff = !sensorData.enabled;
+    });
+  }
+
+  
   
   ngOnDestroy() {
     this.alive = false;

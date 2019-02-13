@@ -80,7 +80,9 @@ namespace TemperatureHub.Repository
 
             if (_dataCache.TryGetValue(aggregateData.SenderMAC, out lastData))
             {
-                if (aggregateData.Temperature == lastData.Temperature && aggregateData.Humidity == lastData.Humidity && aggregateData.BatteryLevel == lastData.BatteryLevel)
+                if (aggregateData.Temperature == lastData.Temperature && aggregateData.Humidity == lastData.Humidity && 
+                    aggregateData.BatteryLevel == lastData.BatteryLevel && lastData.TScheduledTarget == aggregateData.TScheduledTarget &&
+                    aggregateData.TValve == lastData.TValve)
                 {
                     Logger.Info("SQLiteFileRepository", "AddSensorData Data skipped");
                     Logger.Info("SQLiteFileRepository", "AddSensorData Get finished");
@@ -132,7 +134,23 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorMasterData Get finished");
             return ret;
         }
+        public SensorMasterData SwitchPower(string id, bool power)
+        {
+            Logger.Info("SQLiteFileRepository", "SwitchPower");
 
+            var ret = ExecuteOnThreadPool<SensorMasterData>(() => {
+                var obj = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName, RoomId, Enabled, ExternalSensor FROM SensorMasterData WHERE SenderMAC = ?", id).FirstOrDefault();
+                if (obj != null)
+                {
+                    obj.Enabled = power;
+                    var result = GetDbInstance().Update(obj);
+                }
+                return obj;
+            });
+
+            Logger.Info("SQLiteFileRepository", "SwitchPower Get finished");
+            return ret;
+        }
         public List<EmailInfo> LoadEmailInfo()
         {
             Logger.Info("SQLiteFileRepository", "LoadEmailInfo");

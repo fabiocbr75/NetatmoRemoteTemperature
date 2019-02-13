@@ -36,11 +36,10 @@ namespace TemperatureHub.Repository
                         TScheduledTarget    REAL NOT NULL,
                         SetTempSended       INT  NOT NULL,
                         BatteryLevel        REAL NOT NULL,
-                        FOREIGN KEY (SenderMAC) REFERENCES SensorMasterData(SenderMAC) ON DELETE CASCADE
+                        FOREIGN KEY (SenderMAC) REFERENCES SensorMasterData(SenderMAC) ON DELETE CASCADE,
+                        PRIMARY KEY (SenderMAC COLLATE NOCASE ASC, IngestionTimestamp COLLATE NOCASE ASC)
                 );
                 
-                CREATE UNIQUE INDEX IF NOT EXISTS IDX_AggregateData ON AggregateData (SenderMAC ASC, IngestionTimestamp ASC);
-
                 CREATE TABLE IF NOT EXISTS EmailInfo(
                     SmtpServer      TEXT NOT NULL,
                     SmtpUserName    TEXT NOT NULL,

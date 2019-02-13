@@ -12,5 +12,6 @@ namespace TemperatureHub.Repository
         List<SensorMasterData> LoadSensorMasterData();
         List<EmailInfo> LoadEmailInfo();
         List<WeatherInfo> LoadWeatherInfo(string mac, int lastDays);
+        SensorMasterData SwitchPower(string id, bool power);
     }
 }
