@@ -114,6 +114,10 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
                 gridLines: {
                   display: true,
                 },
+                ticks: {
+                  autoSkip: true,
+                  // maxTicksLimit: 30
+                },                
               },
             ],
             yAxes: [
@@ -124,8 +128,8 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
                 ticks: {
                   beginAtZero: true,
                   stepSize: 0.5,
-                  min: minValue - 1,
-                  max: maxValue + 1,
+                  min: minValue - 0.5,
+                  max: maxValue + 0.5,
                 },
               },
             ],
