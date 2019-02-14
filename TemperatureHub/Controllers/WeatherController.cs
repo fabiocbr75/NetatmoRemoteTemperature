@@ -29,34 +29,41 @@ namespace TemperatureHub.Controllers
         {
             const int days = 5;
             var ret = new WeatherDTO();
-            var weatherInfoList = _repository.LoadWeatherInfo(id, days);
-            var last = _sharedData.LastSensorData.Where(z => z.Key == id).FirstOrDefault();
-            ret.SenderMAC = id;
-            ret.SenderName = last.Value.SenderName ?? "";
-            ret.Temperature = last.Value.Temperature;
-            ret.Date = DateTime.Now.ToString("ddd, dd MMM");
 
-            var weatherInfoHistory = new WeatherInfoDTO[days];
-
-            int i = 0;
-            foreach (var item in weatherInfoList)
+            try
             {
-                weatherInfoHistory[i] = new WeatherInfoDTO();
-                weatherInfoHistory[i].Max = item.Max;
-                weatherInfoHistory[i].Min = item.Min;
-                weatherInfoHistory[i].DateISO = item.Day;
-                weatherInfoHistory[i].DateOfWeek = DateTime.Parse(weatherInfoHistory[i].DateISO).ToString("ddd");
-                i++;
-            }
 
-            for (int y = i; y < days; y++)
+                var weatherInfoList = _repository.LoadWeatherInfo(id, days);
+                var last = _sharedData.LastSensorData.Where(z => z.Key == id).FirstOrDefault();
+                ret.SenderMAC = id;
+                ret.SenderName = last.Value.SenderName ?? "";
+                ret.Temperature = last.Value.Temperature;
+                ret.Date = DateTime.Now.ToString("ddd, dd MMM");
+
+                var weatherInfoHistory = new WeatherInfoDTO[days];
+
+                int i = 0;
+                foreach (var item in weatherInfoList)
+                {
+                    weatherInfoHistory[i] = new WeatherInfoDTO();
+                    weatherInfoHistory[i].Max = item.Max;
+                    weatherInfoHistory[i].Min = item.Min;
+                    weatherInfoHistory[i].DateISO = item.Day;
+                    weatherInfoHistory[i].DateOfWeek = DateTime.Parse(weatherInfoHistory[i].DateISO).ToString("ddd");
+                    i++;
+                }
+
+                for (int y = i; y < days; y++)
+                {
+                    weatherInfoHistory[y] = new WeatherInfoDTO();
+                }
+
+                ret.WeatherInfo = weatherInfoHistory;
+            }
+            catch (Exception ex)
             {
-                weatherInfoHistory[y] = new WeatherInfoDTO();
+                Logger.Error("ProcessData", "Error on execution. " + ex.Message);
             }
-
-
-            ret.WeatherInfo = weatherInfoHistory;
-
 
             return ret;
         }

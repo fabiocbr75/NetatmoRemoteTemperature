@@ -102,7 +102,7 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
 
         this.options = {
           responsive: true,
-          maintainAspectRatio: true,
+          maintainAspectRatio: false,
           scales: {
             xAxes: [
               {
@@ -177,7 +177,7 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
 
       this.options = {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [
             {

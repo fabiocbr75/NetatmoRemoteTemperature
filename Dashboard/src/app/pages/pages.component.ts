@@ -15,6 +15,7 @@ import { SensorsData, Sensor } from '../@core/data/sensors';
 
 export class PagesComponent implements OnInit {
   private menuItem: any[] = [];
+  private menuOutdoor: any[] = [];
   menu: NbMenuItem[] = [];
 
   constructor(private sensorsService: SensorsData ) {
@@ -24,12 +25,23 @@ export class PagesComponent implements OnInit {
     
     let restCall = this.sensorsService.getSensorMasterData();
     restCall.subscribe((data) => {
-          this.menuItem = data.map((item) => {
-            return {
-              title: item.senderName,
-              link: '/pages/history/' + item.senderMAC,
-            };
-          });
+          this.menuItem = data 
+            .filter((sensor) => sensor.externalSensor == false)
+            .map((item) => {
+              return {
+                title: item.senderName,
+                link: '/pages/history/' + item.senderMAC,
+              };
+            });
+          this.menuOutdoor = data
+            .filter((sensor) => sensor.externalSensor == true)
+            .map((item) => {
+              return {
+                title: item.senderName,
+                link: '/pages/history/' + item.senderMAC,
+              };
+            });
+
           this.menu = [
             {
               title: 'IoT Dashboard',
@@ -46,6 +58,11 @@ export class PagesComponent implements OnInit {
               icon: 'nb-star',
               children: this.menuItem
             },
+            {
+              title: 'Outdoor',
+              icon: 'nb-location',
+              children: this.menuOutdoor
+            },            
           ];
         });
   }
