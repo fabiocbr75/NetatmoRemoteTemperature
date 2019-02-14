@@ -167,7 +167,7 @@ namespace TemperatureHub.Repository
         {
             Logger.Info("SQLiteFileRepository", "LoadWeatherInfo");
 
-            var firstDay = DateTime.UtcNow.Subtract(TimeSpan.FromDays(lastDays)).ToString("yyyy-MM-ddT00:00:00Z");
+            var firstDay = DateTime.UtcNow.Subtract(TimeSpan.FromDays(lastDays-1)).ToString("yyyy-MM-ddT00:00:00Z");
 
             var ret = ExecuteOnThreadPool<List<WeatherInfo>>(() => {
                 var result = GetDbInstance().Query<WeatherInfo>($"select SenderMAC, substr(ingestiontimestamp,1,10) AS DAY, min(Temperature) as Min, max(Temperature) as Max from AggregateData where SenderMAC = '{mac}' and ingestiontimestamp > '{firstDay}' group by SenderMAC, DAY ORDER BY DAY DESC;");
