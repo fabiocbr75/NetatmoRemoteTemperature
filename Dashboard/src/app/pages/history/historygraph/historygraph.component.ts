@@ -109,7 +109,10 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
                 type: 'time',
                 time: {
                   unit: 'minute',
-                  tooltipFormat: 'h:mm a'
+                  tooltipFormat: 'DD/MM - HH:mm',
+                  displayFormats: {
+                    minute: 'DD/MM - HH:mm'
+                  }
                 },
                 gridLines: {
                   display: true,
@@ -184,7 +187,10 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
               type: 'time',
               time: {
                 unit: 'minute',
-                tooltipFormat: 'h:mm a'
+                tooltipFormat: 'DD/MM - HH:mm',
+                displayFormats: {
+                  minute: 'DD/MM - HH:mm'
+                }
               },
               gridLines: {
                 display: true,
