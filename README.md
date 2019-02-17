@@ -11,7 +11,7 @@ To achieve this target the solution use a remote temperature sensor for each val
 - Netatmo public API
 - SPA / Angular7 / ngx-admin / node-nginx / Docker
 
-# Remote Sensor (Project status 100%)
+# Remote Sensor
 - Arduino compatible board (Esp8266) to retrieve temperature and humidity (DHT22) or only temperature (DS18B20).
 
 ### Main activities:
@@ -65,7 +65,7 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
 
 
 
-# Temperature Hub (Project status 80%)
+# Temperature Hub
 - Asp.net core 2.2 webapi application to save on SQLite all temperature retrieved.
 - Switch to manual and set new temperature target based on remote temperature maintaining the scheduled target temperature
 
@@ -122,7 +122,7 @@ To be define
 
 To be define
 
-# Dashboard (Project status 80%)
+# Dashboard
 ### Main activities:
 - Show current temperature status and graph history
 
