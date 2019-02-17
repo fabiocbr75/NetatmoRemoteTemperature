@@ -57,6 +57,7 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
         ingestionTimestamp: item.ingestionTimestamp,
         tValve: item.tValve,
         tScheduledTarget: item.tScheduledTarget,
+        tCurrentTarget: item.tCurrentTarget,
         setTempSended: item.setTempSended,
       }
     }); 

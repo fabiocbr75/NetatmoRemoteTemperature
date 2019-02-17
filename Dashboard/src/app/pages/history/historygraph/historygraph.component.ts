@@ -33,9 +33,11 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
         var tempArray = [];
         var tValveArray = [];
         var tSchedArray = [];
+        var tCurrentArray = [];
         var pointRadius0=[];
         var pointRadius1=[];
         var pointRadius2=[];
+        var pointRadius3=[];
 
         for (var _i = 0; _i < this.sensorDataEx.length; _i++)
         {
@@ -52,14 +54,18 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
               tempArray.push({y: this.sensorDataEx[_i-1].temp, t: dateIso});
               tValveArray.push({y: this.sensorDataEx[_i-1].tValve, t: dateIso});
               tSchedArray.push({y: this.sensorDataEx[_i-1].tScheduledTarget, t: dateIso});
+              tCurrentArray.push({y: this.sensorDataEx[_i-1].tCurrentTarget, t: dateIso});
+              
               pointRadius0.push(1);
               pointRadius1.push(1);
               pointRadius2.push(1);                  
+              pointRadius3.push(1);
             }
           }
           tempArray.push({y: this.sensorDataEx[_i].temp, t: this.sensorDataEx[_i].ingestionTimestamp});
           tValveArray.push({y: this.sensorDataEx[_i].tValve, t: this.sensorDataEx[_i].ingestionTimestamp});
           tSchedArray.push({y: this.sensorDataEx[_i].tScheduledTarget, t: this.sensorDataEx[_i].ingestionTimestamp});
+          tCurrentArray.push({y: this.sensorDataEx[_i-1].tCurrentTarget, t: this.sensorDataEx[_i].ingestionTimestamp});
 
           if (this.sensorDataEx[_i].setTempSended == true) {
             pointRadius0.push(4);
@@ -69,6 +75,7 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
 
           pointRadius1.push(1);
           pointRadius2.push(1);          
+          pointRadius3.push(1);
 
           if (maxValue < this.sensorDataEx[_i].temp && this.sensorDataEx[_i].temp > 0)  {
             maxValue = this.sensorDataEx[_i].temp;
@@ -79,6 +86,10 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           if (maxValue < this.sensorDataEx[_i].tScheduledTarget && this.sensorDataEx[_i].tScheduledTarget > 0) {
             maxValue = this.sensorDataEx[_i].tScheduledTarget;
           }
+          if (maxValue < this.sensorDataEx[_i].tCurrentTarget && this.sensorDataEx[_i].tCurrentTarget > 0) {
+            maxValue = this.sensorDataEx[_i].tCurrentTarget;
+          }
+
 
           if (minValue > this.sensorDataEx[_i].temp && this.sensorDataEx[_i].temp > 0) {
             minValue = this.sensorDataEx[_i].temp;
@@ -89,15 +100,20 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           if (minValue > this.sensorDataEx[_i].tScheduledTarget && this.sensorDataEx[_i].tScheduledTarget > 0) {
             minValue = this.sensorDataEx[_i].tScheduledTarget;
           }
+          if (minValue > this.sensorDataEx[_i].tCurrentTarget && this.sensorDataEx[_i].tCurrentTarget > 0) {
+            minValue = this.sensorDataEx[_i].tCurrentTarget;
+          }          
         }
 
         this.data.datasets[0].data = tempArray;
         this.data.datasets[1].data = tValveArray;
         this.data.datasets[2].data = tSchedArray;
+        this.data.datasets[3].data = tCurrentArray;
         
         this.data.datasets[0].pointRadius = pointRadius0;
         this.data.datasets[1].pointRadius = pointRadius1;
         this.data.datasets[2].pointRadius = pointRadius2;
+        this.data.datasets[3].pointRadius = pointRadius3;
 
 
         this.options = {
@@ -166,6 +182,7 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           borderColor: colors.primary,
           lineTension: 0,        
           fill: false,
+          hidden: true,
         }, {
           data: [],
           label: 'T Scheduled',
@@ -175,6 +192,16 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           borderColor: colors.info,
           lineTension: 0,        
         },
+        {
+          data: [],
+          label: 'T CurrentSched',
+          backgroundColor: NbColorHelper.hexToRgbA(colors.success, 0.3),
+          borderDash: [10,5],
+          fill: false,
+          borderColor: colors.info,
+          lineTension: 0,        
+          hidden: true,
+        },        
         ],
       };
 

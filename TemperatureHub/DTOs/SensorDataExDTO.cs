@@ -11,6 +11,7 @@
         public string IngestionTimestamp { get; set; }
         public double TValve { get; set; }
         public double TScheduledTarget { get; set; }
+        public double TCurrentTarget { get; set; }
         public bool SetTempSended { get; set; }
 
     }
