@@ -65,7 +65,7 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           tempArray.push({y: this.sensorDataEx[_i].temp, t: this.sensorDataEx[_i].ingestionTimestamp});
           tValveArray.push({y: this.sensorDataEx[_i].tValve, t: this.sensorDataEx[_i].ingestionTimestamp});
           tSchedArray.push({y: this.sensorDataEx[_i].tScheduledTarget, t: this.sensorDataEx[_i].ingestionTimestamp});
-          tCurrentArray.push({y: this.sensorDataEx[_i-1].tCurrentTarget, t: this.sensorDataEx[_i].ingestionTimestamp});
+          tCurrentArray.push({y: this.sensorDataEx[_i].tCurrentTarget, t: this.sensorDataEx[_i].ingestionTimestamp});
 
           if (this.sensorDataEx[_i].setTempSended == true) {
             pointRadius0.push(4);
@@ -198,7 +198,7 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           backgroundColor: NbColorHelper.hexToRgbA(colors.success, 0.3),
           borderDash: [10,5],
           fill: false,
-          borderColor: colors.info,
+          borderColor: colors.success,
           lineTension: 0,        
           hidden: true,
         },        

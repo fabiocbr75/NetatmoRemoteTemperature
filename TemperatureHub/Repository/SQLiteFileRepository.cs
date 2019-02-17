@@ -115,7 +115,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorData");
 
             var ret = ExecuteOnThreadPool<List<AggregateDataEx>>(() => {
-                var result = GetDbInstance().Query<AggregateDataEx>("SELECT SD.SenderMAC, SMD.SenderName, SD.Temperature, SD.Humidity, SD.IngestionTimestamp, SD.TValve, SD.TScheduledTarget, SD.BatteryLevel, SD.SetTempSended FROM AggregateData SD JOIN SensorMasterData SMD ON  SMD.SenderMAC = SD.SenderMAC WHERE SD.SenderMAC = ? AND SD.IngestionTimestamp BETWEEN ? AND ? ORDER BY SD.IngestionTimestamp", mac, from, to);
+                var result = GetDbInstance().Query<AggregateDataEx>("SELECT SD.SenderMAC, SMD.SenderName, SD.Temperature, SD.Humidity, SD.IngestionTimestamp, SD.TValve, SD.TScheduledTarget, SD.TCurrentTarget, SD.BatteryLevel, SD.SetTempSended FROM AggregateData SD JOIN SensorMasterData SMD ON  SMD.SenderMAC = SD.SenderMAC WHERE SD.SenderMAC = ? AND SD.IngestionTimestamp BETWEEN ? AND ? ORDER BY SD.IngestionTimestamp", mac, from, to);
                 return result;
             });
 
