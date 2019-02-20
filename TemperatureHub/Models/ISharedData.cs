@@ -8,5 +8,6 @@ namespace TemperatureHub.Models
     {
         IDictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName, double ScheduledTemperature)> LastSensorData { get; }
         ConcurrentQueue<(int ErrorType, string Context, string Message)> LogQueue { get; }
+        HashSet<string> CacheKey { get;  }
     }
 }

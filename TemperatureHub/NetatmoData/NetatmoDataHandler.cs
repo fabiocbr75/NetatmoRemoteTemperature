@@ -16,10 +16,12 @@ namespace TemperatureHub.NetatmoData
     public class NetatmoDataHandler : INetatmoDataHandler
     {
         private readonly IMemoryCache _cache;
+        private readonly ISharedData _sharedData = null;
 
-        public NetatmoDataHandler(IMemoryCache cache)
+        public NetatmoDataHandler(IMemoryCache cache, ISharedData sharedData)
         {
             _cache = cache;
+            _sharedData = sharedData;
         }
         public async Task<NetatmoToken> GetToken(string clientId, string clientSecret, string userName, string password)
         {
@@ -48,6 +50,7 @@ namespace TemperatureHub.NetatmoData
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(token.Expire_in - 60)
                 });
+            _sharedData.CacheKey.Add(key);
             Logger.Info("NetatmoDataHandler", "GetToken Get finished");
             return token;
         }
@@ -112,6 +115,7 @@ namespace TemperatureHub.NetatmoData
                             {
                                 AbsoluteExpiration = DateTimeOffset.FromUnixTimeSeconds(endCacheTime)
                             });
+                            _sharedData.CacheKey.Add(key);
                         }
                     }
                     else
@@ -214,6 +218,7 @@ namespace TemperatureHub.NetatmoData
                         {
                             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60)
                         });
+                        _sharedData.CacheKey.Add(key);
 
                     }
                     else
