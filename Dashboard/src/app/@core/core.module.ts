@@ -41,20 +41,10 @@ import { SettingService } from './services/settings.service';
 
 const socialLinks = [
   {
-    url: 'https://github.com/akveo/nebular',
+    url: 'https://github.com/fabiocbr75/NetatmoRemoteTemperature',
     target: '_blank',
     icon: 'socicon-github',
-  },
-  {
-    url: 'https://www.facebook.com/akveo/',
-    target: '_blank',
-    icon: 'socicon-facebook',
-  },
-  {
-    url: 'https://twitter.com/akveo_inc',
-    target: '_blank',
-    icon: 'socicon-twitter',
-  },
+  }
 ];
 
 const DATA_SERVICES = [
