@@ -204,9 +204,9 @@
     }
   }
 
-  @include media-breakpoint-down(xs) {
-    .right /deep/ {
-      display: none;
-    }
-  }
+  // @include media-breakpoint-down(xs) {
+  //   .right /deep/ {
+  //     display: none;
+  //   }
+  // }
 }

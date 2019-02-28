@@ -9,10 +9,7 @@
 </div>
 
 <div class="header-container">
-  <nb-actions
-    size="medium"
-    [class.right]="position === 'normal'"
-    [class.left]="position === 'inverse'">
+  <nb-actions size="medium" [class.right]="position === 'normal'" [class.left]="position === 'inverse'">
     <!-- <nb-action class="control-item" disabled icon="nb-notifications"></nb-action>
     <nb-action class="control-item" icon="nb-email"></nb-action> -->
     <nb-action class="control-item" icon="nb-loop" (click)="clearCache()"></nb-action>    
