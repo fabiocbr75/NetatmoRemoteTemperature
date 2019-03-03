@@ -73,13 +73,13 @@ namespace TemperatureHub.Process
                                     aggregateData.TCurrentTarget = currentStatus.TCurrentTarget;
                                     aggregateData.TValve = currentStatus.TValve;
 
-                                    if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled)
+                                    if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled && !currentStatus.IsAway)
                                     {
                                         var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
                                         aggregateData.SetTempSended = true;
                                         Logger.Message("ProcessData", $"Set NewTarget!!: {result}");
                                     }
-                                    Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity} - BatteryLevel:{item.BatteryLevel}");
+                                    Logger.Message("ProcessData", $"Time:{item.IngestionTimestamp} - Room:{masterData.SenderName} - IsAway:{currentStatus.IsAway} - RemoteTemp:{item.Temperature} - ValveTemp:{currentStatus.TValve} - CurrentTarget:{currentStatus.TCurrentTarget} - CalculateTarget: {newTarget} - ScheduledTarget: {roomScheduled.TScheduledTarget} - Humidity:{item.Humidity} - BatteryLevel:{item.BatteryLevel}");
                                 }
                                 else
                                 {

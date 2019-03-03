@@ -10,5 +10,6 @@ namespace TemperatureHub.Models
         public string RoomId { get; set; }
         public double TValve { get; set; }
         public double TCurrentTarget { get; set; }
+        public bool IsAway { get; set; }
     }
 }

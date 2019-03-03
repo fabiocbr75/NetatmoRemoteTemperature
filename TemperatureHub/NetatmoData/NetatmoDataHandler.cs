@@ -103,7 +103,8 @@ namespace TemperatureHub.NetatmoData
                         {
                             RoomId = x["id"].ToString(),
                             TCurrentTarget = x["therm_setpoint_temperature"].ToObject<double>(),
-                            TValve = x["therm_measured_temperature"].ToObject<double>()
+                            TValve = x["therm_measured_temperature"].ToObject<double>(),
+                            IsAway = (x["therm_setpoint_mode"].ToObject<string>().Equals("away", StringComparison.InvariantCultureIgnoreCase))
                         }).ToList();
 
                         if (!jobj["body"]["home"]["rooms"].Any(z => z["reachable"].ToObject<bool>() == false))
