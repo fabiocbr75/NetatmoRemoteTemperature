@@ -8,6 +8,7 @@
         public string RoomId { get; set; }
         public bool Enabled { get; set; }
         public bool ExternalSensor { get; set; }
+        public bool NetatmoLinkEnabled { get; set; }
 
     }
 }

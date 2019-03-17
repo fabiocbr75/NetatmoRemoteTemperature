@@ -55,7 +55,7 @@ namespace TemperatureHub.Process
                         aggregateData.Humidity = item.Humidity;
                         aggregateData.BatteryLevel = item.BatteryLevel;
 
-                        if (!masterData.ExternalSensor)
+                        if (!masterData.ExternalSensor || masterData.NetatmoLinkEnabled)
                         {
                             var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
                             var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
