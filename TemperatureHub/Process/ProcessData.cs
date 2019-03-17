@@ -73,7 +73,7 @@ namespace TemperatureHub.Process
                                     aggregateData.TCurrentTarget = currentStatus.TCurrentTarget;
                                     aggregateData.TValve = currentStatus.TValve;
 
-                                    if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled && !currentStatus.IsAway)
+                                    if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled && !currentStatus.IsAway && currentStatus.TCurrentTarget > 15) //Less Then 15 is used as manual set
                                     {
                                         var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
                                         aggregateData.SetTempSended = true;
