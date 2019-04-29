@@ -25,7 +25,7 @@ export class SensorsService extends SensorsData {
       return { 
         senderMAC: item.senderMAC,
         senderName: item.senderName,
-        enabled: item.enabled,
+        netatmoSetTemp: item.netatmoSetTemp,
         externalSensor: item.externalSensor,
       }
     });
@@ -41,7 +41,7 @@ export class SensorsService extends SensorsData {
       { 
         senderMAC: item.senderMAC,
         senderName: item.senderName,
-        enabled: item.enabled,
+        netatmoSetTemp: item.netatmoSetTemp,
         externalSensor: item.externalSensor,
       };
 

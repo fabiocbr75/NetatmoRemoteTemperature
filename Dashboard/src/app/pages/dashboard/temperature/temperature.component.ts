@@ -49,7 +49,7 @@ export class TemperatureComponent implements OnDestroy, OnInit {
 
   switchPower(event) {
     this.sensorDataService.postSwitchPowerSensorMasterData(this.senderMAC, event).subscribe((sensorData: Sensor) => {
-      this.temperatureOff = !sensorData.enabled;
+      this.temperatureOff = !sensorData.netatmoSetTemp;
     });
   }
 
