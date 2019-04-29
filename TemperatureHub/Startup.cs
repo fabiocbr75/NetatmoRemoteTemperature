@@ -97,7 +97,7 @@ namespace TemperatureHub
             var sharedData = app.ApplicationServices.GetService<ISharedData>();
             Logger.SetSharedData(sharedData);
             var repo = app.ApplicationServices.GetService<ISQLiteFileRepository>();
-            var allSensor = repo.LoadSensorMasterData().Where(x => x.NetatmoSetTemp == true);
+            var allSensor = repo.LoadSensorMasterData(); //.Where(x => x.NetatmoSetTemp == true);
             foreach (var item in allSensor)
             {
                 sharedData.LastSensorData[item.SenderMAC] = (Temperature: 0, IngestionTime: DateTime.MinValue, BatteryLevel: 0, SenderName: "", ScheduledTemperature: 0);

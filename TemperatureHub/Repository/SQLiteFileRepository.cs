@@ -95,7 +95,7 @@ namespace TemperatureHub.Repository
             });
 
             _dataCache[aggregateData.SenderMAC] = aggregateData;
-            Logger.Info("SQLiteFileRepository", "AddSensorDatastarted Get finished");
+            Logger.Info("SQLiteFileRepository", "AddSensorData Get finished");
         }
 
         public List<SensorData> LoadSensorData(string mac, string from, string to)
@@ -128,7 +128,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "LoadSensorMasterData");
 
             var ret = ExecuteOnThreadPool<List<SensorMasterData>>(() => {
-                var result = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName, RoomId, NetatmoSetTemp, ExternalSensor FROM SensorMasterData");
+                var result = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName, RoomId, NetatmoSetTemp, ExternalSensor, NetatmoLink FROM SensorMasterData");
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadSensorMasterData Get finished");
@@ -139,7 +139,7 @@ namespace TemperatureHub.Repository
             Logger.Info("SQLiteFileRepository", "SwitchPower");
 
             var ret = ExecuteOnThreadPool<SensorMasterData>(() => {
-                var obj = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName, RoomId, NetatmoSetTemp, ExternalSensor FROM SensorMasterData WHERE SenderMAC = ?", id).FirstOrDefault();
+                var obj = GetDbInstance().Query<SensorMasterData>("SELECT SenderMAC, SenderName, RoomId, NetatmoSetTemp, ExternalSensor, NetatmoLink FROM SensorMasterData WHERE SenderMAC = ?", id).FirstOrDefault();
                 if (obj != null)
                 {
                     obj.NetatmoSetTemp = power;
