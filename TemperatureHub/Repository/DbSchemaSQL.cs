@@ -14,7 +14,7 @@ namespace TemperatureHub.Repository
                         RoomId              TEXT NOT NULL COLLATE NOCASE,
                         NetatmoSetTemp      INTEGER NOT NULL,
                         ExternalSensor      INTEGER NOT NULL DEFAULT 0,
-                        NetatmoLink         INTEGER NOT NULL DEFAULT 1,
+                        NetatmoLink         INTEGER NOT NULL DEFAULT 1
                 );
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5B:62', 'Cucina', '2809735084', 1, 0, 1);
                 INSERT OR IGNORE INTO SensorMasterData VALUES ('80:7D:3A:47:5C:B2', 'Sala', '2935863693', 1, 0, 1);
