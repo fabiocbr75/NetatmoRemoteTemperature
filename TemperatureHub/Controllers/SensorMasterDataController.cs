@@ -31,7 +31,7 @@ namespace TemperatureHub.Controllers
                 tmp.SenderMAC = item.SenderMAC;
                 tmp.SenderName= item.SenderName;
                 tmp.RoomId = item.RoomId;
-                tmp.Enabled = item.Enabled;
+                tmp.NetatmoSetTemp = item.NetatmoSetTemp;
                 tmp.ExternalSensor = item.ExternalSensor;
                 retData.Add(tmp);
             }
@@ -48,7 +48,7 @@ namespace TemperatureHub.Controllers
             ret.SenderMAC = item.SenderMAC;
             ret.SenderName = item.SenderName;
             ret.RoomId = item.RoomId;
-            ret.Enabled = item.Enabled;
+            ret.NetatmoSetTemp = item.NetatmoSetTemp;
             ret.ExternalSensor = item.ExternalSensor;
 
             return ret;

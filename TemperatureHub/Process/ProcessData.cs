@@ -55,7 +55,7 @@ namespace TemperatureHub.Process
                         aggregateData.Humidity = item.Humidity;
                         aggregateData.BatteryLevel = item.BatteryLevel;
 
-                        if (!masterData.ExternalSensor)
+                        if (masterData.NetatmoLink)
                         {
                             var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
                             var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
@@ -73,7 +73,7 @@ namespace TemperatureHub.Process
                                     aggregateData.TCurrentTarget = currentStatus.TCurrentTarget;
                                     aggregateData.TValve = currentStatus.TValve;
 
-                                    if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.Enabled && !currentStatus.IsAway && currentStatus.TCurrentTarget > 15) //Less Then 15 is used as manual set
+                                    if ((Math.Abs(newTarget - currentStatus.TCurrentTarget) >= 0.5) && masterData.NetatmoSetTemp && !currentStatus.IsAway && currentStatus.TCurrentTarget > 15) //Less Then 15 is used as manual set
                                     {
                                         var result = await _netatmoCloud.SetThemp(_appsettings.HomeId, currentStatus.RoomId, newTarget, schedule.EndTime, token.Access_token);
                                         aggregateData.SetTempSended = true;

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 export interface Sensor {
   senderMAC: string;
   senderName: string;
-  enabled: boolean;
+  netatmoSetTemp: boolean;
   externalSensor: boolean;
 }
 
