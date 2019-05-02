@@ -20,7 +20,8 @@ RUN npm run ng build -- --prod --output-path=dist
 
 ### STAGE 2: Setup ### We deploy on raspberry 
 
-FROM arm32v7/nginx:1.14.1
+#FROM arm32v7/nginx:1.14.1
+FROM nginx:1.14.1
 
 ## Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/

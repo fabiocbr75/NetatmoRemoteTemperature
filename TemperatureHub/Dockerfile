@@ -1,4 +1,6 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim-arm32v7 AS base
+#FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim-arm32v7 AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime-stretch-slim AS base
+
 WORKDIR /app
 EXPOSE 5000
 
