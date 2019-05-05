@@ -134,7 +134,7 @@ namespace TemperatureHub
                     mailMessages.Add($"Sensor not received = {item.Key}. Last seens: {item.Value.IngestionTime}");
                 }
 
-                if (item.Value.BatteryLevel > 0 && item.Value.BatteryLevel <= 3.0) //0 is used for non battery sensors
+                if (item.Value.BatteryLevel > 0 && item.Value.BatteryLevel <= 3.3) //0 is used for non battery sensors
                 {
                     mailMessages.Add($"Recharge battery = {item.Key}. Last seens: {item.Value.IngestionTime}");
                 }
