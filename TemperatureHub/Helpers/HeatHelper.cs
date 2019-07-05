@@ -370,9 +370,18 @@ float DHT::computeHeatIndex(float temperature, float percentHumidity, bool isFah
 
         public static double GetHeatIndexCelsius(double temp, double humidity)
         {
-            var tempF = HeatHelper.ConvertCelsiusToFahrenheit(temp);
-            var hindexF = HeatHelper.GetHeatIndexFahrenheit(tempF, humidity);
-            return HeatHelper.ConvertFahrenheitToCelsius(hindexF);
+            double ret = 0;
+            try
+            {
+                var tempF = HeatHelper.ConvertCelsiusToFahrenheit(temp);
+                var hindexF = HeatHelper.GetHeatIndexFahrenheit(tempF, humidity);
+                ret = HeatHelper.ConvertFahrenheitToCelsius(hindexF);
+            }
+            catch (Exception ex)
+            {
+                ret = 0;
+            }
+            return ret;
         }
 
         private static double ConvertCelsiusToFahrenheit(double temp)
