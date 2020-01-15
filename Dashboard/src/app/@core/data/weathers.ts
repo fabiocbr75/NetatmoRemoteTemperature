@@ -10,6 +10,7 @@ export interface Weather {
   senderMAC: string;
   senderName: string;
   temperature: number;
+  humidity: number;
   date: string;
   weatherValue: WeatherValue[];
 }

@@ -14,6 +14,7 @@ export class WeatherComponent implements OnDestroy, OnInit {
   @Input() senderMAC: string;
   @Input() senderName: string;
   temperature: string;
+  humidity: string;
   date: string;
   lastWeather: WeatherValue[] = [ {dateOfWeek: "", min: 0, max: 0},
                                   {dateOfWeek: "", min: 0, max: 0},
@@ -41,6 +42,7 @@ export class WeatherComponent implements OnDestroy, OnInit {
     this.weatherService.getWeatherData(this.senderMAC)
     .subscribe((weatherData: Weather) => {
       this.temperature = weatherData.temperature + "°";
+      this.humidity = weatherData.humidity + "%";
       this.date = weatherData.date;
       this.lastWeather = weatherData.weatherValue;
     });    

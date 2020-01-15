@@ -10,11 +10,11 @@ namespace TemperatureHub.Models
     {
         public SharedData()
         {
-            LastSensorData = new Dictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName, double ScheduledTemperature)>();
+            LastSensorData = new Dictionary<string, (double Temperature, double Humidity, DateTime IngestionTime, double BatteryLevel, string SenderName, double ScheduledTemperature)>();
             LogQueue = new ConcurrentQueue<(int ErrorType, string Context, string Message)>();
             CacheKey = new HashSet<string>();
         }
-        public IDictionary<string, (double Temperature, DateTime IngestionTime, double BatteryLevel, string SenderName, double ScheduledTemperature)> LastSensorData { get; private set; }
+        public IDictionary<string, (double Temperature, double Humidity, DateTime IngestionTime, double BatteryLevel, string SenderName, double ScheduledTemperature)> LastSensorData { get; private set; }
 
         public ConcurrentQueue<(int ErrorType, string Context, string Message)> LogQueue { get; private set; }
 

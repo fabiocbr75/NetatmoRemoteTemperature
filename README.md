@@ -47,7 +47,7 @@ Total price of around 11,00 € for each room\sensor (AliExpress)
 ### Compile & Install:
  - Install Arduino IDE 1.8.6
  - Open /RoomTempSender/RoomTempSender/RoomTempSender.ino 
- - Use "Manage Libraries" to add the required libraries
+ - Use "Manage Libraries" to add the required libraries (ArduinoJson 5.13.5, Adafruit DHT sensor library 1.2.3
  - Change the source code with network SSID, Password and TemperatureHub endpoint
  - Compile and upload to the device
 

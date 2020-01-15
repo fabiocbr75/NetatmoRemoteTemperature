@@ -38,6 +38,7 @@ namespace TemperatureHub.Controllers
                 ret.SenderMAC = id;
                 ret.SenderName = last.Value.SenderName ?? "";
                 ret.Temperature = last.Value.Temperature;
+                ret.Humidity = last.Value.Humidity;
                 ret.Date = DateTime.Now.ToString("ddd, dd MMM");
 
                 var weatherInfoHistory = new WeatherInfoDTO[days];

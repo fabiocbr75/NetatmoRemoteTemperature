@@ -100,7 +100,7 @@ namespace TemperatureHub
             var allSensor = repo.LoadSensorMasterData(); //.Where(x => x.NetatmoSetTemp == true);
             foreach (var item in allSensor)
             {
-                sharedData.LastSensorData[item.SenderMAC] = (Temperature: 0, IngestionTime: DateTime.MinValue, BatteryLevel: 0, SenderName: "", ScheduledTemperature: 0);
+                sharedData.LastSensorData[item.SenderMAC] = (Temperature: 0, Humidity: 0, IngestionTime: DateTime.MinValue, BatteryLevel: 0, SenderName: "", ScheduledTemperature: 0);
             }
 
             timer = new Timer(
@@ -158,16 +158,23 @@ namespace TemperatureHub
         {
             foreach (var item in emailInfoList)
             {
-                SmtpClient client = new SmtpClient(item.SmtpServer);
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential(item.SmtpUserName, item.SmtpPassword);
+                try
+                {
+                    SmtpClient client = new SmtpClient(item.SmtpServer);
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new NetworkCredential(item.SmtpUserName, item.SmtpPassword);
 
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(item.FromMailAddress);
-                mailMessage.To.Add(item.ToMailAddress);
-                mailMessage.Body = string.Join("\n", mailMessages.ToArray());
-                mailMessage.Subject = "SensorNotReceived";
-                client.Send(mailMessage);
+                    MailMessage mailMessage = new MailMessage();
+                    mailMessage.From = new MailAddress(item.FromMailAddress);
+                    mailMessage.To.Add(item.ToMailAddress);
+                    mailMessage.Body = string.Join("\n", mailMessages.ToArray());
+                    mailMessage.Subject = "SensorNotReceived";
+                    client.Send(mailMessage);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Info("Startup", $"SendMail:{ex.Message}");
+                }
             }
         }
     }

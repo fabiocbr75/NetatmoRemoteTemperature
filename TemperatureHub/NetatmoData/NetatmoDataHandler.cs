@@ -121,7 +121,7 @@ namespace TemperatureHub.NetatmoData
                     }
                     else
                     {
-                        Logger.Warn("NetatmoDataHandler", $"GetRoomStatus Error on netatmo body: {res}");
+                        //Logger.Warn("NetatmoDataHandler", $"GetRoomStatus Error on netatmo body: {res}");
                     }
                 }
             }

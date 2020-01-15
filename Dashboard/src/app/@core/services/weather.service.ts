@@ -37,6 +37,7 @@ export class WeatherService extends WeathersData {
         senderMAC: body.senderMAC,
         senderName: body.senderName,
         temperature: body.temperature,
+        humidity: body.humidity,
         date: body.date,
         weatherValue: weatherValue,
       };

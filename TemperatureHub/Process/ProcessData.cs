@@ -83,7 +83,7 @@ namespace TemperatureHub.Process
                                 }
                                 else
                                 {
-                                    Logger.Warn("ProcessData", $"The is no status for roomid:{masterData.RoomId} - MAC:{masterData.SenderMAC} - Name: {masterData.SenderName}");
+                                    //Logger.Warn("ProcessData", $"The is no status for roomid:{masterData.RoomId} - MAC:{masterData.SenderMAC} - Name: {masterData.SenderName}");
                                 }
                             }
                             else
@@ -93,6 +93,7 @@ namespace TemperatureHub.Process
 
                         }
                         _sharedData.LastSensorData[item.SenderMAC] = (Temperature: item.Temperature, 
+                                                                      Humidity: item.Humidity,
                                                                       IngestionTime: DateTime.ParseExact(item.IngestionTimestamp, "yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture), 
                                                                       BatteryLevel: item.BatteryLevel, 
                                                                       SenderName: masterData.SenderName, 
