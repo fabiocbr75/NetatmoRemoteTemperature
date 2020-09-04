@@ -10,6 +10,7 @@ namespace TemperatureHub.Repository
         List<SensorData> LoadSensorData(string id, string from, string to);
         List<AggregateDataEx> LoadSensorDataEx(string id, string from, string to);
         List<SensorMasterData> LoadSensorMasterData();
+        List<MinMaxData4Day> LoadMinMaxData4Day(string mac, string from, string to);
         List<EmailInfo> LoadEmailInfo();
         List<WeatherInfo> LoadWeatherInfo(string mac, int lastDays);
         SensorMasterData SwitchPower(string id, bool power);

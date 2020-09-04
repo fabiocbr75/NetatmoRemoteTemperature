@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { of as observableOf,  Observable } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import { TemperatureHumidityData, Temperature, SensorDataEx } from '../data/temperature-humidity';
+import { TemperatureHumidityData, Temperature, SensorDataEx, MinMaxData4Day } from '../data/temperature-humidity';
 import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 @Injectable()
@@ -64,14 +64,33 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
 
     return ret;
   }
+
+  private extractMinMaxData(res: Response): MinMaxData4Day[] {
+    let body: any = res;
+
+    let ret: MinMaxData4Day[] = body.map(item => { 
+      return { 
+        mac: item.mac,
+        minTemp: item.min,
+        maxTemp: item.max,
+        day: item.day
+      }
+    }); 
+
+    return ret;
+  }
+
   getTemperatureData(senderMAC: string): Observable<Temperature> {
     return this.http.get(this.endpoint + 'sensorData/LastTemperature/' + senderMAC).pipe(
         map(this.extractData));
-    
   }
   getSensorDataEx(senderMAC: string, from: string, to:string): Observable<SensorDataEx[]> {
     return this.http.get(this.endpoint + 'sensorData/' + senderMAC, { params: { from: from, to: to }}).pipe(
       map(this.extractSensorDataEx));
+  }
+  getMinMaxData4Day(senderMAC: string, from: string, to:string): Observable<MinMaxData4Day[]> {
+    return this.http.get(this.endpoint + 'minMaxData4Day/' + senderMAC, { params: { from: from, to: to }}).pipe(
+      map(this.extractMinMaxData));
   }
   getHumidityData(): Observable<Temperature> {
     return observableOf(this.humidityDate);

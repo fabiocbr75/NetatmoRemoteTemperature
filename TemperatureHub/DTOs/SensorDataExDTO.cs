@@ -1,6 +1,6 @@
 ﻿namespace TemperatureHub.DTOs
 {
-    public class SensorDataExDTO
+	public class SensorDataExDTO
     {
         public string MAC { get; set; }
         public string Name { get; set; }
@@ -16,3 +16,4 @@
 
     }
 }
+

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TemperatureHub.Models
 {
-    public class SensorData
+	public class SensorData
     {
         private double _temperature;
         private double _humidity;

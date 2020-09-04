@@ -23,8 +23,17 @@ export interface SensorDataEx {
   setTempSended: boolean;
 }
 
+export interface MinMaxData4Day {
+  mac: string;
+  minTemp: number;
+  maxTemp: number;
+  day: string;
+}
+
+
 export abstract class TemperatureHumidityData {
   abstract getTemperatureData(senderMAC: string): Observable<Temperature>;
   abstract getSensorDataEx(senderMAC: string, from: string, to:string): Observable<SensorDataEx[]>;
+  abstract getMinMaxData4Day(senderMAC: string, from: string, to:string): Observable<MinMaxData4Day[]>;
   abstract getHumidityData(): Observable<Temperature>;
 }

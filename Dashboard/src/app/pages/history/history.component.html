@@ -4,6 +4,7 @@
       <nb-card-header>
         History graph
         <p></p>
+        <nb-toggle [(ngModel)]="minMaxAnalysis">Min\Max Analysis</nb-toggle>
         <input #inputpicker nbInput placeholder="Range Picker" [nbDatepicker]="rangepicker">
         <nb-rangepicker #rangepicker></nb-rangepicker>
         <!-- <nb-calendar-range [(range)]="range" #rangepicker></nb-calendar-range> -->
