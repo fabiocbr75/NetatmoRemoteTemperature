@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of as observableOf,  Observable } from 'rxjs';
-import { TemperatureHumidityData, Temperature, SensorDataEx } from '../data/temperature-humidity';
+import { TemperatureHumidityData, Temperature, SensorDataEx, MinMaxData4Day } from '../data/temperature-humidity';
 
 @Injectable()
 export class TemperatureHumidityService extends TemperatureHumidityData {
@@ -37,6 +37,13 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     setTempSended: false,
   }]
 
+  private minMaxData4Day: MinMaxData4Day[] = [{
+    mac: '',
+    minTemp: 0,
+    maxTemp: 100,
+    day: ''
+  }];
+
   getTemperatureData(senderMAC: string): Observable<Temperature> {
     return observableOf(this.temperatureDate);
   }
@@ -47,5 +54,9 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
 
   getHumidityData(): Observable<Temperature> {
     return observableOf(this.humidityDate);
+  }
+
+  getMinMaxData4Day(senderMAC: string, from: string, to:string): Observable<MinMaxData4Day[]>{
+    return observableOf(this.minMaxData4Day);
   }
 }

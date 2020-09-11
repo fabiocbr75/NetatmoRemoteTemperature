@@ -3,7 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { SensorsData, Sensor } from '../../@core/data/sensors';
 import { TemperatureHumidityData, SensorDataEx, MinMaxData4Day } from '../../@core/data/temperature-humidity';
 import { NbRangepickerComponent } from '@nebular/theme/components/datepicker/datepicker.component';
-import { NbCalendarRang, NbToggleModule } from '@nebular/theme';
+import { NbCalendarRange, NbCheckboxComponent } from '@nebular/theme';
 
 
 
@@ -16,11 +16,11 @@ export class HistoryComponent  implements OnInit, OnDestroy {
   private mac: string;
   private from: string;
   private to: string;
-  minMaxAnalysis = false;
   sensorDataEx: SensorDataEx[];
   minMaxData4Day: MinMaxData4Day[];
-
+  
   @ViewChild('rangepicker') rangepicker: NbRangepickerComponent<any>;
+  @ViewChild('minmax') minMaxAnalysis: NbCheckboxComponent;
 
   constructor(private route: ActivatedRoute, private temperatureHumidityService: TemperatureHumidityData) { 
     var now = new Date;
@@ -32,11 +32,26 @@ export class HistoryComponent  implements OnInit, OnDestroy {
 
   }
 
+    
+  toggle(checked: boolean) {
+    if (checked)
+    {
+      let tmpDate = new Date();
+      let tmpLastWeek = new Date();
+      tmpLastWeek.setDate(tmpDate.getDate() - 7);
+      
+      this.from = tmpLastWeek.toISOString();
+  
+      this.temperatureHumidityService.getMinMaxData4Day(this.mac, this.from, this.to).subscribe((data) => {
+        this.minMaxData4Day = data;
+      });
+    }
 
+  }
+  
   ngOnInit() {
     
     this.rangepicker.rangeChange.subscribe((val: {start: Date, end: Date}) => {
-
       var dateFrom = (val.start) ? val.start : null;
       if (dateFrom != null) {
         var d = new Date(Date.UTC(dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate(),0,0,0))
@@ -48,7 +63,7 @@ export class HistoryComponent  implements OnInit, OnDestroy {
           tmp = new Date(Date.UTC(dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate(), 23, 59, 59, 999));
           this.to = tmp.toISOString();
 
-          if (this.minMaxAnalysis)
+          if (this.minMaxAnalysis.value)
           {
             this.temperatureHumidityService.getMinMaxData4Day(this.mac, this.from, this.to).subscribe((data) => {
               this.minMaxData4Day = data;
@@ -66,11 +81,12 @@ export class HistoryComponent  implements OnInit, OnDestroy {
     
     this.route.paramMap.subscribe(params => {
       this.mac = params.get("mac")
+
       this.temperatureHumidityService.getSensorDataEx(this.mac, this.from, this.to).subscribe((data) => {
         this.sensorDataEx = data;
       });
+
     });
   }
-
 
 }

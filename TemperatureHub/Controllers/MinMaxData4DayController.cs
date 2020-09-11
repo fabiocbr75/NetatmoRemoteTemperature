@@ -34,8 +34,9 @@ namespace TemperatureHub.Controllers
                 var tmp = new MinMaxData4DayDTO();
                 tmp.MAC = item.SenderMAC;
                 tmp.Day = item.Day;
-                tmp.Max = item.MaxT;
-                tmp.Min = item.MinT;
+                tmp.Max = Math.Round(item.MaxT, 1);
+                tmp.Min = Math.Round(item.MinT, 1);
+
                 retData.Add(tmp);
             }
 

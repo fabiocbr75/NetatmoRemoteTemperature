@@ -228,7 +228,7 @@ export class HistoryGraphComponent implements OnDestroy, OnChanges {
           label: 'Humidity',
           backgroundColor: NbColorHelper.hexToRgbA(colors.success, 0.3),
           fill: false,
-          borderColor: colors.info,
+          borderColor: colors.info ,
           lineTension: 0,        
           hidden: false,
           yAxisID: 'yHumidity',

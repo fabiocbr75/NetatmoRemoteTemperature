@@ -4,13 +4,15 @@
       <nb-card-header>
         History graph
         <p></p>
-        <nb-toggle [(ngModel)]="minMaxAnalysis">Min\Max Analysis</nb-toggle>
+        <nb-checkbox (change)="toggle($event)" #minmax>Min\Max Analysis</nb-checkbox>
+        <p></p>
         <input #inputpicker nbInput placeholder="Range Picker" [nbDatepicker]="rangepicker">
         <nb-rangepicker #rangepicker></nb-rangepicker>
         <!-- <nb-calendar-range [(range)]="range" #rangepicker></nb-calendar-range> -->
       </nb-card-header>
       <nb-card-body>
-        <ngx-historygraph [sensorDataEx]="sensorDataEx"  ></ngx-historygraph>
+        <ngx-historyanalysis *ngIf="minMaxAnalysis.value" [minMaxData4Day]="minMaxData4Day"  ></ngx-historyanalysis>
+        <ngx-historygraph *ngIf="!minMaxAnalysis.value" [sensorDataEx]="sensorDataEx"  ></ngx-historygraph>
       </nb-card-body>
     </nb-card>
   </div>
