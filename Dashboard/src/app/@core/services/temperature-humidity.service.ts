@@ -7,8 +7,8 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular
 @Injectable()
 export class TemperatureHumidityService extends TemperatureHumidityData {
     
-  // private endpoint: string = 'http://192.168.2.40:5000/api/';
-  private endpoint: string = 'http://localhost:5000/api/';
+  private endpoint: string = 'http://192.168.2.40:5000/api/';
+  // private endpoint: string = 'http://localhost:5000/api/';
   private httpOptions: any = {
     headers: new HttpHeaders({
         'Content-Type':  'application/json'
