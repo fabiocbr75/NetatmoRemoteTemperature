@@ -40,9 +40,11 @@ export class HistoryAnalysisComponent implements OnDestroy, OnChanges {
         for (var _i = 0; _i < this.minMaxData4Day.length; _i++) {
 
           tMaxArray.push({ y: this.minMaxData4Day[_i].maxTemp, t: this.minMaxData4Day[_i].day });
-          tMaxTime.push(this.minMaxData4Day[_i].maxTime.substr(11, 5));
+          let tMaxTimeDate = new Date(this.minMaxData4Day[_i].maxTime);
+          tMaxTime.push(tMaxTimeDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
           tMinArray.push({ y: this.minMaxData4Day[_i].minTemp, t: this.minMaxData4Day[_i].day });
-          tMinTime.push(this.minMaxData4Day[_i].minTime.substr(11, 5));
+          let tMinTimeDate = new Date(this.minMaxData4Day[_i].minTime);
+          tMinTime.push(tMinTimeDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
           
 
 
