@@ -73,7 +73,9 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
         mac: item.mac,
         minTemp: item.min,
         maxTemp: item.max,
-        day: item.day
+        day: item.day,
+        minTime: item.minTime,
+        maxTime: item.maxTime
       }
     }); 
 

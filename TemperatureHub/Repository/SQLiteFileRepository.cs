@@ -138,14 +138,21 @@ namespace TemperatureHub.Repository
         public List<MinMaxData4Day> LoadMinMaxData4Day(string mac, string from, string to)
         {
             Logger.Info("SQLiteFileRepository", "LoadMinMaxData4Day");
-
+          
             var ret = ExecuteOnThreadPool<List<MinMaxData4Day>>(() => {
-                var result = GetDbInstance().Query<MinMaxData4Day>(@"SELECT SenderMAC, substr(IngestionTimestamp, 0, 11) as Day, MIN(temperature) as MinT, MAX(temperature) as MaxT FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ? AND temperature > -10 GROUP BY Day ORDER BY Day", mac, from, to);
+                var result = GetDbInstance().Query<MinMaxData4Day>(@"
+                                                            SELECT 
+                                                                *,
+                                                                (SELECT Min(IngestionTimestamp) FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN  ? AND ? AND temperature = MaxT) MaxTime,
+                                                                (SELECT Min(IngestionTimestamp) FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN  ? AND ? AND temperature = MinT) MinTime
+                                                            FROM (
+                                                            SELECT SenderMAC, substr(IngestionTimestamp, 0, 11) as Day, MIN(temperature) as MinT, MAX(temperature) as MaxT FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ? AND temperature > -10 GROUP BY Day ORDER BY Day
+                                                            )
+                                                            ORDER BY Day", mac, from, to, mac, from, to, mac, from, to);
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadMinMaxData4Day Get finished");
             return ret;
-
         }
 
         public SensorMasterData SwitchPower(string id, bool power)

@@ -30,7 +30,9 @@ export class HistoryAnalysisComponent implements OnDestroy, OnChanges {
         var maxValue: number = 0;
         var minValue: number = 100;
         var tMaxArray = [];
+        var tMaxTime = [];
         var tMinArray = [];
+        var tMinTime = [];
 
         var pointRadius0 = [];
         var pointRadius1 = [];
@@ -38,14 +40,19 @@ export class HistoryAnalysisComponent implements OnDestroy, OnChanges {
         for (var _i = 0; _i < this.minMaxData4Day.length; _i++) {
 
           tMaxArray.push({ y: this.minMaxData4Day[_i].maxTemp, t: this.minMaxData4Day[_i].day });
+          tMaxTime.push(this.minMaxData4Day[_i].maxTime.substr(11, 5));
           tMinArray.push({ y: this.minMaxData4Day[_i].minTemp, t: this.minMaxData4Day[_i].day });
+          tMinTime.push(this.minMaxData4Day[_i].minTime.substr(11, 5));
+          
 
 
           pointRadius0.push(5);
           pointRadius1.push(5);
 
           this.data.datasets[0].data = tMaxArray;
+          this.data.datasets[0].labels = tMaxTime;
           this.data.datasets[1].data = tMinArray;
+          this.data.datasets[1].labels = tMinTime;
 
           this.data.datasets[0].pointRadius = pointRadius0;
           this.data.datasets[1].pointRadius = pointRadius1;
@@ -58,6 +65,14 @@ export class HistoryAnalysisComponent implements OnDestroy, OnChanges {
         this.options = {
           responsive: true,
           maintainAspectRatio: true,
+          tooltips: {
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    var label = 'T:' + tooltipItem.yLabel + ' at:' + data.datasets[tooltipItem.datasetIndex].labels[tooltipItem.index];
+                    return label;
+                }
+            }
+          },          
           scales: {
             xAxes: [
               {

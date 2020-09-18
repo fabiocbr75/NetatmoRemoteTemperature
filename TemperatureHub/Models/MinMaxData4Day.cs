@@ -16,6 +16,8 @@
             get => _max;
             set => _max = System.Math.Round(value, 1);
         }
+        public string MinTime { get; set; }
+        public string MaxTime { get; set; }
         public double Delta
         {
             get

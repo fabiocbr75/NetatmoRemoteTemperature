@@ -36,6 +36,8 @@ namespace TemperatureHub.Controllers
                 tmp.Day = item.Day;
                 tmp.Max = Math.Round(item.MaxT, 1);
                 tmp.Min = Math.Round(item.MinT, 1);
+                tmp.MaxTime = item.MaxTime;
+                tmp.MinTime = item.MinTime;
 
                 retData.Add(tmp);
             }

@@ -28,6 +28,8 @@ export interface MinMaxData4Day {
   minTemp: number;
   maxTemp: number;
   day: string;
+  minTime: string;
+  maxTime: string;
 }
 
 

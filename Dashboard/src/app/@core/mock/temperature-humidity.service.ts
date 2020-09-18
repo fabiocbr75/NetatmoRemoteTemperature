@@ -41,7 +41,9 @@ export class TemperatureHumidityService extends TemperatureHumidityData {
     mac: '',
     minTemp: 0,
     maxTemp: 100,
-    day: ''
+    day: '',
+    minTime: '',
+    maxTime: ''
   }];
 
   getTemperatureData(senderMAC: string): Observable<Temperature> {
