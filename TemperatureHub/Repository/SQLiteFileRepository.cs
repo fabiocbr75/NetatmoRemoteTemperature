@@ -148,7 +148,7 @@ namespace TemperatureHub.Repository
                                                             FROM (
                                                             SELECT SenderMAC, substr(IngestionTimestamp, 0, 11) as Day, MIN(temperature) as MinT, MAX(temperature) as MaxT FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ? AND temperature > -10 GROUP BY Day ORDER BY Day
                                                             )
-                                                            ORDER BY Day", mac, from, to, mac, from, to, mac, from, to);
+                                                            ORDER BY Day", mac, mac, mac, from, to);
                 return result;
             });
             Logger.Info("SQLiteFileRepository", "LoadMinMaxData4Day Get finished");
