@@ -143,8 +143,8 @@ namespace TemperatureHub.Repository
                 var result = GetDbInstance().Query<MinMaxData4Day>(@"
                                                             SELECT 
                                                                 *,
-                                                                (SELECT Min(IngestionTimestamp) FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN  ? AND ? AND temperature = MaxT) MaxTime,
-                                                                (SELECT Min(IngestionTimestamp) FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN  ? AND ? AND temperature = MinT) MinTime
+                                                                (SELECT Min(IngestionTimestamp) FROM AggregateData WHERE SenderMAC = ? AND substr(IngestionTimestamp, 0, 11) = Day AND temperature = MaxT) MaxTime,
+                                                                (SELECT Min(IngestionTimestamp) FROM AggregateData WHERE SenderMAC = ? AND substr(IngestionTimestamp, 0, 11) = Day AND temperature = MinT) MinTime
                                                             FROM (
                                                             SELECT SenderMAC, substr(IngestionTimestamp, 0, 11) as Day, MIN(temperature) as MinT, MAX(temperature) as MaxT FROM AggregateData WHERE SenderMAC = ? AND IngestionTimestamp BETWEEN ? AND ? AND temperature > -10 GROUP BY Day ORDER BY Day
                                                             )
