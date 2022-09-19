@@ -2,3 +2,6 @@
 /.vs
 /RoomTempSenderDHT22
 /BlazorDashboard
+/RoomTempSenderESP32/src/Scripts
+/RoomTempSenderESP32/src/Lib/site-packages
+*.cfg
