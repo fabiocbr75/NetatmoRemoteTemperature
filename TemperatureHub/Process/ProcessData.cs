@@ -29,6 +29,8 @@ namespace TemperatureHub.Process
             _netatmoCloud = netatmoCloud;
             _appsettings = appSettings.Value;
             _sharedData = sharedData;
+
+            _netatmoCloud.Init(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.RefreshToken);
             StartExecutionLoop();
         }
 
@@ -57,7 +59,7 @@ namespace TemperatureHub.Process
 
                         if (masterData.NetatmoLink)
                         {
-                            var token = await _netatmoCloud.GetToken(_appsettings.ClientId, _appsettings.ClientSecret, _appsettings.Username, _appsettings.Password);
+                            var token = await _netatmoCloud.GetToken();
                             var schedule = await _netatmoCloud.GetActiveRoomSchedule(_appsettings.HomeId, token.Access_token);
                             if (schedule != null)
                             {

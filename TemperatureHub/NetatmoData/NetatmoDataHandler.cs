@@ -17,16 +17,34 @@ namespace TemperatureHub.NetatmoData
     {
         private readonly IMemoryCache _cache;
         private readonly ISharedData _sharedData = null;
+        private bool _isInitialized;
+        private string _clientId;
+        private string _clientSecret;
+        private string _refresh_token;
 
         public NetatmoDataHandler(IMemoryCache cache, ISharedData sharedData)
         {
             _cache = cache;
             _sharedData = sharedData;
         }
-        public async Task<NetatmoToken> GetToken(string clientId, string clientSecret, string userName, string password)
+
+        public void Init(string clientId, string clientSecret, string refreshToken)
+        {
+            if (_isInitialized)
+            {
+                return;
+            }
+            _clientId = clientId;
+            _clientSecret = clientSecret;
+            _refresh_token = refreshToken;
+
+            _isInitialized = true;
+        }
+
+        public async Task<NetatmoToken> GetToken()
         {
             Logger.Info("NetatmoDataHandler", "GetToken Get started");
-            string key = $"Token4ClientId_{clientId}";
+            string key = $"Token4ClientId_{_clientId}";
             NetatmoToken token = null;
             if (_cache.TryGetValue<NetatmoToken>(key, out token))
             {
@@ -35,17 +53,19 @@ namespace TemperatureHub.NetatmoData
             }
 
             var dict = new Dictionary<string, string>();
-            dict.Add("grant_type", "password");
-            dict.Add("client_id", clientId);
-            dict.Add("client_secret", clientSecret);
-            dict.Add("username", userName);
-            dict.Add("password", password);
+            dict.Add("grant_type", "refresh_token");
+            dict.Add("client_id", _clientId);
+            dict.Add("client_secret", _clientSecret);
+            dict.Add("refresh_token", _refresh_token);
             dict.Add("scope", "read_thermostat write_thermostat");
             var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Post, "https://api.netatmo.com/oauth2/token") { Content = new FormUrlEncodedContent(dict) };
             var res = await client.SendAsync(req);
             var tokenJson = res.Content.ReadAsStringAsync().Result;
             token = JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
+
+            _refresh_token = token.Refresh_token;
+
             _cache.Set<NetatmoToken>(key, token, new MemoryCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(token.Expire_in - 60)
@@ -53,21 +73,6 @@ namespace TemperatureHub.NetatmoData
             _sharedData.CacheKey.Add(key);
             Logger.Info("NetatmoDataHandler", "GetToken Get finished");
             return token;
-        }
-        public async Task<NetatmoToken> GetTokenByRefresh(string clientId, string clientSecret, string refreshToken)
-        {
-            Logger.Info("NetatmoDataHandler", "GetTokenByRefresh Get started");
-            var dict = new Dictionary<string, string>();
-            dict.Add("grant_type", "password");
-            dict.Add("client_id", clientId);
-            dict.Add("client_secret", clientSecret);
-            dict.Add("refresh_token", refreshToken);
-            var client = new HttpClient();
-            var req = new HttpRequestMessage(HttpMethod.Post, "https://api.netatmo.com/oauth2/token") { Content = new FormUrlEncodedContent(dict) };
-            var res = await client.SendAsync(req);
-            var tokenJson = res.Content.ReadAsStringAsync().Result;
-            Logger.Info("NetatmoDataHandler", "GetTokenByRefresh Get finished");
-            return JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
         }
 
         public async Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken, long endSchedulateTime)
@@ -269,5 +274,7 @@ namespace TemperatureHub.NetatmoData
             Logger.Info("NetatmoDataHandler", "GetActiveRoomSchedule Get finished");
             return schedule;
         }
+
+
     }
 }

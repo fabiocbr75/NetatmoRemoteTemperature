@@ -88,11 +88,10 @@ namespace TemperatureHub
             SQLiteFileRepository.CreateOrUpdateDb(sett.DbFullPath);
 
             Logger.Info("Startup", $"HomeId:{sett.HomeId}");
-            Logger.Info("Startup", $"Username:{sett.Username}");
 
             Logger.Info("Startup", $"ClientId(last 3 char):{sett.ClientId.Substring(sett.ClientId.Length - 3)}");
             Logger.Info("Startup", $"ClientSecret(last 3 char):{sett.ClientSecret.Substring(sett.ClientSecret.Length - 3)}");
-            Logger.Info("Startup", $"Password(last 3 char):{sett.Password.Substring(sett.Password.Length - 3)}");
+            Logger.Info("Startup", $"RefreshToken(last 3 char):{sett.RefreshToken.Substring(sett.RefreshToken.Length - 3)}");
 
             var sharedData = app.ApplicationServices.GetService<ISharedData>();
             Logger.SetSharedData(sharedData);
