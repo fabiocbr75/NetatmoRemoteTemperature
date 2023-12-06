@@ -1,13 +1,16 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Linq;
 using TemperatureHub.Helpers;
 using TemperatureHub.Models;
 
@@ -17,15 +20,17 @@ namespace TemperatureHub.NetatmoData
     {
         private readonly IMemoryCache _cache;
         private readonly ISharedData _sharedData = null;
+        private readonly IOptions<AppSettings> _appSettings;
         private bool _isInitialized;
         private string _clientId;
         private string _clientSecret;
         private string _refresh_token;
 
-        public NetatmoDataHandler(IMemoryCache cache, ISharedData sharedData)
+        public NetatmoDataHandler(IMemoryCache cache, ISharedData sharedData, IOptions<AppSettings> appSettings)
         {
             _cache = cache;
             _sharedData = sharedData;
+            _appSettings = appSettings;
         }
 
         public void Init(string clientId, string clientSecret, string refreshToken)
@@ -36,7 +41,10 @@ namespace TemperatureHub.NetatmoData
             }
             _clientId = clientId;
             _clientSecret = clientSecret;
-            _refresh_token = refreshToken;
+
+            var token = LoadToken(refreshToken);
+
+            _refresh_token = token.Refresh_token;
 
             _isInitialized = true;
         }
@@ -61,6 +69,8 @@ namespace TemperatureHub.NetatmoData
             var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Post, "https://api.netatmo.com/oauth2/token") { Content = new FormUrlEncodedContent(dict) };
             var res = await client.SendAsync(req);
+            res.EnsureSuccessStatusCode();
+
             var tokenJson = res.Content.ReadAsStringAsync().Result;
             token = JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
 
@@ -71,9 +81,47 @@ namespace TemperatureHub.NetatmoData
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(token.Expire_in - 60)
                 });
             _sharedData.CacheKey.Add(key);
+
+
+            SaveToken(token);
+
             Logger.Info("NetatmoDataHandler", "GetToken Get finished");
             return token;
         }
+
+        private void SaveToken(NetatmoToken netatmoToken)
+        {
+            try
+            {
+                var token = JsonConvert.SerializeObject(netatmoToken);
+                System.IO.File.WriteAllText(Path.Combine(_appSettings.Value.DbFullPath, "token.json"), token);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("NetatmoDataHandler", $"Fail write token. Error:{ex.Message}"); 
+            }
+        }
+
+        private NetatmoToken LoadToken(string refreshToken)
+        {
+            try
+            {
+                var token = System.IO.File.ReadAllText(Path.Combine(_appSettings.Value.DbFullPath, "token.json"));
+                return JsonConvert.DeserializeObject<NetatmoToken>(token);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("NetatmoDataHandler", $"Fail read token. Error:{ex.Message}");
+            }
+
+            return new NetatmoToken()
+            {
+                Refresh_token = refreshToken
+            };
+        }
+
+
+
 
         public async Task<List<RoomData>> GetRoomStatus(string homeId, string accessToken, long endSchedulateTime)
         {

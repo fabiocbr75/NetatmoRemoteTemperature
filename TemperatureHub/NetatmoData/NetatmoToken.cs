@@ -7,14 +7,14 @@ namespace TemperatureHub.NetatmoData
 {
     public class NetatmoToken
     {
-        public string Access_token { get; set; }
+        public string Access_token { get; set; } = string.Empty;
 
-        public string Refresh_token { get; set; }
+        public string Refresh_token { get; set; } = string.Empty;
 
-        public string[] Scope { get; set; }
+        public string[] Scope { get; set; } = new string[0];
 
-        public long Expires_in { get; set; }
+        public long Expires_in { get; set; } = 0;
 
-        public long Expire_in { get; set; }
+        public long Expire_in { get; set; } = 0;
     }
 }
