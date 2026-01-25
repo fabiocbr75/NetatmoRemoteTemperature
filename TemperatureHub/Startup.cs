@@ -18,6 +18,7 @@ using TemperatureHub.Repository;
 using System.Threading;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.Extensions.Hosting;
 
 namespace TemperatureHub
 {
@@ -30,7 +31,7 @@ namespace TemperatureHub
 
         private static Timer timer;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                     .SetBasePath(env.ContentRootPath)
@@ -62,7 +63,7 @@ namespace TemperatureHub
                  .AllowCredentials());
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc();
  
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -75,7 +76,7 @@ namespace TemperatureHub
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -110,9 +111,10 @@ namespace TemperatureHub
 
 
             app.UseCors("CorsPolicy"); //Only 4 test. 
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
-            var lifeTime = app.ApplicationServices.GetService<IApplicationLifetime>();
+            var lifeTime = app.ApplicationServices.GetService<Microsoft.Extensions.Hosting.IHostApplicationLifetime>();
             lifeTime.ApplicationStopping.Register(() =>
             {
                 SQLiteFileRepository.CleanUp();
