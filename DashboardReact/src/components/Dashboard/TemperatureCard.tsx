@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import type { Temperature } from '../../types/sensor.types';
 import { temperatureService, sensorService } from '../../services/api.service';
 import './TemperatureCard.css';
@@ -22,15 +22,7 @@ const TemperatureCard = ({ senderName, senderMAC, temperatureOff }: TemperatureC
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadTemperatureData();
-  }, [senderMAC]);
-
-  useEffect(() => {
-    setIsOff(temperatureOff);
-  }, [temperatureOff]);
-
-  const loadTemperatureData = async () => {
+  const loadTemperatureData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -42,7 +34,15 @@ const TemperatureCard = ({ senderName, senderMAC, temperatureOff }: TemperatureC
     } finally {
       setLoading(false);
     }
-  };
+  }, [senderMAC]);
+
+  useEffect(() => {
+    loadTemperatureData();
+  }, [loadTemperatureData]);
+
+  useEffect(() => {
+    setIsOff(temperatureOff);
+  }, [temperatureOff]);
 
   const handlePowerSwitch = async () => {
     try {

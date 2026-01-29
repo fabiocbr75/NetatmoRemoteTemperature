@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import type { Weather, WeatherValue } from '../../types/sensor.types';
 import { weatherService } from '../../services/api.service';
 import './WeatherCard.css';
@@ -18,11 +18,7 @@ const WeatherCard = ({ senderName, senderMAC }: WeatherCardProps) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadWeatherData();
-  }, [senderMAC]);
-
-  const loadWeatherData = async () => {
+  const loadWeatherData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -34,7 +30,11 @@ const WeatherCard = ({ senderName, senderMAC }: WeatherCardProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [senderMAC]);
+
+  useEffect(() => {
+    loadWeatherData();
+  }, [loadWeatherData]);
 
   if (loading) {
     return (

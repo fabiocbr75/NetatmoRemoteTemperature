@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import type { SensorDataEx, MinMaxData4Day } from '../../types/sensor.types';
 import { temperatureService } from '../../services/api.service';
@@ -21,13 +21,7 @@ const History = () => {
   const [fromDate, setFromDate] = useState(startDay.toISOString().split('T')[0]);
   const [toDate, setToDate] = useState(now.toISOString().split('T')[0]);
 
-  useEffect(() => {
-    if (mac) {
-      loadSensorData();
-    }
-  }, [mac]);
-
-  const loadSensorData = async () => {
+  const loadSensorData = useCallback(async () => {
     if (!mac) return;
 
     try {
@@ -50,7 +44,13 @@ const History = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [mac, fromDate, toDate, showMinMaxAnalysis]);
+
+  useEffect(() => {
+    if (mac) {
+      loadSensorData();
+    }
+  }, [mac, loadSensorData]);
 
   const handleDateChange = () => {
     loadSensorData();

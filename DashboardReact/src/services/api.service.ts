@@ -36,7 +36,12 @@ export const temperatureService = {
    * Get last temperature data for a specific sensor
    */
   getLastTemperature: async (senderMAC: string): Promise<Temperature> => {
-    const response = await apiClient.get<any>(`/sensorData/LastTemperature/${senderMAC}`);
+    const response = await apiClient.get<{
+      temp: number;
+      ingestionTimestamp: string;
+      batteryLevel: string;
+      scheduledTemperature: number;
+    }>(`/sensorData/LastTemperature/${senderMAC}`);
     
     // Transform the response to match Temperature interface
     return {
@@ -71,12 +76,21 @@ export const temperatureService = {
     from: string,
     to: string
   ): Promise<MinMaxData4Day[]> => {
-    const response = await apiClient.get<any[]>(`/minMaxData4Day/${senderMAC}`, {
+    interface ApiMinMaxData {
+      mac: string;
+      min: number;
+      max: number;
+      day: string;
+      minTime: string;
+      maxTime: string;
+    }
+    
+    const response = await apiClient.get<ApiMinMaxData[]>(`/minMaxData4Day/${senderMAC}`, {
       params: { from, to },
     });
     
     // Transform the response to match MinMaxData4Day interface
-    return response.data.map((item: any) => ({
+    return response.data.map((item: ApiMinMaxData) => ({
       mac: item.mac,
       minTemp: item.min,
       maxTemp: item.max,
