@@ -6,6 +6,6 @@
 /RoomTempSenderESP32/src/Lib/site-packages
 *.cfg
 
-# Test artifacts
-*/bin/
-*/obj/
+# Build artifacts
+**/bin/
+**/obj/
