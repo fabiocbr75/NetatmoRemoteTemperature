@@ -72,6 +72,11 @@ namespace TemperatureHub.NetatmoData
 
             var tokenJson = res.Content.ReadAsStringAsync().Result;
             token = JsonSerializer.Deserialize<NetatmoToken>(tokenJson);
+            
+            if (token == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize token from Netatmo API");
+            }
 
             _refresh_token = token.Refresh_token;
 
@@ -106,7 +111,11 @@ namespace TemperatureHub.NetatmoData
             try
             {
                 var token = System.IO.File.ReadAllText(Path.Combine(_appSettings.Value.DbFullPath, "token.json"));
-                return JsonSerializer.Deserialize<NetatmoToken>(token);
+                var deserialized = JsonSerializer.Deserialize<NetatmoToken>(token);
+                if (deserialized != null)
+                {
+                    return deserialized;
+                }
             }
             catch (Exception ex)
             {
@@ -149,14 +158,15 @@ namespace TemperatureHub.NetatmoData
                 using var jsonDoc = JsonDocument.Parse(res);
                 var root = jsonDoc.RootElement;
                 
-                if (root.GetProperty("status").GetString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+                if (root.TryGetProperty("status", out var status) && 
+                    status.GetString()?.Equals("ok", StringComparison.InvariantCultureIgnoreCase) == true)
                 {
                     if (!root.GetProperty("body").TryGetProperty("errors", out _))
                     {
                         var rooms = root.GetProperty("body").GetProperty("home").GetProperty("rooms");
                         
                         roomData = rooms.EnumerateArray()
-                            .Where(z => z.GetProperty("reachable").GetBoolean() == true)
+                            .Where(z => z.GetProperty("reachable").GetBoolean())
                             .Select(x => new RoomData()
                             {
                                 RoomId = x.GetProperty("id").GetString(),
@@ -166,7 +176,7 @@ namespace TemperatureHub.NetatmoData
                             }).ToList();
 
                         bool allReachable = rooms.EnumerateArray()
-                            .All(z => z.GetProperty("reachable").GetBoolean() == true);
+                            .All(z => z.GetProperty("reachable").GetBoolean());
                             
                         if (allReachable)
                         { //Cacheble only if all sensor are reachable
@@ -257,13 +267,14 @@ namespace TemperatureHub.NetatmoData
                 using var jsonDoc = JsonDocument.Parse(res);
                 var root = jsonDoc.RootElement;
                 
-                if (root.GetProperty("status").GetString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+                if (root.TryGetProperty("status", out var status) && 
+                    status.GetString()?.Equals("ok", StringComparison.InvariantCultureIgnoreCase) == true)
                 {
                     if (!root.GetProperty("body").TryGetProperty("errors", out _))
                     {
                         var home = root.GetProperty("body").GetProperty("homes").EnumerateArray().First();
                         var sched = home.GetProperty("schedules").EnumerateArray()
-                            .Where(x => x.TryGetProperty("selected", out var selected) && selected.GetBoolean() == true)
+                            .Where(x => x.TryGetProperty("selected", out var selected) && selected.GetBoolean())
                             .First();
 
                         var zones = sched.GetProperty("zones").EnumerateArray().ToList();
@@ -273,6 +284,11 @@ namespace TemperatureHub.NetatmoData
                             {
                                 var zoneId = x.GetProperty("zone_id").GetString();
                                 var zone = zones.FirstOrDefault(z => z.GetProperty("id").GetString() == zoneId);
+                                
+                                if (zone.ValueKind == System.Text.Json.JsonValueKind.Undefined)
+                                {
+                                    return null;
+                                }
                                 
                                 return new Schedule()
                                 {
@@ -284,7 +300,9 @@ namespace TemperatureHub.NetatmoData
                                             TScheduledTarget = y.GetProperty("therm_setpoint_temperature").GetDouble()
                                         }).ToList()
                                 };
-                            }).ToList();
+                            })
+                            .Where(s => s != null)
+                            .ToList();
 
                         _cache.Set<List<Schedule>>(key, roomSchedules, new MemoryCacheEntryOptions
                         {

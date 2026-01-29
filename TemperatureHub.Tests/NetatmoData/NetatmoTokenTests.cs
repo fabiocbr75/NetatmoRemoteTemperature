@@ -116,6 +116,7 @@ namespace TemperatureHub.Tests.NetatmoData
             // Assert
             Assert.IsNotNull(token);
             Assert.AreEqual("test_access", token.Access_token);
+            // System.Text.Json sets missing string properties to their default value (string.Empty in this case due to initialization)
             Assert.AreEqual(string.Empty, token.Refresh_token);
             Assert.IsNotNull(token.Scope);
             Assert.AreEqual(0, token.Scope.Length);
@@ -124,7 +125,7 @@ namespace TemperatureHub.Tests.NetatmoData
         }
 
         [TestMethod]
-        public void Deserialize_WithNullScope_CreatesEmptyArray()
+        public void Deserialize_WithNullScope_HandlesNull()
         {
             // Arrange
             var json = @"{
@@ -140,7 +141,8 @@ namespace TemperatureHub.Tests.NetatmoData
 
             // Assert
             Assert.IsNotNull(token);
-            Assert.IsNull(token.Scope); // System.Text.Json will keep it as null
+            // System.Text.Json will set the property to null when the JSON value is null
+            Assert.IsNull(token.Scope);
         }
 
         [TestMethod]
