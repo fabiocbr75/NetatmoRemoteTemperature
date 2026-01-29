@@ -5,3 +5,7 @@
 /RoomTempSenderESP32/src/Scripts
 /RoomTempSenderESP32/src/Lib/site-packages
 *.cfg
+
+# Test artifacts
+*/bin/
+*/obj/
