@@ -1,0 +1,93 @@
+.temperature-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.temperature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sensor-name {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.power-button {
+  background: none;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.power-button:hover {
+  transform: scale(1.1);
+}
+
+.power-button.on {
+  border-color: #3366ff;
+  background-color: #e8f0ff;
+}
+
+.power-button.off {
+  border-color: #999;
+  background-color: #f5f5f5;
+}
+
+.power-icon {
+  font-size: 1.3rem;
+}
+
+.power-button.on .power-icon {
+  color: #3366ff;
+}
+
+.power-button.off .power-icon {
+  color: #999;
+}
+
+.temperature-display {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.temperature-value {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ff3d71;
+  margin-bottom: 0.5rem;
+}
+
+.temperature-info {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.error {
+  color: #ff3d71;
+}

@@ -1,0 +1,59 @@
+.history-analysis {
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.analysis-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analysis-table th {
+  background-color: #f5f5f5;
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #ddd;
+}
+
+.analysis-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.analysis-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.temp-value {
+  font-weight: 600;
+}
+
+.temp-min {
+  color: #3366ff;
+}
+
+.temp-max {
+  color: #ff3d71;
+}
+
+@media (max-width: 768px) {
+  .analysis-table {
+    font-size: 0.9rem;
+  }
+  
+  .analysis-table th,
+  .analysis-table td {
+    padding: 0.5rem;
+  }
+}
