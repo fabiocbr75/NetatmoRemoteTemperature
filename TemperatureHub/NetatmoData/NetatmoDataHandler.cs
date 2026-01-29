@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
@@ -72,7 +71,7 @@ namespace TemperatureHub.NetatmoData
             res.EnsureSuccessStatusCode();
 
             var tokenJson = res.Content.ReadAsStringAsync().Result;
-            token = JsonConvert.DeserializeObject<NetatmoToken>(tokenJson);
+            token = JsonSerializer.Deserialize<NetatmoToken>(tokenJson);
 
             _refresh_token = token.Refresh_token;
 
@@ -93,7 +92,7 @@ namespace TemperatureHub.NetatmoData
         {
             try
             {
-                var token = JsonConvert.SerializeObject(netatmoToken);
+                var token = JsonSerializer.Serialize(netatmoToken);
                 System.IO.File.WriteAllText(Path.Combine(_appSettings.Value.DbFullPath, "token.json"), token);
             }
             catch (Exception ex)
@@ -107,7 +106,7 @@ namespace TemperatureHub.NetatmoData
             try
             {
                 var token = System.IO.File.ReadAllText(Path.Combine(_appSettings.Value.DbFullPath, "token.json"));
-                return JsonConvert.DeserializeObject<NetatmoToken>(token);
+                return JsonSerializer.Deserialize<NetatmoToken>(token);
             }
             catch (Exception ex)
             {
@@ -147,20 +146,29 @@ namespace TemperatureHub.NetatmoData
             try
             {
                 res = await client.GetStringAsync(url);
-                var jobj = JObject.Parse(res);
-                if (jobj["status"].ToString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+                using var jsonDoc = JsonDocument.Parse(res);
+                var root = jsonDoc.RootElement;
+                
+                if (root.GetProperty("status").GetString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (jobj["body"]["errors"] == null)
+                    if (!root.GetProperty("body").TryGetProperty("errors", out _))
                     {
-                        roomData = jobj["body"]["home"]["rooms"].Where(z => z["reachable"].ToObject<bool>() == true).Select(x => new RoomData()
-                        {
-                            RoomId = x["id"].ToString(),
-                            TCurrentTarget = x["therm_setpoint_temperature"].ToObject<double>(),
-                            TValve = x["therm_measured_temperature"].ToObject<double>(),
-                            IsAway = (x["therm_setpoint_mode"].ToObject<string>().Equals("away", StringComparison.InvariantCultureIgnoreCase))
-                        }).ToList();
+                        var rooms = root.GetProperty("body").GetProperty("home").GetProperty("rooms");
+                        
+                        roomData = rooms.EnumerateArray()
+                            .Where(z => z.GetProperty("reachable").GetBoolean() == true)
+                            .Select(x => new RoomData()
+                            {
+                                RoomId = x.GetProperty("id").GetString(),
+                                TCurrentTarget = x.GetProperty("therm_setpoint_temperature").GetDouble(),
+                                TValve = x.GetProperty("therm_measured_temperature").GetDouble(),
+                                IsAway = x.GetProperty("therm_setpoint_mode").GetString().Equals("away", StringComparison.InvariantCultureIgnoreCase)
+                            }).ToList();
 
-                        if (!jobj["body"]["home"]["rooms"].Any(z => z["reachable"].ToObject<bool>() == false))
+                        bool allReachable = rooms.EnumerateArray()
+                            .All(z => z.GetProperty("reachable").GetBoolean() == true);
+                            
+                        if (allReachable)
                         { //Cacheble only if all sensor are reachable
                             long simulateCacheTo = new DateTimeOffset(DateTime.UtcNow.AddMinutes(9)).ToUnixTimeSeconds();
                             long endCacheTime = simulateCacheTo > endSchedulateTime ? endSchedulateTime : simulateCacheTo;
@@ -246,27 +254,37 @@ namespace TemperatureHub.NetatmoData
             try
             {
                 res = await client.GetStringAsync(url);
-                var jobj = JObject.Parse(res);
-                if (jobj["status"].ToString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
+                using var jsonDoc = JsonDocument.Parse(res);
+                var root = jsonDoc.RootElement;
+                
+                if (root.GetProperty("status").GetString().Equals("ok", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (jobj["body"]["errors"] == null)
+                    if (!root.GetProperty("body").TryGetProperty("errors", out _))
                     {
-                        var home = jobj["body"]["homes"].ToArray()[0];
-                        var sched = home["schedules"].ToArray().Where(x => x["selected"] != null && x["selected"].ToObject<bool>() == true).First();
+                        var home = root.GetProperty("body").GetProperty("homes").EnumerateArray().First();
+                        var sched = home.GetProperty("schedules").EnumerateArray()
+                            .Where(x => x.TryGetProperty("selected", out var selected) && selected.GetBoolean() == true)
+                            .First();
 
-                        roomSchedules = sched["timetable"]
-                                            .Select(x => new Schedule()
-                                            {
-                                                MinuteFromMonday = x["m_offset"].ToObject<int>(),
-                                                RoomSchedules = sched["zones"]
-                                                                        .Where(z => z["id"].ToString() == x["zone_id"].ToString())
-                                                                        .Select(r => r["rooms"]).First()
-                                                                        .Select(y => new RoomSchedule()
-                                                                        {
-                                                                            RoomId = y["id"].ToString(),
-                                                                            TScheduledTarget = y["therm_setpoint_temperature"].ToObject<double>()
-                                                                        }).ToList()
-                                            }).ToList();
+                        var zones = sched.GetProperty("zones").EnumerateArray().ToList();
+                        
+                        roomSchedules = sched.GetProperty("timetable").EnumerateArray()
+                            .Select(x =>
+                            {
+                                var zoneId = x.GetProperty("zone_id").GetString();
+                                var zone = zones.FirstOrDefault(z => z.GetProperty("id").GetString() == zoneId);
+                                
+                                return new Schedule()
+                                {
+                                    MinuteFromMonday = x.GetProperty("m_offset").GetInt32(),
+                                    RoomSchedules = zone.GetProperty("rooms").EnumerateArray()
+                                        .Select(y => new RoomSchedule()
+                                        {
+                                            RoomId = y.GetProperty("id").GetString(),
+                                            TScheduledTarget = y.GetProperty("therm_setpoint_temperature").GetDouble()
+                                        }).ToList()
+                                };
+                            }).ToList();
 
                         _cache.Set<List<Schedule>>(key, roomSchedules, new MemoryCacheEntryOptions
                         {
