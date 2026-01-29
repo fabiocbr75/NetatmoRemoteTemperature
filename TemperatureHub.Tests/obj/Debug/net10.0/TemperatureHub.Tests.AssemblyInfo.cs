@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TemperatureHub.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0df3a6039d24cfb100df39546c5abfb673289af2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8e0a2059cfb82cfd1bef46565fd626ea0cd2841")]
 [assembly: System.Reflection.AssemblyProductAttribute("TemperatureHub.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TemperatureHub.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
